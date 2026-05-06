@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Q-Readiness | Quantum Readiness Assessment</title>
+  <meta name="description" content="Premium quantum readiness assessment covering PQC, quantum networking, and optimization. NIST-aligned methodology with AI acceleration. Portal access included.">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <!-- Skip link for keyboard users -->
+  <a href="#evaluate" class="skip-link">Skip to content</a>
+
+  <!-- ============================================================
+       NAVIGATION — scroll-triggered, premium styling
+       ============================================================ -->
+  <nav class="nav nav--visible" role="navigation" aria-label="Primary navigation">
+    <a href="index.html" class="nav__brand" aria-label="Q-Readiness home">
+      <span class="nav__brand-mark">Q</span>
+      <span>Q-Readiness</span>
+    </a>
+    <div class="nav__menu">
+      <a href="#evaluate" class="nav__link">Evaluate</a>
+      <a href="#dashboard" class="nav__link">Dashboard</a>
+      <a href="#methodology" class="nav__link">Methodology</a>
+      <a href="#intelligence" class="nav__link">Intel</a>
+      <a href="dashboard.html" class="nav__link">Client Portal</a>
+      <a href="#contact" class="nav__link nav__cta btn btn--primary btn--small">Book a Call</a>
+    </div>
+    <button class="hamburger" aria-label="Open menu" aria-expanded="false">
+      <span class="hamburger__line"></span>
+      <span class="hamburger__line"></span>
+      <span class="hamburger__line"></span>
+    </button>
+  </nav>
+
+  <!-- Mobile overlay -->
+  <div class="overlay" role="dialog" aria-modal="true" aria-label="Navigation menu">
+    <nav class="overlay__nav">
+      <a href="#evaluate" class="overlay__link">Evaluate</a>
+      <a href="#dashboard" class="overlay__link">Dashboard</a>
+      <a href="#methodology" class="overlay__link">Methodology</a>
+      <a href="#intelligence" class="overlay__link">Intel</a>
+      <a href="quantum-status.html" class="overlay__link">Full Timeline</a>
+      <a href="dashboard.html" class="overlay__link">Client Portal</a>
+      <a href="#contact" class="overlay__link overlay__cta btn btn--outline">Book a Call</a>
+    </nav>
+  </div>
+
+  <!-- ============================================================
+       SECTION 1: HERO — Premium
+       ============================================================ -->
+  <section id="hero" class="section section--dark section--grid hero">
+    <div class="container">
+      <div class="hero__content reveal">
+        <div class="hero__badge">
+          <span class="hero__badge-dot"></span>
+          AI-Accelerated Audit &middot; 2.5 Weeks
+        </div>
+        <h1>We Evaluate Your<br><span class="highlight">Quantum Readiness</span></h1>
+        <p class="hero__sub">
+          The only assessment covering <strong>post-quantum cryptography</strong>, <strong>quantum networking protocols</strong>, and <strong>quantum optimization &amp; ML readiness</strong> &mdash; delivered in <strong>2.5 weeks, not 3 months</strong>. Portal access to your live dashboard.
+        </p>
+        <div class="hero__actions">
+          <a href="#contact" class="btn btn--primary">Book a Scoping Call</a>
+          <a href="#evaluate" class="btn btn--outline">View Assessment Domains</a>
+        </div>
+
+        <!-- Know More — Expandable HNDL urgency callout -->
+        <div class="hero-know-more">
+          <button class="know-more-toggle" aria-expanded="false">
+            Know More: Harvest Now, Decrypt Later <span class="know-more-icon">+</span>
+          </button>
+          <div class="know-more-content">
+            <p class="know-more-text">
+              Adversaries are already collecting encrypted data today, waiting for quantum computers capable of breaking current cryptography. Every piece of encrypted communications, stored data, and digital signature captured now is at risk of future decryption. This is not a future threat &mdash; the window to act is measured in months, not years. Organizations with data that must remain confidential beyond 2030 should begin PQC migration immediately.
+            </p>
+          </div>
+        </div>
+
+        <div class="hero__stats">
+          <div class="hero__stat-item">
+            <div class="hero__stat-value">2.5 Weeks</div>
+            <div class="hero__stat-label">Assessment delivery</div>
+          </div>
+          <div class="hero__stat-item">
+            <div class="hero__stat-value">3 Domains</div>
+            <div class="hero__stat-label">PQC &middot; Networking &middot; Optimization</div>
+          </div>
+          <div class="hero__stat-item">
+            <div class="hero__stat-value">80% Faster</div>
+            <div class="hero__stat-label">Than traditional audits</div>
+          </div>
+        </div>
+      </div>
+      <div class="hero__line" aria-hidden="true"></div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       SECTION 2: WHAT WE EVALUATE — Premium Cards
+       ============================================================ -->
+  <section id="evaluate" class="section section--darker section--striped">
+    <div class="container">
+      <h2 class="section-title reveal">What We Evaluate</h2>
+      <p class="section-subtitle reveal">Three assessment domains covering the full quantum readiness spectrum. Each module leverages specialized open-source tools and follows NIST-aligned methodology. Select your sector for tailored context.</p>
+
+      <!-- Sector selector — buyer-segment-aware filtering -->
+      <div class="sector-selector">
+        <button class="sector-btn sector-btn--active" data-sector="all">All Sectors</button>
+        <button class="sector-btn" data-sector="regulated">Regulated Enterprise</button>
+        <button class="sector-btn" data-sector="defense">Public Sector / Defense</button>
+        <button class="sector-btn" data-sector="telecom">Telecom &amp; Research</button>
+        <button class="sector-btn" data-sector="cyber">Cybersecurity Vendors</button>
+      </div>
+
+      <div class="evaluate-grid">
+        <!-- PQC — featured/primary -->
+        <div class="evaluate-card evaluate-card--featured reveal" data-card-index="0" tabindex="0" role="button">
+          <div class="evaluate-card__badge">Primary</div>
+          <div class="evaluate-card__icon">PQC</div>
+          <h3>Post-Quantum Cryptography</h3>
+          <p>Cryptographic inventory, PKI/TLS exposure analysis, vendor readiness assessment, and migration roadmap aligned to NIST PQC standards and CNSA 2.0 timelines. Highest priority domain for regulated enterprises.</p>
+          <div class="evaluate-card__tools">
+            <span class="evaluate-card__tool">QRAMM</span>
+            <span class="evaluate-card__tool">PKI-Scanner</span>
+            <span class="evaluate-card__tool">OpenQuantumSafe</span>
+          </div>
+        </div>
+        <!-- Quantum Networking -->
+        <div class="evaluate-card reveal" data-card-index="1" tabindex="0" role="button">
+          <div class="evaluate-card__icon">QN</div>
+          <h3>Quantum Networking</h3>
+          <p>Protocol evaluation for QKD integration, quantum network simulation, trusted node analysis, and readiness assessment for telecom and research network environments. Includes NSA/NCSC guidance context.</p>
+          <div class="evaluate-card__tools">
+            <span class="evaluate-card__tool">NetSquid</span>
+            <span class="evaluate-card__tool">QNE</span>
+            <span class="evaluate-card__tool">SeQUeNCe</span>
+          </div>
+        </div>
+        <!-- Optimization/ML -->
+        <div class="evaluate-card reveal" data-card-index="2" tabindex="0" role="button">
+          <div class="evaluate-card__icon">QM</div>
+          <h3>Optimization &amp; Machine Learning</h3>
+          <p>Screening of operations research and ML workloads for potential quantum advantage, algorithm selection guidance, and infrastructure readiness for hybrid quantum-classical workflows.</p>
+          <div class="evaluate-card__tools">
+            <span class="evaluate-card__tool">SQOUT</span>
+            <span class="evaluate-card__tool">Cirq</span>
+            <span class="evaluate-card__tool">PennyLane</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       SECTION 3: DASHBOARD PREVIEW — Premium Terminal Panel
+       ============================================================ -->
+  <section id="dashboard" class="section section--dark section--glow">
+    <div class="container">
+      <h2 class="section-title reveal">Your Assessment Dashboard</h2>
+      <p class="section-subtitle reveal">Every engagement includes portal access to your live readiness dashboard &mdash; real-time scores, prioritized findings, and actionable remediation steps.</p>
+      <div class="dashboard-panel reveal">
+        <div class="dashboard-panel__header">
+          <div class="dashboard-panel__header-dots">
+            <span class="dashboard-panel__header-dot"></span>
+            <span class="dashboard-panel__header-dot"></span>
+            <span class="dashboard-panel__header-dot"></span>
+          </div>
+          <span class="dashboard-panel__header-label">Q-Readiness Assessment Dashboard</span>
+        </div>
+        <div class="dashboard-panel__body">
+          <div class="dashboard-header">
+            <div class="dashboard-score">
+              <div class="dashboard-score__value">37<span style="font-size:1.4rem;color:var(--color-text-muted)">/100</span></div>
+              <div class="dashboard-score__label">Overall Readiness Score</div>
+            </div>
+            <div class="dashboard-meta">
+              <div class="dashboard-meta__badge">&#9888; 4 Critical Findings</div>
+              <div class="dashboard-meta__text">Last updated: May 2026</div>
+            </div>
+          </div>
+          <div class="dashboard-bars">
+            <div class="dashboard-bar">
+              <div class="dashboard-bar__header">
+                <span class="dashboard-bar__label">Cryptographic Inventory</span>
+                <span class="dashboard-bar__pct" style="color:#FF5F57">30%</span>
+              </div>
+              <div class="dashboard-bar__track">
+                <div class="dashboard-bar__fill dashboard-bar__fill--red" data-width="30"></div>
+              </div>
+            </div>
+            <div class="dashboard-bar">
+              <div class="dashboard-bar__header">
+                <span class="dashboard-bar__label">PQC Architecture</span>
+                <span class="dashboard-bar__pct" style="color:var(--color-accent)">55%</span>
+              </div>
+              <div class="dashboard-bar__track">
+                <div class="dashboard-bar__fill dashboard-bar__fill--gold" data-width="55"></div>
+              </div>
+            </div>
+            <div class="dashboard-bar">
+              <div class="dashboard-bar__header">
+                <span class="dashboard-bar__label">Quantum Networking Readiness</span>
+                <span class="dashboard-bar__pct" style="color:#FF5F57">25%</span>
+              </div>
+              <div class="dashboard-bar__track">
+                <div class="dashboard-bar__fill dashboard-bar__fill--red" data-width="25"></div>
+              </div>
+            </div>
+          </div>
+          <div class="dashboard-actions">
+            <h4 class="dashboard-actions__title">Priority Actions</h4>
+            <div class="dashboard-action">
+              <span class="dashboard-action__checkbox"></span>
+              <span>Inventory all PKI certificates and cipher suites</span>
+              <span class="dashboard-action__tag dashboard-action__tag--critical">Critical</span>
+            </div>
+            <div class="dashboard-action">
+              <span class="dashboard-action__checkbox"></span>
+              <span>Identify and contact PQC-priority vendors</span>
+              <span class="dashboard-action__tag dashboard-action__tag--critical">Critical</span>
+            </div>
+            <div class="dashboard-action">
+              <span class="dashboard-action__checkbox"></span>
+              <span>Assess TLS 1.3 readiness across all endpoints</span>
+              <span class="dashboard-action__tag dashboard-action__tag--high">High</span>
+            </div>
+            <div class="dashboard-action">
+              <span class="dashboard-action__checkbox"></span>
+              <span>Begin crypto-agility roadmap and governance framework</span>
+              <span class="dashboard-action__tag dashboard-action__tag--medium">Medium</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       SECTION 4: METHODOLOGY — Premium Comparison
+       ============================================================ -->
+  <section id="methodology" class="section section--deep">
+    <div class="container">
+      <h2 class="section-title reveal">How It Works</h2>
+      <p class="section-subtitle reveal">AI-accelerated methodology that delivers in 2.5 weeks what traditionally takes 3 months. NIST-aligned, tool-backed, and built for technical scrutiny.</p>
+      <div class="methodology-grid">
+        <!-- Traditional -->
+        <div class="methodology-col methodology-col--traditional reveal">
+          <div class="methodology-col__header">
+            <h3 class="methodology-col__title">Traditional Assessment</h3>
+            <div class="methodology-col__time">~13 <span class="methodology-col__time-label">Weeks</span></div>
+          </div>
+          <div class="methodology-step">
+            <span class="methodology-step__num">1</span>
+            <div class="methodology-step__content">
+              <h4>Scope &amp; Access</h4>
+              <p>Weeks 1&ndash;2: Manual scoping, stakeholder meetings, environment access setup</p>
+            </div>
+          </div>
+          <div class="methodology-step">
+            <span class="methodology-step__num">2</span>
+            <div class="methodology-step__content">
+              <h4>Manual Inventory</h4>
+              <p>Weeks 3&ndash;5: Spreadsheet-based cryptographic inventory, manual certificate review</p>
+            </div>
+          </div>
+          <div class="methodology-step">
+            <span class="methodology-step__num">3</span>
+            <div class="methodology-step__content">
+              <h4>Assessment &amp; Analysis</h4>
+              <p>Weeks 6&ndash;9: Vulnerability scanning, vendor interviews, compliance gap analysis</p>
+            </div>
+          </div>
+          <div class="methodology-step">
+            <span class="methodology-step__num">4</span>
+            <div class="methodology-step__content">
+              <h4>Report &amp; Review</h4>
+              <p>Weeks 10&ndash;13: Manual report writing, executive review, multiple revision cycles</p>
+            </div>
+          </div>
+        </div>
+        <!-- Accelerated -->
+        <div class="methodology-col methodology-col--accelerated reveal">
+          <div class="methodology-col__header">
+            <h3 class="methodology-col__title">Q-Readiness Accelerated</h3>
+            <div class="methodology-col__time">~2.5 <span class="methodology-col__time-label">Weeks</span></div>
+          </div>
+          <div class="methodology-step">
+            <span class="methodology-step__num">1</span>
+            <div class="methodology-step__content">
+              <h4>AI Triage &amp; Scoping</h4>
+              <p>Days 1&ndash;3: AI-assisted intake, automated environment profiling, scope discovery</p>
+            </div>
+          </div>
+          <div class="methodology-step">
+            <span class="methodology-step__num">2</span>
+            <div class="methodology-step__content">
+              <h4>Automated Scanning</h4>
+              <p>Days 4&ndash;7: QRAMM cryptographic discovery, PKI-scanner certificate analysis, OpenQuantumSafe protocol probing</p>
+            </div>
+          </div>
+          <div class="methodology-step">
+            <span class="methodology-step__num">3</span>
+            <div class="methodology-step__content">
+              <h4>Simulation &amp; Analysis</h4>
+              <p>Days 8&ndash;12: NetSquid protocol simulation, SQOUT optimization screening, AI-assisted gap analysis</p>
+            </div>
+          </div>
+          <div class="methodology-step">
+            <span class="methodology-step__num">4</span>
+            <div class="methodology-step__content">
+              <h4>Deliverable &amp; Portal</h4>
+              <p>Days 13&ndash;18: Automated report generation, executive risk summary, portal dashboard activation</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="methodology-note reveal">
+        <strong>NIST-aligned methodology.</strong> All assessments follow NIST PQC standardization and CNSA 2.0 timelines. Per NSA/NCSC guidance, PQC is evaluated as the primary cryptographic migration path. Quantum networking assessments include the full NCSC classification framework.
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       SECTION 5: QUANTUM TIMELINE — Premium Countdown Clocks
+       ============================================================ -->
+  <section id="quantum-timeline" class="section section--darker">
+    <div class="container">
+      <h2 class="section-title reveal">Quantum Timeline</h2>
+      <p class="section-subtitle reveal">Live countdown to critical PQC migration deadlines. Organizations that begin today gain a 12&ndash;18 month advantage in vendor negotiations and regulatory positioning.</p>
+
+      <!-- Urgency bar — nearest deadline indicator -->
+      <div class="urgency-bar">
+        <span class="urgency-bar__dot"></span>
+        <span>Nearest deadline: <strong class="urgency-bar__date" id="urgencyDate">Jun 1, 2027</strong></span>
+        <span class="urgency-bar__sep">&mdash;</span>
+        <span>Assessment takes just 2.5 weeks</span>
+      </div>
+
+      <div class="clocks-grid">
+        <!-- Clock 1: Next NIST Standards — 2027-06-01 -->
+        <div class="countdown-clock reveal" data-target="2027-06-01T00:00:00">
+          <div class="countdown-value">
+            <span class="cd-days"><span class="countdown-number">000</span><span class="countdown-unit">Days</span></span>
+            <span class="cd-hours"><span class="countdown-number">00</span><span class="countdown-unit">Hrs</span></span>
+            <span class="cd-minutes"><span class="countdown-number">00</span><span class="countdown-unit">Min</span></span>
+            <span class="cd-seconds"><span class="countdown-number">00</span><span class="countdown-unit">Sec</span></span>
+          </div>
+          <p class="countdown-label">Next NIST Standards</p>
+          <p class="countdown-desc">FN-DSA (FIPS 206) expected to finalize. Additional signature and KEM schemes for specialized use cases including lightweight IoT and zero-trust architectures.</p>
+        </div>
+        <!-- Clock 2: Enterprise PQC — 2028-01-01 -->
+        <div class="countdown-clock reveal" data-target="2028-01-01T00:00:00">
+          <div class="countdown-value">
+            <span class="cd-days"><span class="countdown-number">000</span><span class="countdown-unit">Days</span></span>
+            <span class="cd-hours"><span class="countdown-number">00</span><span class="countdown-unit">Hrs</span></span>
+            <span class="cd-minutes"><span class="countdown-number">00</span><span class="countdown-unit">Min</span></span>
+            <span class="cd-seconds"><span class="countdown-number">00</span><span class="countdown-unit">Sec</span></span>
+          </div>
+          <p class="countdown-label">Enterprise PQC Window</p>
+          <p class="countdown-desc">Banks and regulated enterprises begin mandatory migration. Regulatory pressure from OCC, ECB, and MAS expected to align with this window.</p>
+        </div>
+        <!-- Clock 3: Defense Systems — 2030-01-01 -->
+        <div class="countdown-clock reveal" data-target="2030-01-01T00:00:00">
+          <div class="countdown-value">
+            <span class="cd-days"><span class="countdown-number">000</span><span class="countdown-unit">Days</span></span>
+            <span class="cd-hours"><span class="countdown-number">00</span><span class="countdown-unit">Hrs</span></span>
+            <span class="cd-minutes"><span class="countdown-number">00</span><span class="countdown-unit">Min</span></span>
+            <span class="cd-seconds"><span class="countdown-number">00</span><span class="countdown-unit">Sec</span></span>
+          </div>
+          <p class="countdown-label">Defense Systems Deadline</p>
+          <p class="countdown-desc">Government PQC compliance for National Security Systems. CNSA 2.0 mandates in full effect. CRQC considered probable by intelligence assessments.</p>
+        </div>
+        <!-- Clock 4: CNSA 2.0 — 2033-01-01 -->
+        <div class="countdown-clock reveal" data-target="2033-01-01T00:00:00">
+          <div class="countdown-value">
+            <span class="cd-days"><span class="countdown-number">000</span><span class="countdown-unit">Days</span></span>
+            <span class="cd-hours"><span class="countdown-number">00</span><span class="countdown-unit">Hrs</span></span>
+            <span class="cd-minutes"><span class="countdown-number">00</span><span class="countdown-unit">Min</span></span>
+            <span class="cd-seconds"><span class="countdown-number">00</span><span class="countdown-unit">Sec</span></span>
+          </div>
+          <p class="countdown-label">CNSA 2.0 Compliance</p>
+          <p class="countdown-desc">All national security systems fully migrated to PQC-approved algorithms. Current PKI infrastructure considered broken by this point. Harvested data at risk.</p>
+        </div>
+      </div>
+
+      <!-- Clocks urgency note -->
+      <p class="clocks-urgency">The nearest deadline is <span id="nearestDeadlineLabel">June 1, 2027</span>. Begin your assessment now &mdash; 2.5 weeks is all it takes.</p>
+
+      <div class="reveal" style="text-align:center;margin-top:48px;">
+        <a href="quantum-status.html" class="btn btn--outline">View Full Timeline &rarr;</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       SECTION 6: NEWS / INTELLIGENCE — Premium Magazine Layout
+       ============================================================ -->
+  <section id="intelligence" class="section section--dark section--striped">
+    <div class="container">
+      <h2 class="section-title reveal">Quantum Intelligence</h2>
+      <p class="section-subtitle reveal">Curated updates on PQC standards, regulatory timelines, and quantum technology milestones. Structured intelligence for decision-makers.</p>
+      <div class="news-grid">
+        <!-- Card 1 -->
+        <article class="news-card reveal" tabindex="0" role="button">
+          <span class="news-card__source-tag">NIST</span>
+          <div class="news-card__date">May 2026</div>
+          <h3>NIST Finalizes First PQC Standards</h3>
+          <p>ML-KEM (FIPS 203), ML-DSA (FIPS 204), and SLH-DSA (FIPS 205) finalized for immediate adoption. NIST states these "can and should be put into use now."</p>
+          <div class="news-card__expand">
+            <p>Organizations should begin cryptographic inventory and migration planning immediately. The standards cover key establishment and digital signatures &mdash; the foundation of enterprise PKI, TLS, and code-signing infrastructure.</p>
+          </div>
+          <span class="news-card__toggle">Read more</span>
+        </article>
+        <!-- Card 2 -->
+        <article class="news-card reveal" tabindex="0" role="button">
+          <span class="news-card__source-tag">NSA</span>
+          <div class="news-card__date">April 2026</div>
+          <h3>NSA Reaffirms PQC as Primary Quantum Mitigation</h3>
+          <p>CNSA 2.0 timelines established for national security systems. NSA does not recommend QKD for National Security Systems due to hardware and integration limitations.</p>
+          <div class="news-card__expand">
+            <p>Updated guidance reinforces PQC as the cost-effective, maintainable path. CNSA 2.0 mandates set clear deadlines through 2033 for all government and defense systems. Commercial equivalents expected across Five Eyes partners.</p>
+          </div>
+          <span class="news-card__toggle">Read more</span>
+        </article>
+        <!-- Card 3 -->
+        <article class="news-card reveal" tabindex="0" role="button">
+          <span class="news-card__source-tag">Industry</span>
+          <div class="news-card__date">March 2026</div>
+          <h3>Enterprise PQC Hiring Surges Across Security Industry</h3>
+          <p>Booz Allen, Palo Alto Networks, and other major vendors post dedicated PQC roles as cryptographic inventory becomes a formal product category with dedicated budget.</p>
+          <div class="news-card__expand">
+            <p>Roles span cryptographic inventory, migration architecture, PKI/TLS readiness, vendor assessment, and executive risk reporting. This signals real budget allocation &mdash; not exploratory research &mdash; across regulated sectors.</p>
+          </div>
+          <span class="news-card__toggle">Read more</span>
+        </article>
+        <!-- Card 4 -->
+        <article class="news-card reveal" tabindex="0" role="button">
+          <span class="news-card__source-tag">NCSC</span>
+          <div class="news-card__date">February 2026</div>
+          <h3>NCSC Publishes Quantum Networking Classification Guide</h3>
+          <p>Three-class framework helps enterprises evaluate when quantum networking is relevant vs. premature, covering QKD, networked sensors, and entanglement distribution.</p>
+          <div class="news-card__expand">
+            <p>The guide divides quantum networking into three classes: replacing classical security (QKD), extending networks with quantum components, and inherently quantum networks. Helps buyers avoid over-investing before technology matures for their use case.</p>
+          </div>
+          <span class="news-card__toggle">Read more</span>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       SECTION 7: CONTACT / BOOK A CALL — Premium Form & Offers
+       ============================================================ -->
+  <section id="contact" class="section section--darker">
+    <div class="container">
+      <h2 class="section-title reveal">Book a Scoping Call</h2>
+      <p class="section-subtitle reveal">Tell us about your organization and we will prepare a tailored quantum readiness assessment proposal. No pitch. No deck.</p>
+      <div class="contact-grid">
+        <!-- Left: Form -->
+        <form class="contact-form reveal" id="contact-form" novalidate>
+          <div class="contact-form__group">
+            <label class="contact-form__label" for="name">Name</label>
+            <input class="contact-form__input" type="text" id="name" name="name" autocomplete="name" required>
+          </div>
+          <div class="contact-form__group">
+            <label class="contact-form__label" for="email">Work Email</label>
+            <input class="contact-form__input" type="email" id="email" name="email" autocomplete="email" required>
+          </div>
+          <div class="contact-form__group">
+            <label class="contact-form__label" for="org">Organization</label>
+            <input class="contact-form__input" type="text" id="org" name="org" autocomplete="organization" required>
+          </div>
+          <div class="contact-form__group">
+            <label class="contact-form__label" for="interest">Area of Interest</label>
+            <select class="contact-form__select" id="interest" name="interest">
+              <option value="">Select an option&hellip;</option>
+              <option value="q1">Q-1: Readiness Assessment</option>
+              <option value="q2">Q-2: PQC Architecture Pilot</option>
+              <option value="q3">Q-3: Networking Decision Brief</option>
+              <option value="q4">Q-4: Simulator Workshop</option>
+              <option value="multiple">Multiple / Not Sure</option>
+            </select>
+          </div>
+          <div class="contact-form__group">
+            <label class="contact-form__label" for="message">Context (optional)</label>
+            <textarea class="contact-form__textarea" id="message" name="message" placeholder="Tell us about your infrastructure, timeline, and any specific concerns&hellip;"></textarea>
+          </div>
+          <button class="btn btn--primary contact-form__submit" type="submit">Submit Inquiry</button>
+          <p class="contact-form__feedback" aria-live="polite"></p>
+        </form>
+        <!-- Right: Offers -->
+        <div class="contact-offers reveal">
+          <h3 class="contact-offers__heading">Our Services</h3>
+          <div class="contact-offer">
+            <div class="contact-offer__title"><span class="accent-text">Q-1</span> Quantum Readiness Assessment</div>
+            <p class="contact-offer__desc">Cryptographic inventory, risk classification, vendor assessment, and migration roadmap aligned to NIST standards.</p>
+            <span class="contact-offer__cta">Starting from $XX,XXX &rarr;</span>
+          </div>
+          <div class="contact-offer">
+            <div class="contact-offer__title"><span class="accent-text">Q-2</span> PQC Architecture &amp; Pilot</div>
+            <p class="contact-offer__desc">Prototype hybrid or PQC-ready flows for one bounded protocol or application surface with performance testing.</p>
+            <span class="contact-offer__cta">Technical follow-on &rarr;</span>
+          </div>
+          <div class="contact-offer">
+            <div class="contact-offer__title"><span class="accent-text">Q-3</span> Quantum Networking Decision Brief</div>
+            <p class="contact-offer__desc">Determine whether QKD or quantum networking is relevant to your specific environment and threat model.</p>
+            <span class="contact-offer__cta">Specialized add-on &rarr;</span>
+          </div>
+          <div class="contact-offer">
+            <div class="contact-offer__title"><span class="accent-text">Q-4</span> Simulator Workshop</div>
+            <p class="contact-offer__desc">Technical enablement for engineering and security teams using NetSquid and quantum network simulators.</p>
+            <span class="contact-offer__cta">Team workshop &rarr;</span>
+          </div>
+        </div>
+        <!-- Portal note -->
+        <div class="contact-portal-note reveal">
+          <strong>Every assessment includes portal access</strong> to your live readiness dashboard with real-time scores, downloadable reports, and ongoing monitoring. Your data, your dashboard &mdash; not email newsletters.
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="container" style="margin-top:80px;padding-top:36px;border-top:0.5px solid var(--color-border);">
+      <footer class="footer">
+        <span>&copy; 2026 Q-Readiness</span>
+        <div class="footer__links">
+          <a href="#">Privacy</a>
+          <a href="#">Accessibility</a>
+          <a href="#">Client Portal</a>
+        </div>
+      </footer>
+    </div>
+  </section>
+
+  <button class="scroll-top-btn" id="scrollTopBtn" aria-label="Scroll to top">&uarr;</button>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

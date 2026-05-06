@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Q-Readiness | Assessment Dashboard</title>
+  <meta name="description" content="Your personalized quantum readiness assessment dashboard — domain scores, critical findings, and prioritized remediation backlog.">
+  <link rel="stylesheet" href="css/styles.css">
+  <style>
+    /* ============================================================
+       Dashboard-specific styles — Premium design system tokens only
+       ============================================================ */
+
+    /* ---- Donut ring (CSS-only, conic-gradient) ---- */
+    .donut-section {
+      text-align: center;
+      padding: 60px 0 80px;
+    }
+    .donut-wrapper {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .donut-ring {
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      position: relative;
+      background: conic-gradient(
+        var(--color-accent) 0deg 133.2deg,
+        var(--color-border) 133.2deg 360deg
+      );
+      margin-bottom: 20px;
+    }
+    .donut-ring::after {
+      content: '';
+      position: absolute;
+      top: 18px; left: 18px;
+      width: 164px; height: 164px;
+      border-radius: 50%;
+      background: var(--color-surface);
+    }
+    .donut-score {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 1;
+      text-align: center;
+    }
+    .donut-score__value {
+      font-family: var(--font-display);
+      font-size: 3.2rem;
+      font-weight: 300;
+      color: var(--color-accent);
+      line-height: 1;
+      letter-spacing: 0.02em;
+    }
+    .donut-score__total {
+      font-size: 0.85rem;
+      color: var(--color-text-muted);
+      font-weight: 300;
+      margin-top: 4px;
+      letter-spacing: 0.06em;
+    }
+    .donut-label {
+      font-size: 0.78rem;
+      color: var(--color-text-muted);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      font-weight: 300;
+      margin-top: 4px;
+    }
+    .donut-meta {
+      margin-top: 16px;
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .donut-meta__badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(255, 95, 87, 0.06);
+      border: 0.5px solid rgba(255, 95, 87, 0.15);
+      padding: 8px 16px;
+      font-size: 0.72rem;
+      color: #FF5F57;
+      font-weight: 400;
+      letter-spacing: 0.03em;
+    }
+    .donut-meta__text {
+      font-size: 0.72rem;
+      color: var(--color-text-muted);
+    }
+
+    /* ---- Domain score cards ---- */
+    .domain-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 24px;
+      max-width: 960px;
+      margin: 0 auto;
+    }
+    .domain-card {
+      background: var(--color-surface);
+      border: 0.5px solid var(--color-border);
+      padding: 36px 32px;
+      position: relative;
+      transition: all var(--transition-base);
+    }
+    .domain-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg,
+        transparent,
+        rgba(212, 160, 67, 0.3),
+        transparent
+      );
+    }
+    .domain-card:hover {
+      transform: translateY(-2px);
+      border-color: var(--color-border-divider);
+    }
+    .domain-card__icon {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.08em;
+      color: var(--color-accent-dim);
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+    .domain-card__title {
+      font-family: var(--font-display);
+      font-size: 1.15rem;
+      font-weight: 500;
+      margin-bottom: 16px;
+      color: var(--color-text);
+    }
+    .domain-card__score-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 10px;
+    }
+    .domain-card__score {
+      font-family: var(--font-display);
+      font-size: 2rem;
+      font-weight: 300;
+      letter-spacing: 0.02em;
+    }
+    .domain-card__score--critical { color: #FF5F57; }
+    .domain-card__score--warning { color: #FFBD2E; }
+    .domain-card__score--moderate { color: var(--color-accent); }
+    .domain-card__score--fair { color: var(--color-green); }
+    .domain-card__total {
+      font-size: 0.78rem;
+      color: var(--color-text-muted);
+    }
+    .domain-card__bar {
+      height: 4px;
+      background: var(--color-base-deep);
+      overflow: hidden;
+      margin-bottom: 12px;
+    }
+    .domain-card__bar-fill {
+      height: 100%; width: 0;
+      transition: width 1.2s ease-out;
+    }
+    .domain-card__bar-fill.wide { width: inherit; }
+    .domain-card__bar-fill--red { background: #FF5F57; }
+    .domain-card__bar-fill--gold { background: var(--color-accent); }
+    .domain-card__bar-fill--green { background: var(--color-green); }
+    .domain-card__status {
+      font-size: 0.68rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      font-weight: 300;
+    }
+    .domain-card__status--critical { color: #FF5F57; }
+    .domain-card__status--warning { color: #FFBD2E; }
+    .domain-card__status--moderate { color: var(--color-accent); }
+    .domain-card__status--fair { color: var(--color-green); }
+
+    /* ---- Findings cards ---- */
+    .findings-grid {
+      max-width: 860px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .finding-card {
+      background: var(--color-surface);
+      border: 0.5px solid var(--color-border);
+      padding: 28px 32px;
+      display: flex;
+      align-items: flex-start;
+      gap: 20px;
+      position: relative;
+      transition: all var(--transition-base);
+    }
+    .finding-card:hover {
+      border-color: var(--color-border-divider);
+    }
+    .finding-card__icon {
+      flex-shrink: 0;
+      width: 36px; height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 0.5px solid var(--color-border);
+      font-family: var(--font-body);
+      font-size: 1rem;
+    }
+    .finding-card__icon--critical {
+      border-color: rgba(255, 95, 87, 0.3);
+      color: #FF5F57;
+    }
+    .finding-card__icon--high {
+      border-color: rgba(255, 189, 46, 0.3);
+      color: #FFBD2E;
+    }
+    .finding-card__body {
+      flex: 1;
+      min-width: 0;
+    }
+    .finding-card__header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 8px;
+      flex-wrap: wrap;
+    }
+    .finding-card__title {
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: var(--color-text);
+      font-family: var(--font-display);
+    }
+    .finding-card__badge {
+      font-size: 0.62rem;
+      padding: 3px 10px;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      flex-shrink: 0;
+      font-family: var(--font-body);
+    }
+    .finding-card__badge--critical {
+      background: rgba(255, 95, 87, 0.08);
+      color: #FF5F57;
+      border: 0.5px solid rgba(255, 95, 87, 0.15);
+    }
+    .finding-card__badge--high {
+      background: rgba(255, 189, 46, 0.08);
+      color: #FFBD2E;
+      border: 0.5px solid rgba(255, 189, 46, 0.15);
+    }
+    .finding-card__desc {
+      font-size: 0.82rem;
+      color: var(--color-text-dim);
+      line-height: 1.7;
+      font-weight: 300;
+    }
+    .finding-card__meta {
+      display: flex;
+      gap: 16px;
+      margin-top: 12px;
+      font-size: 0.7rem;
+      color: var(--color-text-muted);
+      letter-spacing: 0.03em;
+    }
+    .finding-card__meta span {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    /* ---- Remediation table ---- */
+    .backlog-section {
+      max-width: 960px;
+      margin: 0 auto;
+    }
+    .backlog-table-wrap {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+    .backlog-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.82rem;
+    }
+    .backlog-table thead th {
+      font-family: var(--font-body);
+      font-size: 0.65rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--color-text-muted);
+      text-align: left;
+      padding: 16px 20px;
+      border-bottom: 0.5px solid var(--color-border-light);
+    }
+    .backlog-table tbody td {
+      padding: 16px 20px;
+      border-bottom: 0.5px solid var(--color-border-light);
+      color: var(--color-text-dim);
+      font-weight: 300;
+      vertical-align: top;
+    }
+    .backlog-table tbody tr {
+      transition: background var(--transition-base);
+    }
+    .backlog-table tbody tr:hover {
+      background: rgba(212, 160, 67, 0.02);
+    }
+    .backlog-table tbody tr:last-child td {
+      border-bottom: none;
+    }
+    .backlog-rank {
+      font-family: var(--font-display);
+      font-size: 1rem;
+      color: var(--color-accent);
+      font-weight: 400;
+    }
+    .backlog-finding {
+      font-weight: 400;
+      color: var(--color-text);
+    }
+    .backlog-tag {
+      display: inline-block;
+      font-size: 0.6rem;
+      padding: 3px 8px;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+    .backlog-tag--critical {
+      background: rgba(255, 95, 87, 0.08);
+      color: #FF5F57;
+      border: 0.5px solid rgba(255, 95, 87, 0.15);
+    }
+    .backlog-tag--high {
+      background: rgba(255, 189, 46, 0.08);
+      color: #FFBD2E;
+      border: 0.5px solid rgba(255, 189, 46, 0.15);
+    }
+    .backlog-tag--medium {
+      background: rgba(92, 184, 122, 0.08);
+      color: var(--color-green);
+      border: 0.5px solid rgba(92, 184, 122, 0.15);
+    }
+    .backlog-tag--low {
+      background: rgba(232, 228, 218, 0.04);
+      color: var(--color-text-muted);
+      border: 0.5px solid rgba(232, 228, 218, 0.08);
+    }
+    .backlog-clear-btn {
+      margin-top: 28px;
+      text-align: right;
+    }
+
+    /* ---- Countdown wrapper ---- */
+    .compliance-countdown {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    /* ---- Section sub-nav ---- */
+    .sub-nav {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 4px;
+      margin-top: -16px;
+      margin-bottom: 48px;
+    }
+    .sub-nav__link {
+      font-family: var(--font-body);
+      font-size: 0.7rem;
+      font-weight: 400;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      padding: 8px 16px;
+      color: var(--color-text-muted);
+      border: 0.5px solid transparent;
+      transition: all var(--transition-base);
+      text-decoration: none;
+    }
+    .sub-nav__link:hover {
+      color: var(--color-accent);
+      border-color: var(--color-border);
+    }
+
+    /* ---- Responsive ---- */
+    @media (max-width: 768px) {
+      .domain-grid { grid-template-columns: 1fr; gap: 20px; }
+      .donut-ring { width: 160px; height: 160px; }
+      .donut-ring::after { top: 14px; left: 14px; width: 132px; height: 132px; }
+      .donut-score__value { font-size: 2.6rem; }
+      .finding-card { flex-direction: column; gap: 12px; padding: 24px 20px; }
+      .finding-card__header { flex-direction: column; align-items: flex-start; }
+      .backlog-table { font-size: 0.75rem; }
+      .backlog-table thead th,
+      .backlog-table tbody td { padding: 12px 14px; }
+      .sub-nav { gap: 2px; }
+      .sub-nav__link { font-size: 0.65rem; padding: 6px 12px; }
+    }
+    @media (max-width: 480px) {
+      .domain-card { padding: 28px 24px; }
+      .finding-card { padding: 20px 16px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ============================================================
+       NAVIGATION — same premium pattern
+       ============================================================ -->
+  <nav class="nav nav--visible" role="navigation" aria-label="Primary navigation">
+    <a href="index.html" class="nav__brand" aria-label="Q-Readiness home">
+      <span class="nav__brand-mark">Q</span>
+      <span>Q-Readiness</span>
+    </a>
+    <div class="nav__menu">
+      <a href="index.html" class="nav__link">Home</a>
+      <a href="index.html#methodology" class="nav__link">Methodology</a>
+      <a href="quantum-status.html" class="nav__link">Timeline</a>
+      <a href="index.html#contact" class="nav__link nav__cta btn btn--primary btn--small">Book a Call</a>
+    </div>
+    <button class="hamburger" aria-label="Open menu" aria-expanded="false">
+      <span class="hamburger__line"></span>
+      <span class="hamburger__line"></span>
+      <span class="hamburger__line"></span>
+    </button>
+  </nav>
+
+  <!-- Mobile overlay -->
+  <div class="overlay" role="dialog" aria-modal="true" aria-label="Navigation menu">
+    <nav class="overlay__nav">
+      <a href="index.html" class="overlay__link">Home</a>
+      <a href="index.html#methodology" class="overlay__link">Methodology</a>
+      <a href="quantum-status.html" class="overlay__link">Full Timeline</a>
+      <a href="index.html#contact" class="overlay__link overlay__cta btn btn--outline">Book a Call</a>
+    </nav>
+  </div>
+
+  <!-- ============================================================
+       PAGE HEADER
+       ============================================================ -->
+  <section class="section section--dark section--grid" style="padding-top:120px;padding-bottom:40px;">
+    <div class="container">
+      <div class="reveal">
+        <div style="text-align:center;margin-bottom:24px;">
+          <a href="index.html" style="font-size:0.72rem;letter-spacing:0.06em;text-transform:uppercase;color:var(--color-text-muted);">&larr; Back to Home</a>
+        </div>
+        <h1 class="quantum-page-title">Assessment Dashboard</h1>
+        <p class="quantum-page-subtitle">Your personalized quantum readiness overview — domain-level scores, critical findings, and prioritized remediation plan based on your assessment data.</p>
+      </div>
+      <!-- Quick-nav sub-links -->
+      <div class="sub-nav reveal" style="margin-top:32px;">
+        <a href="#overall" class="sub-nav__link">Readiness Score</a>
+        <a href="#domains" class="sub-nav__link">Domain Breakdown</a>
+        <a href="#findings" class="sub-nav__link">Critical Findings</a>
+        <a href="#backlog" class="sub-nav__link">Remediation Plan</a>
+        <a href="#compliance" class="sub-nav__link">Compliance Timeline</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       SECTION 1: OVERALL READINESS — Donut Ring
+       ============================================================ -->
+  <section id="overall" class="section section--darker donut-section">
+    <div class="container">
+      <h2 class="section-title reveal">Overall Readiness Score</h2>
+      <p class="section-subtitle reveal" style="max-width:500px;">
+        Your combined score across all three assessment domains, weighted by cryptographic inventory completeness, NIST standard alignment, and remediation velocity.
+      </p>
+
+      <div class="donut-wrapper reveal" style="padding-top:20px;">
+        <div class="donut-ring">
+          <div class="donut-score">
+            <div class="donut-score__value">37</div>
+            <div class="donut-score__total">/ 100</div>
+          </div>
+        </div>
+        <div class="donut-label">Overall Readiness</div>
+        <div class="donut-meta">
+          <span class="donut-meta__badge">&#9888; 4 Critical Findings</span>
+          <span class="donut-meta__text">Last updated: May 2026</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       SECTION 2: DOMAIN SCORES — Cards with progress bars
+       ============================================================ -->
+  <section id="domains" class="section section--deep">
+    <div class="container">
+      <h2 class="section-title reveal">Domain Breakdown</h2>
+      <p class="section-subtitle reveal" style="max-width:540px;">
+        Scores per assessment domain based on tool-driven analysis of your current infrastructure, cryptographic posture, and readiness maturity.
+      </p>
+
+      <div class="domain-grid">
+        <!-- PQC -->
+        <div class="domain-card reveal" tabindex="0" role="button">
+          <div class="domain-card__icon">PQC-001-R1</div>
+          <div class="domain-card__title">Post-Quantum Cryptography</div>
+          <div class="domain-card__score-row">
+            <span class="domain-card__score domain-card__score--critical">34</span>
+            <span class="domain-card__total">/ 100</span>
+          </div>
+          <div class="domain-card__bar">
+            <div class="domain-card__bar-fill domain-card__bar-fill--red wide" data-width="34"></div>
+          </div>
+          <span class="domain-card__status domain-card__status--critical">Critical &mdash; Immediate action required</span>
+        </div>
+
+        <!-- Quantum Networking -->
+        <div class="domain-card reveal" tabindex="0" role="button">
+          <div class="domain-card__icon">QN-002-R1</div>
+          <div class="domain-card__title">Quantum Networking</div>
+          <div class="domain-card__score-row">
+            <span class="domain-card__score domain-card__score--moderate">61</span>
+            <span class="domain-card__total">/ 100</span>
+          </div>
+          <div class="domain-card__bar">
+            <div class="domain-card__bar-fill domain-card__bar-fill--gold wide" data-width="61"></div>
+          </div>
+          <span class="domain-card__status domain-card__status--moderate">Moderate &mdash; Gaps identified in protocol audit</span>
+        </div>
+
+        <!-- Optimization -->
+        <div class="domain-card reveal" tabindex="0" role="button">
+          <div class="domain-card__icon">OM-003-R1</div>
+          <div class="domain-card__title">Optimization &amp; Machine Learning</div>
+          <div class="domain-card__score-row">
+            <span class="domain-card__score domain-card__score--fair">72</span>
+            <span class="domain-card__total">/ 100</span>
+          </div>
+          <div class="domain-card__bar">
+            <div class="domain-card__bar-fill domain-card__bar-fill--green wide" data-width="72"></div>
+          </div>
+          <span class="domain-card__status domain-card__status--fair">Fair &mdash; Screening complete, select opportunities</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       SECTION 3: CRITICAL FINDINGS
+       ============================================================ -->
+  <section id="findings" class="section section--darker">
+    <div class="container">
+      <h2 class="section-title reveal">Critical Findings</h2>
+      <p class="section-subtitle reveal" style="max-width:580px;">
+        High-severity findings identified through automated scanning (QRAMM, PKI-Scanner, NetSquid) and manual validation. Each finding includes affected assets, risk rating, and recommended remediation.
+      </p>
+
+      <div class="findings-grid">
+        <!-- Finding 1 -->
+        <div class="finding-card reveal">
+          <div class="finding-card__icon finding-card__icon--critical">!</div>
+          <div class="finding-card__body">
+            <div class="finding-card__header">
+              <span class="finding-card__title">TLS 1.2 Deprecated Cipher Suites in Production</span>
+              <span class="finding-card__badge finding-card__badge--critical">Critical</span>
+            </div>
+            <p class="finding-card__desc">
+              Automated PKI-Scanner analysis identified 47 deprecated cipher suites (3DES, RC4, CBC-mode TLS 1.2) actively configured across 12 production endpoints spanning 3 data centers and 2 cloud regions. These cipher suites are vulnerable to present-day attacks and will not support PQC key establishment migration paths. TLS 1.3 migration is a prerequisite for PQC KEM integration via ML-KEM (FIPS 203).
+            </p>
+            <div class="finding-card__meta">
+              <span>&#9632; 12 endpoints affected</span>
+              <span>Domain: PQC</span>
+              <span>Tool: PKI-Scanner v2.4</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Finding 2 -->
+        <div class="finding-card reveal">
+          <div class="finding-card__icon finding-card__icon--critical">!</div>
+          <div class="finding-card__body">
+            <div class="finding-card__header">
+              <span class="finding-card__title">PKI Certificate Inventory &amp; Ownership Gap</span>
+              <span class="finding-card__badge finding-card__badge--critical">Critical</span>
+            </div>
+            <p class="finding-card__desc">
+              QRAMM cryptographic discovery mapped 1,247 certificates across the enterprise. Of these, 428 (34%) lack documented ownership, expiry tracking, or purpose classification. Without complete inventory and ownership attribution, quantum-vulnerable key rotation cannot be scoped, prioritized, or executed. Unknown certificates represent a material risk to PQC migration timeline and post-quantum cryptographic agility.
+            </p>
+            <div class="finding-card__meta">
+              <span>&#9632; 428 of 1,247 certificates unowned</span>
+              <span>Domain: PQC</span>
+              <span>Tool: QRAMM v1.8</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Finding 3 -->
+        <div class="finding-card reveal">
+          <div class="finding-card__icon finding-card__icon--high">!</div>
+          <div class="finding-card__body">
+            <div class="finding-card__header">
+              <span class="finding-card__title">Vendor PQC Readiness &mdash; Incomplete Responses</span>
+              <span class="finding-card__badge finding-card__badge--high">High</span>
+            </div>
+            <p class="finding-card__desc">
+              Cryptographic agility questionnaire sent to 14 critical technology vendors (identity, network infrastructure, cloud platforms, security tooling). To date, 8 vendors have not provided PQC migration timelines or algorithm support roadmaps. Vendor crypto-agility is a dependency for the enterprise PQC migration window beginning 2028. Non-responsive vendors represent an unquantified supply-chain risk to the CNSA 2.0 compliance timeline.
+            </p>
+            <div class="finding-card__meta">
+              <span>&#9632; 8 of 14 vendors unresponsive</span>
+              <span>Domain: PQC / Cross-domain</span>
+              <span>Status: Follow-up dispatched</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       SECTION 4: REMEDIATION BACKLOG
+       ============================================================ -->
+  <section id="backlog" class="section section--deep">
+    <div class="container">
+      <h2 class="section-title reveal">Remediation Backlog</h2>
+      <p class="section-subtitle reveal" style="max-width:560px;">
+        Prioritized action plan ranked by risk severity and dependency order. Each item maps to a finding from the assessment and targets a specific readiness improvement.
+      </p>
+
+      <div class="backlog-section reveal">
+        <div class="backlog-table-wrap">
+          <table class="backlog-table">
+            <thead>
+              <tr>
+                <th>Rank</th>
+                <th>Finding</th>
+                <th>Domain</th>
+                <th>Risk</th>
+                <th>Effort</th>
+                <th>Target</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span class="backlog-rank">1</span></td>
+                <td>
+                  <span class="backlog-finding">TLS 1.3 Migration &mdash; All Production Endpoints</span>
+                  <div style="font-size:0.72rem;color:var(--color-text-muted);margin-top:4px;">Prerequisite for ML-KEM PQC key establishment integration</div>
+                </td>
+                <td>PQC</td>
+                <td><span class="backlog-tag backlog-tag--critical">Critical</span></td>
+                <td>3 months</td>
+                <td>Q3 2026</td>
+              </tr>
+              <tr>
+                <td><span class="backlog-rank">2</span></td>
+                <td>
+                  <span class="backlog-finding">Certificate Inventory &amp; Ownership Mapping</span>
+                  <div style="font-size:0.72rem;color:var(--color-text-muted);margin-top:4px;">QA-validated certificate register with expiry tracking and owner attribution</div>
+                </td>
+                <td>PQC</td>
+                <td><span class="backlog-tag backlog-tag--critical">Critical</span></td>
+                <td>6 weeks</td>
+                <td>Q2 2026</td>
+              </tr>
+              <tr>
+                <td><span class="backlog-rank">3</span></td>
+                <td>
+                  <span class="backlog-finding">Vendor PQC Readiness Assessment</span>
+                  <div style="font-size:0.72rem;color:var(--color-text-muted);margin-top:4px;">Escalate and complete cryptographic agility questionnaires for 14 critical vendors</div>
+                </td>
+                <td>PQC</td>
+                <td><span class="backlog-tag backlog-tag--high">High</span></td>
+                <td>8 weeks</td>
+                <td>Q2 2026</td>
+              </tr>
+              <tr>
+                <td><span class="backlog-rank">4</span></td>
+                <td>
+                  <span class="backlog-finding">Quantum Networking Protocol Audit &mdash; Extended Scope</span>
+                  <div style="font-size:0.72rem;color:var(--color-text-muted);margin-top:4px;">NetSquid simulation of QKD integration for inter-data-center links</div>
+                </td>
+                <td>Networking</td>
+                <td><span class="backlog-tag backlog-tag--medium">Medium</span></td>
+                <td>4 weeks</td>
+                <td>Q3 2026</td>
+              </tr>
+              <tr>
+                <td><span class="backlog-rank">5</span></td>
+                <td>
+                  <span class="backlog-finding">ML Pipeline Quantum Advantage Screening</span>
+                  <div style="font-size:0.72rem;color:var(--color-text-muted);margin-top:4px;">SQOUT analysis of operations research workloads for hybrid quantum-classical candidates</div>
+                </td>
+                <td>Optimization</td>
+                <td><span class="backlog-tag backlog-tag--low">Low</span></td>
+                <td>3 weeks</td>
+                <td>Q4 2026</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="backlog-clear-btn reveal">
+          <span style="font-size:0.72rem;color:var(--color-text-muted);letter-spacing:0.03em;">
+            5 of 18 identified items shown. <a href="index.html#contact" style="color:var(--color-accent);">Schedule a review session</a> for full backlog.
+          </span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       SECTION 5: COMPLIANCE DEADLINE COUNTDOWN
+       ============================================================ -->
+  <section id="compliance" class="section section--darker">
+    <div class="container">
+      <h2 class="section-title reveal">Enterprise PQC Compliance Deadline</h2>
+      <p class="section-subtitle reveal" style="max-width:560px;">
+        Regulatory deadline for financial and critical infrastructure sectors. Organizations that begin today gain a 12&ndash;18 month advantage in vendor negotiations, architecture planning, and regulatory positioning.
+      </p>
+
+      <div class="compliance-countdown reveal">
+        <div class="countdown-clock" data-target="2029-01-01T00:00:00">
+          <div class="countdown-value">
+            <span class="cd-days"><span class="countdown-number">000</span><span class="countdown-unit">Days</span></span>
+            <span class="cd-hours"><span class="countdown-number">00</span><span class="countdown-unit">Hrs</span></span>
+            <span class="cd-minutes"><span class="countdown-number">00</span><span class="countdown-unit">Min</span></span>
+            <span class="cd-seconds"><span class="countdown-number">00</span><span class="countdown-unit">Sec</span></span>
+          </div>
+          <p class="countdown-label">Enterprise PQC Compliance Window</p>
+          <p class="countdown-desc">Banks and regulated enterprises begin mandatory migration. Regulatory pressure from OCC, ECB, and MAS expected to align with this deadline.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       CTA + FOOTER
+       ============================================================ -->
+  <section class="section section--dark">
+    <div class="container">
+      <div class="reveal" style="text-align:center;">
+        <p style="font-size:1rem;color:var(--color-text-dim);max-width:560px;margin:0 auto 36px;font-weight:300;line-height:1.8;">
+          Your dashboard is updated as new assessment data becomes available. Schedule a review session with our team to walk through the findings and remediation plan.
+        </p>
+        <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;">
+          <a href="index.html#contact" class="btn btn--primary">Book a Review Session</a>
+          <a href="index.html" class="btn btn--text">&larr; Back to Main Page</a>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div style="margin-top:80px;padding-top:36px;border-top:0.5px solid var(--color-border);">
+        <footer class="footer">
+          <span>&copy; 2026 Q-Readiness</span>
+          <div class="footer__links">
+            <a href="index.html">Home</a>
+            <a href="index.html#contact">Privacy</a>
+            <a href="#">Client Portal</a>
+          </div>
+        </footer>
+      </div>
+    </div>
+  </section>
+
+  <!-- Scroll-to-top -->
+  <button class="scroll-top-btn" id="scrollTopBtn" aria-label="Scroll to top">&uarr;</button>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

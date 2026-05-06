@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Q-Readiness | Quantum Timeline</title>
+  <meta name="description" content="Quantum status timeline with live countdown clocks to PQC migration deadlines. Enterprise, defense, CNSA 2.0, and NIST standards timelines.">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <!-- ============================================================
+       NAVIGATION — same pattern as index
+       ============================================================ -->
+  <nav class="nav nav--visible" role="navigation" aria-label="Primary navigation">
+    <a href="index.html" class="nav__brand" aria-label="Q-Readiness home">
+      <span class="nav__brand-mark">Q</span>
+      <span>Q-Readiness</span>
+    </a>
+    <div class="nav__menu">
+      <a href="index.html#evaluate" class="nav__link">Evaluate</a>
+      <a href="index.html#dashboard" class="nav__link">Dashboard</a>
+      <a href="index.html#methodology" class="nav__link">Methodology</a>
+      <a href="index.html#intelligence" class="nav__link">Intel</a>
+      <a href="index.html#contact" class="nav__link nav__cta btn btn--primary btn--small">Book a Call</a>
+    </div>
+    <button class="hamburger" aria-label="Open menu" aria-expanded="false">
+      <span class="hamburger__line"></span>
+      <span class="hamburger__line"></span>
+      <span class="hamburger__line"></span>
+    </button>
+  </nav>
+
+  <!-- Mobile overlay -->
+  <div class="overlay" role="dialog" aria-modal="true" aria-label="Navigation menu">
+    <nav class="overlay__nav">
+      <a href="index.html" class="overlay__link">Main Page</a>
+      <a href="index.html#evaluate" class="overlay__link">Evaluate</a>
+      <a href="index.html#dashboard" class="overlay__link">Dashboard</a>
+      <a href="index.html#intelligence" class="overlay__link">Intel</a>
+      <a href="index.html#contact" class="overlay__link overlay__cta btn btn--outline">Book a Call</a>
+    </nav>
+  </div>
+
+  <!-- ============================================================
+       PAGE HEADER — Premium
+       ============================================================ -->
+  <section class="section section--dark section--grid" style="padding-top:120px;padding-bottom:60px;">
+    <div class="container">
+      <div class="reveal">
+        <h1 class="quantum-page-title">Quantum Timeline</h1>
+        <p class="quantum-page-subtitle">Live countdown to critical PQC migration deadlines across regulated enterprise, defense, and national security domains.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       LARGE COUNTDOWN CLOCKS (2x2)
+       Consistent HTML structure with index.html for JS to parse
+       ============================================================ -->
+  <section class="section section--darker" style="padding-top:0;">
+    <div class="container">
+      <div class="clocks-grid clocks-grid--large">
+        <!-- Clock 1: Next NIST Standards — 2027-06-01 -->
+        <div class="countdown-clock reveal" data-target="2027-06-01T00:00:00">
+          <div class="countdown-value">
+            <span class="cd-days"><span class="countdown-number">000</span><span class="countdown-unit">Days</span></span>
+            <span class="cd-hours"><span class="countdown-number">00</span><span class="countdown-unit">Hrs</span></span>
+            <span class="cd-minutes"><span class="countdown-number">00</span><span class="countdown-unit">Min</span></span>
+            <span class="cd-seconds"><span class="countdown-number">00</span><span class="countdown-unit">Sec</span></span>
+          </div>
+          <p class="countdown-label">Next NIST Standards</p>
+          <p class="countdown-desc">FN-DSA (FIPS 206) expected to finalize. Additional signature and KEM schemes under consideration for specialized use cases including lightweight IoT and zero-trust architectures.</p>
+        </div>
+        <!-- Clock 2: Enterprise PQC — 2028-01-01 -->
+        <div class="countdown-clock reveal" data-target="2028-01-01T00:00:00">
+          <div class="countdown-value">
+            <span class="cd-days"><span class="countdown-number">000</span><span class="countdown-unit">Days</span></span>
+            <span class="cd-hours"><span class="countdown-number">00</span><span class="countdown-unit">Hrs</span></span>
+            <span class="cd-minutes"><span class="countdown-number">00</span><span class="countdown-unit">Min</span></span>
+            <span class="cd-seconds"><span class="countdown-number">00</span><span class="countdown-unit">Sec</span></span>
+          </div>
+          <p class="countdown-label">Enterprise PQC Window</p>
+          <p class="countdown-desc">Banks and regulated enterprises begin mandatory migration. Regulatory pressure from OCC, ECB, and MAS expected to align with this window. Early adopters complete pilot migrations.</p>
+        </div>
+        <!-- Clock 3: Defense Systems — 2030-01-01 -->
+        <div class="countdown-clock reveal" data-target="2030-01-01T00:00:00">
+          <div class="countdown-value">
+            <span class="cd-days"><span class="countdown-number">000</span><span class="countdown-unit">Days</span></span>
+            <span class="cd-hours"><span class="countdown-number">00</span><span class="countdown-unit">Hrs</span></span>
+            <span class="cd-minutes"><span class="countdown-number">00</span><span class="countdown-unit">Min</span></span>
+            <span class="cd-seconds"><span class="countdown-number">00</span><span class="countdown-unit">Sec</span></span>
+          </div>
+          <p class="countdown-label">Defense Systems Deadline</p>
+          <p class="countdown-desc">Government PQC compliance for National Security Systems. CNSA 2.0 mandates in full effect. Early CRQC considered probable by intelligence assessments.</p>
+        </div>
+        <!-- Clock 4: CNSA 2.0 — 2033-01-01 -->
+        <div class="countdown-clock reveal" data-target="2033-01-01T00:00:00">
+          <div class="countdown-value">
+            <span class="cd-days"><span class="countdown-number">000</span><span class="countdown-unit">Days</span></span>
+            <span class="cd-hours"><span class="countdown-number">00</span><span class="countdown-unit">Hrs</span></span>
+            <span class="cd-minutes"><span class="countdown-number">00</span><span class="countdown-unit">Min</span></span>
+            <span class="cd-seconds"><span class="countdown-number">00</span><span class="countdown-unit">Sec</span></span>
+          </div>
+          <p class="countdown-label">CNSA 2.0 Compliance</p>
+          <p class="countdown-desc">All national security systems fully migrated to PQC-approved algorithms. NSA mandate covers key management, PKI, and software/firmware signing. Harvested data from 2026 at risk.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       TIMELINE VISUALIZATION — Premium
+       ============================================================ -->
+  <section class="section section--dark" style="padding-top:60px;">
+    <div class="container">
+      <h2 class="section-title reveal" style="margin-bottom:24px;">Readiness Timeline</h2>
+
+      <div class="quantum-timeline-viz reveal" id="timeline-viz">
+        <div class="quantum-timeline-viz__track">
+          <div class="quantum-timeline-viz__progress"></div>
+        </div>
+        <div class="quantum-timeline-viz__nodes">
+          <!-- 2026 — Today -->
+          <div class="timeline-node active" data-year="2026">
+            <span class="timeline-node__dot"></span>
+            <span class="timeline-node__year">2026</span>
+            <span class="timeline-node__label">Today &mdash; Start your assessment</span>
+            <div class="timeline-node__detail">
+              <h4>Q-Readiness Assessment</h4>
+              <p>The optimal time to begin your PQC migration. Organizations that start now gain 12&ndash;18 months advantage in vendor negotiations, architecture planning, and regulatory positioning.</p>
+            </div>
+          </div>
+          <!-- 2027 -->
+          <div class="timeline-node" data-year="2027">
+            <span class="timeline-node__dot"></span>
+            <span class="timeline-node__year">2027</span>
+            <span class="timeline-node__label">NIST finalizes additional standards</span>
+            <div class="timeline-node__detail">
+              <h4>FN-DSA Finalization</h4>
+              <p>FIPS 206 (FN-DSA) expected to finalize. CNSA 2.0 commercial deadlines begin to crystallize. Early adopters complete pilot migrations.</p>
+            </div>
+          </div>
+          <!-- 2028 -->
+          <div class="timeline-node" data-year="2028">
+            <span class="timeline-node__dot"></span>
+            <span class="timeline-node__year">2028</span>
+            <span class="timeline-node__label">Enterprise migration begins</span>
+            <div class="timeline-node__detail">
+              <h4>Regulated Enterprise Window</h4>
+              <p>Banks, insurers, and critical infrastructure providers begin mandatory PQC migration under regulatory pressure. OCC, ECB, and MAS expected to issue formal guidance.</p>
+            </div>
+          </div>
+          <!-- 2030 -->
+          <div class="timeline-node" data-year="2030">
+            <span class="timeline-node__dot"></span>
+            <span class="timeline-node__year">2030</span>
+            <span class="timeline-node__label">Defense systems compliance</span>
+            <div class="timeline-node__detail">
+              <h4>Government Compliance</h4>
+              <p>National Security Systems must be CNSA 2.0 compliant. Early CRQC considered probable by intelligence assessments.</p>
+            </div>
+          </div>
+          <!-- 2033 -->
+          <div class="timeline-node" data-year="2033">
+            <span class="timeline-node__dot"></span>
+            <span class="timeline-node__year">2033</span>
+            <span class="timeline-node__label">Full CNSA 2.0 compliance</span>
+            <div class="timeline-node__detail">
+              <h4>Widespread PQC Adoption</h4>
+              <p>All national security systems fully migrated. Widespread CRQC availability presumed. Current PKI infrastructure is considered broken.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- HNDL Callout -->
+      <div class="hndl-callout reveal">
+        <h3>Harvest Now, Decrypt Later</h3>
+        <p>Adversaries are collecting encrypted data today for future decryption when a cryptographically relevant quantum computer becomes available. This includes VPN traffic, TLS sessions, email archives, and stored encrypted databases. Organizations with data that must remain confidential beyond 2030 should begin PQC migration immediately. This is the central argument for urgency in every Q-Readiness assessment.</p>
+      </div>
+
+      <p class="quantum-context reveal">CNSA 2.0 mandates, regulatory deadlines, and industry benchmarks create a clear readiness window. Organizations that begin today will have a 12&ndash;18 month advantage in vendor negotiations, architecture planning, and regulatory positioning.</p>
+
+      <div class="reveal" style="text-align:center;margin-top:48px;">
+        <a href="index.html#contact" class="btn btn--primary">Book Your Assessment</a>
+        <a href="index.html" class="btn btn--text">&larr; Back to Main Page</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <section class="section section--darker" style="padding:48px 0;">
+    <div class="container" style="padding-top:24px;border-top:0.5px solid var(--color-border);">
+      <footer class="footer">
+        <span>&copy; 2026 Q-Readiness</span>
+        <div class="footer__links">
+          <a href="index.html">Main Page</a>
+          <a href="index.html#contact">Privacy</a>
+          <a href="index.html#contact">Accessibility</a>
+          <a href="#">Client Portal</a>
+        </div>
+      </footer>
+    </div>
+  </section>
+
+  <button class="scroll-top-btn" id="scrollTopBtn" aria-label="Scroll to top">&uarr;</button>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
