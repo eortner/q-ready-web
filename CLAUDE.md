@@ -48,10 +48,17 @@ Tool catalog: `../web-swarm/website-swarm/TOOLS-MISSING.md`
 
 ## Behavioral rules
 
+- NEVER simulate or pretend to use a skill. If a skill is available, invoke it with the Skill tool. If it cannot be invoked, state that clearly and explain why.
+- NEVER fake analysis by manually applying a skill's methodology. Use the actual skill or don't claim to.
+
 - Edit existing files with Edit tool. Write only for new files from scratch.
 - Ask before any change spanning more than 50 lines.
 - One change per turn. Confirm before continuing.
 - NEVER change `css/styles.css` or `index.html` design without explicit approval.
+
+## Available skills
+
+- `ui-ux-pro-max` — UI/UX design intelligence. 67 styles, 96 palettes, 57 font pairings, 25 chart types. Use `python3 .claude/skills/ui-ux-pro-max/scripts/search.py "<query>" --domain <domain>` for chart, UX, color, typography guidance. Do NOT change fonts or colors from styles.css — use skill for layout, spacing, accessibility, chart best practices only.
 
 ## Reference files
 

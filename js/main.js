@@ -347,13 +347,14 @@
   }
 
   /* ========================================
-     7. CONTACT FORM
+     7. CONTACT FORM — Formspree
      ======================================== */
   function initContactForm() {
     var form = qs('#contact-form');
     if (!form) return;
 
     var feedback = form.querySelector('.contact-form__feedback');
+    var submitBtn = form.querySelector('.contact-form__submit');
 
     form.addEventListener('submit', function (e) {
       e.preventDefault();
@@ -363,37 +364,58 @@
         return;
       }
 
-      var email = form.querySelector('[name="email"]');
-      var name = form.querySelector('[name="name"]');
-      var emailVal = email ? email.value.trim() : '';
+      var nameField = form.querySelector('[name="name"]');
+      var emailField = form.querySelector('[name="email"]');
+      var emailVal = emailField ? emailField.value.trim() : '';
 
-      if (!name || !name.value.trim()) {
+      if (!nameField || !nameField.value.trim()) {
         if (feedback) feedback.textContent = 'Please enter your name.';
-        if (name) name.focus();
+        if (nameField) nameField.focus();
         return;
       }
 
       if (!emailVal) {
         if (feedback) feedback.textContent = 'Please enter your email address.';
-        if (email) email.focus();
+        if (emailField) emailField.focus();
         return;
       }
 
       var re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!re.test(emailVal)) {
         if (feedback) feedback.textContent = 'Please enter a valid email address.';
-        if (email) email.focus();
+        if (emailField) emailField.focus();
         return;
       }
 
-      state.formSubmitted = true;
-      var submitBtn = form.querySelector('.contact-form__submit');
+      var url = form.getAttribute('action');
+      if (!url || url.indexOf('CHANGE_ME') !== -1) {
+        if (feedback) feedback.textContent = 'Form not configured. Please set your Formspree endpoint.';
+        return;
+      }
+
       if (submitBtn) {
-        submitBtn.textContent = 'Thank you — We will be in touch';
+        submitBtn.textContent = 'Sending...';
         submitBtn.disabled = true;
         submitBtn.style.opacity = '0.7';
       }
-      if (feedback) feedback.textContent = 'Inquiry received. We will respond within 24 hours.';
+
+      fetch(url, {
+        method: 'POST',
+        body: new FormData(form),
+        headers: { 'Accept': 'application/json' }
+      }).then(function (response) {
+        if (response.ok) {
+          state.formSubmitted = true;
+          if (submitBtn) submitBtn.textContent = 'Thank you — We will be in touch';
+          if (feedback) feedback.textContent = 'Inquiry received. We will respond within 24 hours.';
+        } else {
+          if (submitBtn) { submitBtn.textContent = 'Submit Inquiry'; submitBtn.disabled = false; submitBtn.style.opacity = '1'; }
+          if (feedback) feedback.textContent = 'Something went wrong. Please try again or email us directly.';
+        }
+      }).catch(function () {
+        if (submitBtn) { submitBtn.textContent = 'Submit Inquiry'; submitBtn.disabled = false; submitBtn.style.opacity = '1'; }
+        if (feedback) feedback.textContent = 'Network error. Please check your connection and try again.';
+      });
     });
   }
 

@@ -13,21 +13,21 @@
     .tab-content.active { display: block; }
     /* KPI cards */
     .kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 32px; }
-    .kpi-card { background: var(--color-surface); border: 0.5px solid var(--color-border); padding: 24px; text-align: center; transition: border-color var(--transition-base); }
-    .kpi-card:hover { border-color: var(--color-accent-dim); }
+    .kpi-card { background: var(--color-surface); border: 0.5px solid var(--color-border); padding: 24px; text-align: center; transition: all var(--transition-base); cursor: pointer; }
+    .kpi-card:hover { border-color: var(--color-accent); transform: translateY(-2px); }
     .kpi-card__value { font-family: var(--font-display); font-size: 2rem; font-weight: 300; color: var(--color-accent); line-height: 1.2; }
     .kpi-card__value--critical { color: #FF5F57; }
     .kpi-card__label { font-family: var(--font-body); font-size: 0.68rem; font-weight: 400; color: var(--color-text-muted); letter-spacing: 0.05em; text-transform: uppercase; margin-top: 8px; }
     .kpi-card__source { font-size: 0.62rem; color: var(--color-text-muted); font-weight: 300; margin-top: 4px; }
     /* Side nav overrides for dashboard use */
-    .dash-rail { position: fixed; left: 0; top: var(--nav-height); bottom: 0; width: 224px; z-index: 800; background: rgba(7, 10, 18, 0.95); border-right: 0.5px solid var(--color-border); padding: 32px 0; display: flex; flex-direction: column; gap: 2px; backdrop-filter: blur(12px); }
+    .dash-rail { position: fixed; left: 0; top: var(--nav-height); bottom: 0; width: 224px; z-index: 30; background: rgba(7, 10, 18, 0.95); border-right: 0.5px solid var(--color-border); padding: 32px 0; display: flex; flex-direction: column; gap: 2px; backdrop-filter: blur(12px); }
     .dash-rail__item { display: flex; align-items: center; gap: 12px; padding: 16px 24px; cursor: pointer; transition: all var(--transition-base); border-left: 2px solid transparent; color: var(--color-text-dim); font-family: var(--font-body); font-size: 0.78rem; font-weight: 400; letter-spacing: 0.05em; text-transform: uppercase; background: none; border-top: none; border-right: none; border-bottom: none; width: 100%; text-align: left; }
     .dash-rail__item:hover { background: rgba(212, 160, 67, 0.05); color: var(--color-accent); }
     .dash-rail__item.active { border-left-color: var(--color-accent); background: rgba(212, 160, 67, 0.08); color: var(--color-accent); }
     .dash-rail__num { font-size: 0.6rem; font-weight: 500; color: var(--color-text-muted); flex-shrink: 0; }
     .dash-rail__item.active .dash-rail__num { color: var(--color-accent); }
     /* Top bar */
-    .top-bar { position: fixed; top: var(--nav-height); left: 224px; right: 0; z-index: 700; background: rgba(10, 14, 23, 0.92); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border-bottom: 0.5px solid var(--color-border); padding: 14px 32px; display: flex; justify-content: space-between; align-items: center; }
+    .top-bar { position: fixed; top: var(--nav-height); left: 224px; right: 0; z-index: 20; background: rgba(10, 14, 23, 0.92); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border-bottom: 0.5px solid var(--color-border); padding: 14px 32px; display: flex; justify-content: space-between; align-items: center; }
     .top-bar__meta { font-family: var(--font-body); font-size: 0.72rem; color: var(--color-text-muted); letter-spacing: 0.04em; }
     .top-bar__meta span { color: var(--color-text-dim); }
     /* Main content area */
@@ -37,8 +37,8 @@
     .dash-subheading { font-family: var(--font-body); font-size: 0.78rem; font-weight: 400; color: var(--color-text-muted); letter-spacing: 0.04em; margin-bottom: 24px; }
     /* Data tables */
     .data-table { width: 100%; border-collapse: collapse; }
-    .data-table th { font-family: var(--font-body); font-size: 0.68rem; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: var(--color-text-muted); text-align: left; padding: 12px 16px; border-bottom: 1px solid var(--color-border); }
-    .data-table td { font-family: var(--font-body); font-size: 0.82rem; font-weight: 400; color: var(--color-text-dim); padding: 12px 16px; border-bottom: 0.5px solid var(--color-border-light); vertical-align: top; }
+    .data-table th { font-family: var(--font-body); font-size: 0.72rem; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: var(--color-text-muted); text-align: left; padding: 12px 16px; border-bottom: 1px solid var(--color-border); }
+    .data-table td { font-family: var(--font-body); font-size: 0.84rem; font-weight: 400; color: var(--color-text-dim); padding: 12px 16px; border-bottom: 0.5px solid var(--color-border-light); vertical-align: top; }
     .data-table tr:hover td { background: rgba(212, 160, 67, 0.02); }
     .data-table .evidence-cell pre { font-family: var(--font-mono); font-size: 0.72rem; line-height: 1.6; color: var(--color-text-dim); background: var(--color-base-deep); padding: 12px 14px; border: 0.5px solid var(--color-border); white-space: pre-wrap; margin-top: 4px; }
     .data-table details summary { font-family: var(--font-body); font-size: 0.7rem; font-weight: 400; color: var(--color-accent); cursor: pointer; letter-spacing: 0.04em; }
@@ -92,7 +92,9 @@
       .kpi-row { grid-template-columns: repeat(2, 1fr); }
       .data-table { font-size: 0.75rem; }
     }
+    .nav__link { color: var(--color-text); }
     .dash-main canvas { position: relative; z-index: 0; }
+    .chart-wrap { position: relative; z-index: 0; isolation: isolate; }
     @media print {
       .dash-rail, .nav, .top-bar { display: none !important; }
       .dash-main { margin-left: 0; margin-top: 0; }
@@ -108,16 +110,21 @@
 <nav class="nav nav--visible nav--solid" role="navigation">
   <a href="index.html" class="nav__brand"><span class="nav__brand-mark">Q</span><span>Q-Readiness</span></a>
   <div class="nav__menu">
-    <a href="index.html" class="nav__link">Home</a>
-    <a href="index.html#methodology" class="nav__link">Methodology</a>
-    <a href="quantum-status.html" class="nav__link">Timeline</a>
     <a href="dashboard.html" class="nav__link nav__link--active">Dashboard</a>
+    <a href="quantum-status.html" class="nav__link">Timeline</a>
     <a href="index.html#contact" class="nav__link nav__cta btn btn--primary btn--small">Book a Call</a>
   </div>
   <button class="hamburger" aria-label="Open menu" aria-expanded="false">
     <span class="hamburger__line"></span><span class="hamburger__line"></span><span class="hamburger__line"></span>
   </button>
 </nav>
+<div class="overlay" role="dialog" aria-modal="true">
+  <nav class="overlay__nav">
+    <a href="dashboard.html" class="overlay__link">Dashboard</a>
+    <a href="quantum-status.html" class="overlay__link">Timeline</a>
+    <a href="index.html#contact" class="overlay__link overlay__cta btn btn--outline">Book a Call</a>
+  </nav>
+</div>
 
 <!-- Side navigation (dashboard tabs) -->
 <nav class="dash-rail" id="dashRail">
@@ -389,8 +396,8 @@
         labels: ['HNDL-Urgent (P0)','High (P1)','Medium (P2)','Low (P3)'],
         datasets: [{
           data: [5, 10, 9, 2],
-          backgroundColor: ['rgba(255,95,87,0.7)','rgba(255,189,46,0.7)','rgba(212,160,67,0.5)','rgba(107,102,88,0.3)'],
-          borderColor: ['rgba(255,95,87,0.9)','rgba(255,189,46,0.9)','rgba(212,160,67,0.7)','rgba(107,102,88,0.4)'],
+          backgroundColor: ['rgba(255,95,87,0.75)','rgba(255,189,46,0.75)','rgba(212,160,67,0.55)','rgba(156,150,138,0.35)'],
+          borderColor: ['#FF5F57','#FFBD2E','#D4A043','#9C968A'],
           borderWidth: 1
         }]
       },

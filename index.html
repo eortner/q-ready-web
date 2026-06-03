@@ -20,11 +20,8 @@
       <span>Q-Readiness</span>
     </a>
     <div class="nav__menu">
-      <a href="#evaluate" class="nav__link">Evaluate</a>
-      <a href="#dashboard" class="nav__link">Dashboard</a>
-      <a href="#methodology" class="nav__link">Methodology</a>
-      <a href="#intelligence" class="nav__link">Intel</a>
       <a href="dashboard.html" class="nav__link">Dashboard</a>
+      <a href="quantum-status.html" class="nav__link">Timeline</a>
       <a href="#contact" class="nav__link nav__cta btn btn--primary btn--small">Book a Call</a>
     </div>
     <button class="hamburger" aria-label="Open menu" aria-expanded="false">
@@ -37,12 +34,8 @@
   <!-- Mobile overlay -->
   <div class="overlay" role="dialog" aria-modal="true" aria-label="Navigation menu">
     <nav class="overlay__nav">
-      <a href="#evaluate" class="overlay__link">Evaluate</a>
-      <a href="#dashboard" class="overlay__link">Dashboard</a>
-      <a href="#methodology" class="overlay__link">Methodology</a>
-      <a href="#intelligence" class="overlay__link">Intel</a>
-      <a href="quantum-status.html" class="overlay__link">Full Timeline</a>
       <a href="dashboard.html" class="overlay__link">Dashboard</a>
+      <a href="quantum-status.html" class="overlay__link">Timeline</a>
       <a href="#contact" class="overlay__link overlay__cta btn btn--outline">Book a Call</a>
     </nav>
   </div>
@@ -95,7 +88,18 @@
       </div>
       <div class="hero__line" aria-hidden="true"></div>
     </div>
+    <div class="scroll-hint" aria-hidden="true">
+      <span class="scroll-hint__arrow"></span>
+    </div>
   </section>
+
+  <style>
+    .nav__link { color: var(--color-text); }
+    .scroll-hint { position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%); z-index: 2; }
+    .scroll-hint__arrow { display: block; width: 24px; height: 24px; border-right: 1.5px solid var(--color-accent); border-bottom: 1.5px solid var(--color-accent); transform: rotate(45deg); animation: scroll-bounce 1.8s ease-in-out infinite; }
+    @keyframes scroll-bounce { 0%,100% { opacity: 0.3; transform: rotate(45deg) translateY(0); } 50% { opacity: 1; transform: rotate(45deg) translateY(8px); } }
+    @media (prefers-reduced-motion: reduce) { .scroll-hint__arrow { animation: none; opacity: 0.6; } }
+  </style>
 
   <!-- ============================================================
        SECTION 2: WHAT WE EVALUATE — Premium Cards
@@ -233,6 +237,9 @@
             </div>
           </div>
         </div>
+      </div>
+      <div class="reveal" style="text-align:center;margin-top:36px;">
+        <a href="dashboard.html" class="btn btn--outline">View Full Dashboard &rarr;</a>
       </div>
     </div>
   </section>
@@ -459,7 +466,7 @@
       <p class="section-subtitle reveal">Tell us about your organization and we will prepare a tailored quantum readiness assessment proposal. No pitch. No deck.</p>
       <div class="contact-grid">
         <!-- Left: Form -->
-        <form class="contact-form reveal" id="contact-form" novalidate>
+        <form class="contact-form reveal" id="contact-form" action="https://formspree.io/f/xzdqbbpo" method="POST" novalidate>
           <div class="contact-form__group">
             <label class="contact-form__label" for="name">Name</label>
             <input class="contact-form__input" type="text" id="name" name="name" autocomplete="name" required>
