@@ -1,0 +1,1451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Q-Readiness | Risk-First Dashboard</title>
+  <meta name="description" content="Quantum readiness risk assessment organized by threat pillars: HNDL exposure, compliance, technology maturity, and supply chain risk.">
+  <link rel="stylesheet" href="css/styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <style>
+    /* =========================================
+       Variant C — Risk-First Pillar Styling
+       ========================================= */
+    .info-icon { display:inline-flex; align-items:center; justify-content:center; width:16px; height:16px; border-radius:50%; border:0.5px solid var(--color-border); color:var(--color-text-muted); font-size:10px; cursor:help; margin-left:4px; transition:all var(--transition-base); vertical-align:middle; font-family:var(--font-body); font-style:normal; font-weight:400; }
+    .info-icon:hover { border-color:var(--color-accent); color:var(--color-accent); background:var(--color-accent-subtle); }
+    .info-icon[data-tooltip] { position:relative; }
+    .info-icon[data-tooltip]::after { content:attr(data-tooltip); position:absolute; bottom:calc(100% + 8px); left:50%; transform:translateX(-50%); background:var(--color-surface); border:0.5px solid var(--color-border); color:var(--color-text); font-size:0.72rem; line-height:1.5; padding:8px 12px; max-width:280px; white-space:normal; pointer-events:none; opacity:0; transition:opacity var(--transition-base); z-index:100; font-family:var(--font-body); font-weight:300; letter-spacing:0.01em; text-transform:none; border-radius:var(--radius-sm); }
+    .info-icon[data-tooltip]:hover::after { opacity:1; }
+
+    .pillar-section { padding:80px 0; position:relative; }
+    .pillar-section::after { content:''; position:absolute; bottom:0; left:10%; right:10%; height:0.5px; background:linear-gradient(90deg,transparent,var(--color-border),rgba(212,160,67,0.35),var(--color-border),transparent); }
+    .pillar-header { text-align:center; margin-bottom:48px; }
+    .pillar-number { font-family:var(--font-display); font-size:5rem; font-weight:300; color:var(--color-accent); line-height:1; opacity:0.15; margin-bottom:-2rem; }
+    .pillar-title { font-family:var(--font-display); font-size:2rem; font-weight:400; letter-spacing:0.04em; text-transform:uppercase; color:var(--color-text); position:relative; z-index:1; }
+    .pillar-title::after { content:''; display:block; width:48px; height:1px; margin:16px auto 0; background:var(--color-accent); opacity:0.4; }
+    .pillar-subtitle { color:var(--color-text-dim); font-size:0.95rem; max-width:600px; margin:12px auto 0; line-height:1.7; font-weight:300; }
+    .pillar-summary { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:16px; margin-bottom:40px; }
+    .pillar-summary-card { background:var(--color-surface); border:0.5px solid var(--color-border); padding:24px; text-align:center; }
+    .pillar-summary-card__value { font-family:var(--font-display); font-size:2rem; font-weight:300; color:var(--color-accent); line-height:1.2; }
+    .pillar-summary-card__label { font-size:0.72rem; color:var(--color-text-muted); letter-spacing:0.04em; text-transform:uppercase; margin-top:4px; }
+
+    .finding-table { width:100%; border-collapse:collapse; margin-top:24px; }
+    .finding-table th { text-align:left; font-size:0.72rem; color:var(--color-text-muted); letter-spacing:0.04em; text-transform:uppercase; font-weight:400; padding:12px 16px; border-bottom:0.5px solid var(--color-border); }
+    .finding-table td { padding:16px; border-bottom:0.5px solid var(--color-border-light); font-size:0.88rem; color:var(--color-text-dim); font-weight:300; vertical-align:top; }
+    .finding-table tr:hover td { background:var(--color-accent-subtle); }
+    .domain-tag { display:inline-block; font-size:0.6rem; padding:2px 8px; font-weight:500; letter-spacing:0.04em; text-transform:uppercase; font-family:var(--font-mono); }
+    .domain-tag--pqc { background:rgba(212,160,67,0.1); color:var(--color-accent); border:0.5px solid rgba(212,160,67,0.2); }
+    .domain-tag--qn { background:rgba(92,184,122,0.1); color:var(--color-green); border:0.5px solid rgba(92,184,122,0.2); }
+    .domain-tag--om { background:rgba(255,189,46,0.1); color:#FFBD2E; border:0.5px solid rgba(255,189,46,0.2); }
+    .severity-badge { display:inline-block; font-size:0.62rem; padding:2px 10px; font-weight:500; letter-spacing:0.03em; text-transform:uppercase; font-family:var(--font-body); }
+    .severity-badge--critical { background:rgba(255,95,87,0.08); color:#FF5F57; border:0.5px solid rgba(255,95,87,0.15); }
+    .severity-badge--high { background:rgba(255,189,46,0.08); color:#FFBD2E; border:0.5px solid rgba(255,189,46,0.15); }
+    .severity-badge--medium { background:rgba(92,184,122,0.08); color:var(--color-green); border:0.5px solid rgba(92,184,122,0.15); }
+    .severity-badge--low { background:rgba(107,102,88,0.08); color:var(--color-text-muted); border:0.5px solid rgba(107,102,88,0.15); }
+
+    details.evidence-details { margin-top:8px; }
+    details.evidence-details summary { font-size:0.72rem; color:var(--color-accent); cursor:pointer; font-weight:400; letter-spacing:0.03em; transition:color var(--transition-base); }
+    details.evidence-details summary:hover { color:var(--color-text); }
+    details.evidence-details pre { background:var(--color-base-alt); border:0.5px solid var(--color-border); padding:16px; margin-top:8px; font-family:var(--font-mono); font-size:0.75rem; color:var(--color-text-dim); overflow-x:auto; line-height:1.6; border-radius:var(--radius-sm); }
+
+    .domain-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:20px; margin-bottom:40px; }
+    .domain-card { background:var(--color-surface); border:0.5px solid var(--color-border); padding:32px 24px; text-align:center; }
+    .domain-card__value { font-family:var(--font-display); font-size:2.8rem; font-weight:300; color:var(--color-accent); line-height:1; }
+    .domain-card__label { font-size:0.75rem; color:var(--color-text-dim); letter-spacing:0.04em; text-transform:uppercase; margin-top:8px; }
+    .domain-card__bar { height:3px; background:var(--color-base-deep); margin-top:16px; overflow:hidden; }
+    .domain-card__bar-fill { height:100%; background:var(--color-accent); }
+
+    .readiness-section { padding:80px 0; position:relative; }
+    .readiness-grid { display:grid; grid-template-columns:1fr 1fr; gap:40px; align-items:center; }
+    .readiness-score { text-align:center; }
+    .readiness-score__value { font-family:var(--font-display); font-size:5rem; font-weight:300; color:var(--color-accent); line-height:1; }
+    .readiness-score__label { font-size:0.85rem; color:var(--color-text-muted); letter-spacing:0.04em; text-transform:uppercase; margin-top:8px; font-weight:300; }
+    .readiness-score__sub { font-size:0.82rem; color:var(--color-text-dim); margin-top:16px; line-height:1.6; font-weight:300; max-width:360px; margin-left:auto; margin-right:auto; }
+
+    .remediation-table { width:100%; border-collapse:collapse; margin-top:24px; }
+    .remediation-table th { text-align:left; font-size:0.72rem; color:var(--color-text-muted); letter-spacing:0.04em; text-transform:uppercase; font-weight:400; padding:12px 16px; border-bottom:0.5px solid var(--color-border); }
+    .remediation-table td { padding:14px 16px; border-bottom:0.5px solid var(--color-border-light); font-size:0.85rem; color:var(--color-text-dim); font-weight:300; vertical-align:middle; }
+    .remediation-table tr:hover td { background:var(--color-accent-subtle); }
+
+    .glossary-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:20px; }
+    .glossary-term { background:var(--color-surface); border:0.5px solid var(--color-border-light); padding:20px 24px; }
+    .glossary-term__term { font-size:0.85rem; font-weight:500; color:var(--color-text); margin-bottom:4px; }
+    .glossary-term__def { font-size:0.78rem; color:var(--color-text-dim); line-height:1.6; font-weight:300; }
+
+    .chart-container { max-width:600px; margin:0 auto; padding:24px 0; }
+    .chart-container--wide { max-width:100%; margin:0 auto; padding:24px 0; }
+
+    .trend-container { max-width:800px; margin:24px auto 0; padding:24px; background:var(--color-surface); border:0.5px solid var(--color-border); }
+
+    .cta-bar { text-align:center; padding:60px 0; border-top:0.5px solid var(--color-border); }
+    .cta-bar p { color:var(--color-text-dim); font-size:0.95rem; max-width:520px; margin:0 auto 24px; line-height:1.7; font-weight:300; }
+
+    .footer-bar { display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px; padding:24px 0 40px; font-size:0.78rem; color:var(--color-text-muted); font-weight:300; }
+    .footer-bar__links { display:flex; gap:24px; }
+    .footer-bar__links a { color:var(--color-text-muted); text-decoration:none; transition:color var(--transition-base); font-size:0.78rem; }
+    .footer-bar__links a:hover { color:var(--color-accent); }
+
+    .pillar-insight { background:var(--color-accent-subtle); border-left:2px solid var(--color-accent); padding:16px 20px; margin:20px 0; font-size:0.85rem; color:var(--color-text-dim); line-height:1.7; font-weight:300; }
+
+    .grid-2col { display:grid; grid-template-columns:1fr 1fr; gap:24px; }
+
+    .pillar-finding { background:var(--color-surface); border:0.5px solid var(--color-border); padding:24px; margin-bottom:16px; }
+    .pillar-finding:last-child { margin-bottom:0; }
+
+    .section-heading { font-family:var(--font-display); font-size:1.6rem; font-weight:400; letter-spacing:0.03em; text-transform:uppercase; color:var(--color-text); margin-bottom:32px; text-align:center; }
+    .section-heading::after { content:''; display:block; width:40px; height:1px; margin:12px auto 0; background:var(--color-accent); opacity:0.4; }
+
+    .donut-wrapper { position:relative; width:200px; height:200px; margin:0 auto 16px; }
+    .donut-center { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); text-align:center; }
+    .donut-center__value { font-family:var(--font-display); font-size:2.8rem; font-weight:300; color:var(--color-accent); line-height:1; }
+    .donut-center__label { font-size:0.65rem; color:var(--color-text-muted); letter-spacing:0.04em; text-transform:uppercase; margin-top:4px; font-weight:300; }
+
+    .pillar-headline { border-bottom:0.5px solid var(--color-border); padding-bottom:20px; margin-bottom:24px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; }
+    .pillar-headline__title { font-family:var(--font-display); font-size:1.4rem; font-weight:400; color:var(--color-text); letter-spacing:0.03em; }
+    .pillar-headline__count { font-size:0.72rem; color:var(--color-text-muted); letter-spacing:0.04em; text-transform:uppercase; }
+
+    .trend-chart-box { background:var(--color-surface); border:0.5px solid var(--color-border); padding:32px 24px; margin-top:32px; }
+
+    .breakdown-cards { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; margin-top:32px; }
+    .breakdown-card { background:var(--color-surface); border:0.5px solid var(--color-border); padding:28px 20px; text-align:center; }
+    .breakdown-card__score { font-family:var(--font-display); font-size:2.4rem; font-weight:300; line-height:1; margin-bottom:8px; }
+    .breakdown-card__score--pqc { color:var(--color-accent); }
+    .breakdown-card__score--qn { color:var(--color-green); }
+    .breakdown-card__score--om { color:#FFBD2E; }
+    .breakdown-card__label { font-size:0.72rem; color:var(--color-text-dim); letter-spacing:0.04em; text-transform:uppercase; font-weight:300; }
+    .breakdown-card__bar { height:3px; background:var(--color-base-deep); margin-top:12px; overflow:hidden; }
+    .breakdown-card__bar-fill { height:100%; background:var(--color-accent); }
+    .breakdown-card__bar-fill--qn { background:var(--color-green); }
+    .breakdown-card__bar-fill--om { background:#FFBD2E; }
+
+    @media (max-width:768px) {
+      .readiness-grid { grid-template-columns:1fr; gap:32px; }
+      .breakdown-cards { grid-template-columns:1fr; }
+      .grid-2col { grid-template-columns:1fr; }
+      .finding-table th, .finding-table td { padding:10px 12px; font-size:0.8rem; }
+      .domain-grid { grid-template-columns:1fr; }
+      .pillar-number { font-size:3.5rem; }
+      .readiness-score__value { font-size:3.5rem; }
+      .remediation-table th, .remediation-table td { padding:10px 12px; font-size:0.78rem; }
+    }
+    @media (max-width:480px) {
+      .pillar-section { padding:48px 0; }
+      .pillar-summary { grid-template-columns:1fr 1fr; }
+      .finding-table { font-size:0.78rem; }
+      .finding-table th, .finding-table td { padding:8px; }
+      .breakdown-cards { grid-template-columns:1fr; }
+      .remediation-table { font-size:0.78rem; }
+      .remediation-table th, .remediation-table td { padding:8px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ============================================================
+       NAVIGATION
+       ============================================================ -->
+  <nav class="nav nav--visible" role="navigation" aria-label="Primary navigation">
+    <a href="index.html" class="nav__brand"><span class="nav__brand-mark">Q</span><span>Q-Readiness</span></a>
+    <div class="nav__menu">
+      <a href="index.html" class="nav__link">Home</a>
+      <a href="index.html#methodology" class="nav__link">Methodology</a>
+      <a href="quantum-status.html" class="nav__link">Timeline</a>
+      <a href="index.html#contact" class="nav__link nav__cta btn btn--primary btn--small">Book a Call</a>
+    </div>
+    <button class="hamburger" aria-label="Open menu" aria-expanded="false">
+      <span class="hamburger__line"></span><span class="hamburger__line"></span><span class="hamburger__line"></span>
+    </button>
+  </nav>
+  <div class="overlay" role="dialog" aria-modal="true">
+    <nav class="overlay__nav">
+      <a href="index.html" class="overlay__link">Home</a>
+      <a href="index.html#methodology" class="overlay__link">Methodology</a>
+      <a href="quantum-status.html" class="overlay__link">Full Timeline</a>
+      <a href="index.html#contact" class="overlay__link overlay__cta btn btn--outline">Book a Call</a>
+    </nav>
+  </div>
+
+  <!-- ============================================================
+       PAGE HEADER
+       ============================================================ -->
+  <section class="section section--dark section--grid" style="padding-top:140px;padding-bottom:60px;">
+    <div class="container">
+      <div style="text-align:center;">
+        <div style="display:inline-flex;align-items:center;gap:10px;background:var(--color-accent-subtle);border:0.5px solid var(--color-border);padding:8px 20px;font-size:0.75rem;font-weight:400;color:var(--color-accent);margin-bottom:28px;letter-spacing:0.08em;text-transform:uppercase;font-family:var(--font-body);">
+          <span style="width:6px;height:6px;background:var(--color-green);border-radius:50%;"></span>
+          Variant C &middot; Risk-First
+        </div>
+        <h1 style="font-family:var(--font-display);font-size:clamp(2.8rem,5vw,4.2rem);font-weight:300;letter-spacing:-0.02em;line-height:1.05;margin-bottom:16px;color:var(--color-text);">
+          Quantum Risk<br><span style="color:var(--color-accent);font-weight:500;font-style:italic;">Dashboard</span>
+        </h1>
+        <p style="font-size:clamp(1rem,1.5vw,1.1rem);color:var(--color-text-dim);line-height:1.8;max-width:680px;margin:0 auto 32px;font-weight:300;">
+          Risk manager's lens: all findings organized by threat pillar, not by domain. Every risk category draws from PQC, Quantum Networking, and Optimization & ML assessments.
+        </p>
+        <div style="display:flex;gap:28px;justify-content:center;flex-wrap:wrap;margin-top:36px;padding-top:28px;border-top:0.5px solid var(--color-border);">
+          <div style="text-align:center;">
+            <div style="font-family:var(--font-display);font-size:1.8rem;font-weight:300;color:var(--color-accent);line-height:1.2;">4</div>
+            <div style="font-size:0.72rem;color:var(--color-text-muted);letter-spacing:0.04em;text-transform:uppercase;margin-top:4px;font-weight:300;">Risk Pillars</div>
+          </div>
+          <div style="text-align:center;">
+            <div style="font-family:var(--font-display);font-size:1.8rem;font-weight:300;color:var(--color-accent);line-height:1.2;">6</div>
+            <div style="font-size:0.72rem;color:var(--color-text-muted);letter-spacing:0.04em;text-transform:uppercase;margin-top:4px;font-weight:300;">Assessment Domains</div>
+          </div>
+          <div style="text-align:center;">
+            <div style="font-family:var(--font-display);font-size:1.8rem;font-weight:300;color:var(--color-accent);line-height:1.2;">18</div>
+            <div style="font-size:0.72rem;color:var(--color-text-muted);letter-spacing:0.04em;text-transform:uppercase;margin-top:4px;font-weight:300;">Risk Findings</div>
+          </div>
+          <div style="text-align:center;">
+            <div style="font-family:var(--font-display);font-size:1.8rem;font-weight:300;color:var(--color-accent);line-height:1.2;">14</div>
+            <div style="font-size:0.72rem;color:var(--color-text-muted);letter-spacing:0.04em;text-transform:uppercase;margin-top:4px;font-weight:300;">Critical Items</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       PILLAR 1: HNDL EXPOSURE
+       ============================================================ -->
+  <section class="pillar-section" id="pillar1">
+    <div class="container">
+      <div class="pillar-header">
+        <div class="pillar-number">01</div>
+        <h2 class="pillar-title">HNDL Exposure</h2>
+        <p class="pillar-subtitle">
+          "Harvest Now, Decrypt Later" &mdash; active data harvesting threat. Captured TLS endpoints with quantum-vulnerable certs, database TDE with RSA wrapping, and data types with long retention windows.
+        </p>
+      </div>
+
+      <div class="pillar-summary">
+        <div class="pillar-summary-card">
+          <div class="pillar-summary-card__value">4</div>
+          <div class="pillar-summary-card__label">Vulnerable TLS Endpoints</div>
+        </div>
+        <div class="pillar-summary-card">
+          <div class="pillar-summary-card__value">3</div>
+          <div class="pillar-summary-card__label">At-Risk Crypto Assets</div>
+        </div>
+        <div class="pillar-summary-card">
+          <div class="pillar-summary-card__value">7+ yrs</div>
+          <div class="pillar-summary-card__label">Data Retention Window</div>
+        </div>
+        <div class="pillar-summary-card">
+          <div class="pillar-summary-card__value" style="color:#FF5F57;">Critical</div>
+          <div class="pillar-summary-card__label">Urgency Level</div>
+        </div>
+      </div>
+
+      <div class="pillar-headline">
+        <span class="pillar-headline__title">Active HNDL Exposure Findings</span>
+        <span class="pillar-headline__count">4 urgent findings</span>
+      </div>
+
+      <div class="domain-grid">
+        <div class="pillar-finding">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+            <span class="domain-tag domain-tag--pqc">PQC</span>
+            <span class="severity-badge severity-badge--critical">Critical</span>
+          </div>
+          <h4 style="font-size:0.95rem;font-weight:500;color:var(--color-text);margin-bottom:6px;">
+            TLS Endpoint Certificates
+            <span class="info-icon" data-tooltip="Transport Layer Security certificates using RSA or ECDSA key exchange, vulnerable to Shor's algorithm">?</span>
+          </h4>
+          <p style="font-size:0.82rem;color:var(--color-text-dim);line-height:1.6;font-weight:300;">
+            4 of 4 surveyed targets expose TLS endpoints with quantum-vulnerable X.509 certificates using RSA-2048 or ECDSA P-256. All certificates lack PQC hybrid extensions.
+          </p>
+          <details class="evidence-details">
+            <summary>View evidence</summary>
+            <pre>surveyor-scan.json — 4 targets, all quantum-vulnerable certs
+Target: api.example.com — RSA 2048, SHA-256, valid 2026-2027
+Target: db.example.com — ECDSA P-256, SHA-384, valid 2025-2027
+Target: auth.example.com — RSA 4096, SHA-256, valid 2026-2028
+Target: edge.example.com — ECDSA P-384, SHA-384, valid 2025-2027
+pqc-network-scan — 4 targets, HIGH risk
+All missing X.509 PQC extensions; no ML-KEM or ML-DSA hybrid</pre>
+          </details>
+        </div>
+
+        <div class="pillar-finding">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+            <span class="domain-tag domain-tag--pqc">PQC</span>
+            <span class="severity-badge severity-badge--critical">Critical</span>
+          </div>
+          <h4 style="font-size:0.95rem;font-weight:500;color:var(--color-text);margin-bottom:6px;">
+            Database TDE with RSA Wrapping
+            <span class="info-icon" data-tooltip="Transparent Data Encryption using RSA key wrapping — RSA is vulnerable to Shor's algorithm">?</span>
+          </h4>
+          <p style="font-size:0.82rem;color:var(--color-text-dim);line-height:1.6;font-weight:300;">
+            [Example] Database TDE system wraps column encryption keys with RSA-2048. Key material is exfiltratable now; decryption becomes possible once CRQC emerges.
+          </p>
+          <details class="evidence-details">
+            <summary>View evidence</summary>
+            <pre>[Example] Database TDE key hierarchy:
+CEK (AES-256) wrapped by RSA-2048 KEK
+KEK stored in HSM with RSA-2048 transport key
+All key material harvestable from backup/DR copies
+Migration path: ML-KEM-768 key encapsulation</pre>
+          </details>
+        </div>
+
+        <div class="pillar-finding">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+            <span class="domain-tag domain-tag--pqc">PQC</span>
+            <span class="severity-badge severity-badge--high">High</span>
+          </div>
+          <h4 style="font-size:0.95rem;font-weight:500;color:var(--color-text);margin-bottom:6px;">
+            Secrets &amp; KMS Key Material
+            <span class="info-icon" data-tooltip="Key Management Service — hardware security module managing cryptographic keys">?</span>
+          </h4>
+          <p style="font-size:0.82rem;color:var(--color-text-dim);line-height:1.6;font-weight:300;">
+            [Example] KMS stores service account keys and API tokens wrapped with RSA-3072. Keys are rotated every 90 days but harvestable at rest.
+          </p>
+          <details class="evidence-details">
+            <summary>View evidence</summary>
+            <pre>[Example] Secrets KMS inventory:
+  - 24 service account keys (RSA-3072 wrapped)
+  - 12 API tokens (RSA-2048 wrapped)
+  - 8 database credentials (RSA-2048 wrapped)
+Rotation period: 90 days
+Harvest window: continuous (backup/DR/replication)</pre>
+          </details>
+        </div>
+
+        <div class="pillar-finding">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+            <span class="domain-tag domain-tag--pqc">PQC</span>
+            <span class="severity-badge severity-badge--high">High</span>
+          </div>
+          <h4 style="font-size:0.95rem;font-weight:500;color:var(--color-text);margin-bottom:6px;">
+            Identity JWT Signing
+            <span class="info-icon" data-tooltip="JSON Web Token — identity token signed with RS256 (RSA with SHA-256)">?</span>
+          </h4>
+          <p style="font-size:0.82rem;color:var(--color-text-dim);line-height:1.6;font-weight:300;">
+            [Example] Identity provider signs JWTs with RS256 (RSA-2048). Token validity windows are 1&ndash;24 hours. Harvested tokens could be forged retroactively once CRQC is available.
+          </p>
+          <details class="evidence-details">
+            <summary>View evidence</summary>
+            <pre>[Example] Identity JWT configuration:
+  - Signing algorithm: RS256 (RSA-2048)
+  - Token lifetime: 1h (access), 24h (refresh)
+  - 18 relying parties consuming these tokens
+  - 6 service-to-service trust chains reliant on RS256
+Migration target: ML-DSA-65 for signing</pre>
+          </details>
+        </div>
+      </div>
+
+      <div class="pillar-insight">
+        <strong style="color:var(--color-accent);font-weight:500;">Insight:</strong> All four findings in this pillar are classified as "urgent" because the HNDL threat is active today. Data encrypted or signed with RSA/ECDSA can be harvested now and decrypted after CRQC arrival. Prioritize TLS endpoint migration and TDE key wrapping replacement.
+      </div>
+
+      <div class="trend-chart-box">
+        <h4 style="font-size:0.95rem;font-weight:500;color:var(--color-text);margin-bottom:8px;text-align:center;letter-spacing:0.02em;">HNDL Threat Window Timeline</h4>
+        <p style="font-size:0.75rem;color:var(--color-text-muted);text-align:center;margin-bottom:16px;font-weight:300;letter-spacing:0.03em;">
+          Estimated CRQC arrival range: 2030&ndash;2035
+        </p>
+        <div style="position:relative;height:40px;background:var(--color-base-deep);margin:0 8px;border-radius:var(--radius-sm);">
+          <div style="position:absolute;top:0;left:0;height:100%;width:28%;background:rgba(255,95,87,0.2);border-right:2px solid #FF5F57;"></div>
+          <div style="position:absolute;top:0;left:28%;height:100%;width:42%;background:rgba(255,189,46,0.15);border-right:2px solid #FFBD2E;"></div>
+          <div style="position:absolute;top:0;left:70%;height:100%;width:30%;background:rgba(92,184,122,0.1);"></div>
+          <div style="position:absolute;top:-6px;left:28%;transform:translateX(-50%);font-size:0.6rem;color:#FF5F57;font-weight:500;letter-spacing:0.02em;">NOW</div>
+          <div style="position:absolute;top:44px;left:28%;transform:translateX(-50%);font-size:0.6rem;color:var(--color-text-muted);">2026</div>
+          <div style="position:absolute;top:44px;left:70%;transform:translateX(-50%);font-size:0.6rem;color:var(--color-text-muted);">2030+</div>
+          <div style="position:absolute;top:44px;left:100%;transform:translateX(-50%);font-size:0.6rem;color:var(--color-text-muted);">2035+</div>
+          <div style="position:absolute;top:-2px;left:28%;width:2px;height:44px;background:rgba(255,95,87,0.4);"></div>
+          <div style="position:absolute;top:-2px;left:70%;width:2px;height:44px;background:rgba(255,189,46,0.4);"></div>
+        </div>
+        <div style="display:flex;justify-content:center;gap:24px;margin-top:20px;font-size:0.7rem;color:var(--color-text-muted);font-weight:300;">
+          <span><span style="display:inline-block;width:10px;height:10px;background:rgba(255,95,87,0.3);margin-right:6px;vertical-align:middle;"></span>Harvest Window (active)</span>
+          <span><span style="display:inline-block;width:10px;height:10px;background:rgba(255,189,46,0.2);margin-right:6px;vertical-align:middle;"></span>Migration Window</span>
+          <span><span style="display:inline-block;width:10px;height:10px;background:rgba(92,184,122,0.15);margin-right:6px;vertical-align:middle;"></span>PQC Ready</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       PILLAR 2: COMPLIANCE & STANDARDS RISK
+       ============================================================ -->
+  <section class="pillar-section" id="pillar2">
+    <div class="container">
+      <div class="pillar-header">
+        <div class="pillar-number">02</div>
+        <h2 class="pillar-title">Compliance &amp; Standards Risk</h2>
+        <p class="pillar-subtitle">
+          CNSA 2.0 deadlines, NIST deprecation timeline, regulatory countdown clocks, FIPS 140-3 status, supply chain vendor compliance gaps, and PKI infrastructure standards alignment.
+        </p>
+      </div>
+
+      <div class="pillar-summary">
+        <div class="pillar-summary-card">
+          <div class="pillar-summary-card__value">2030</div>
+          <div class="pillar-summary-card__label">CNSA 2.0 Software Deadline</div>
+        </div>
+        <div class="pillar-summary-card">
+          <div class="pillar-summary-card__value">2033</div>
+          <div class="pillar-summary-card__label">CNSA 2.0 Hardware Deadline</div>
+        </div>
+        <div class="pillar-summary-card">
+          <div class="pillar-summary-card__value">3</div>
+          <div class="pillar-summary-card__label">Regulatory Frameworks</div>
+        </div>
+        <div class="pillar-summary-card">
+          <div class="pillar-summary-card__value" style="color:#FFBD2E;">Partial</div>
+          <div class="pillar-summary-card__label">Standards Alignment</div>
+        </div>
+      </div>
+
+      <div class="pillar-headline">
+        <span class="pillar-headline__title">Regulatory &amp; Standards Findings</span>
+        <span class="pillar-headline__count">5 findings</span>
+      </div>
+
+      <div class="domain-grid">
+        <div class="pillar-finding">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+            <span class="domain-tag domain-tag--pqc">PQC</span>
+            <span class="severity-badge severity-badge--high">High</span>
+          </div>
+          <h4 style="font-size:0.95rem;font-weight:500;color:var(--color-text);margin-bottom:6px;">
+            CNSA 2.0 Compliance Gap
+            <span class="info-icon" data-tooltip="Commercial National Security Algorithm Suite 2.0 — NSA-mandated PQC transition for National Security Systems">?</span>
+          </h4>
+          <p style="font-size:0.82rem;color:var(--color-text-dim);line-height:1.6;font-weight:300;">
+            Current crypto assets do not meet CNSA 2.0 requirements. RSA-2048 and ECDSA P-256 in active use must migrate to ML-KEM, ML-DSA, and SLH-DSA by mandated deadlines.
+          </p>
+          <details class="evidence-details">
+            <summary>View evidence</summary>
+            <pre>cbom.json — 6 crypto assets
+  3 assets use RSA-2048 (non-compliant with CNSA 2.0)
+  2 assets use ECDSA P-256 (non-compliant)
+  1 asset uses AES-256 (compliant)
+  CNSA 2.0 software deadline: 2030
+  CNSA 2.0 hardware deadline: 2033
+  0/6 assets currently CNSA 2.0 compliant</pre>
+          </details>
+        </div>
+
+        <div class="pillar-finding">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+            <span class="domain-tag domain-tag--pqc">PQC</span>
+            <span class="severity-badge severity-badge--high">High</span>
+          </div>
+          <h4 style="font-size:0.95rem;font-weight:500;color:var(--color-text);margin-bottom:6px;">
+            NIST PQC Standardization Timeline
+            <span class="info-icon" data-tooltip="NIST Post-Quantum Cryptography standardization — ML-KEM, ML-DSA, SLH-DSA, FN-DSA">?</span>
+          </h4>
+          <p style="font-size:0.82rem;color:var(--color-text-dim);line-height:1.6;font-weight:300;">
+            ML-KEM (FIPS 203) and ML-DSA (FIPS 204) finalized 2024. FN-DSA (FIPS 206) expected 2025. Org has not yet aligned crypto inventory with NIST standardized algorithms.
+          </p>
+          <details class="evidence-details">
+            <summary>View evidence</summary>
+            <pre>PQC benchmark results:
+  Key exchange migrated: 4/8 (50%)
+  Certificate migration: 0/8 (0%)
+  ML-KEM-768: 10.5 microseconds (liboqs)
+  ML-DSA-65: 102.5 microseconds (liboqs)
+  Org has tested PQC algorithms but not deployed</pre>
+          </details>
+        </div>
+
+        <div class="pillar-finding">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+            <span class="domain-tag domain-tag--pqc">PQC</span>
+            <span class="severity-badge severity-badge--medium">Medium</span>
+          </div>
+          <h4 style="font-size:0.95rem;font-weight:500;color:var(--color-text);margin-bottom:6px;">
+            FIPS 140-3 Status
+            <span class="info-icon" data-tooltip="Federal Information Processing Standard 140-3 — cryptographic module validation standard">?</span>
+          </h4>
+          <p style="font-size:0.82rem;color:var(--color-text-dim);line-height:1.6;font-weight:300;">
+            Current FIPS 140-2 validated modules in use. Transition to FIPS 140-3 required by September 2026. PQC algorithm implementations not yet FIPS 140-3 validated.
+          </p>
+          <details class="evidence-details">
+            <summary>View evidence</summary>
+            <pre>[Example] FIPS 140-2 modules: 4 active
+  FIPS 140-3 transition deadline: Sep 2026
+  PQC algorithm FIPS validation status:
+    ML-KEM-768: not yet submitted
+    ML-DSA-65: not yet submitted
+    SLH-DSA: in testing</pre>
+          </details>
+        </div>
+
+        <div class="pillar-finding">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+            <span class="domain-tag domain-tag--pqc">PQC</span>
+            <span class="severity-badge severity-badge--high">High</span>
+          </div>
+          <h4 style="font-size:0.95rem;font-weight:500;color:var(--color-text);margin-bottom:6px;">
+            PKI Infrastructure Standards Gap
+            <span class="info-icon" data-tooltip="Public Key Infrastructure — certificate authorities, registration authorities, and certificate management">?</span>
+          </h4>
+          <p style="font-size:0.82rem;color:var(--color-text-dim);line-height:1.6;font-weight:300;">
+            Internal PKI issues RSA-2048 certificates with 3&ndash;5 year validity. No PQC certificate profiles, no hybrid certificate support, no automated PQC enrollment.
+          </p>
+          <details class="evidence-details">
+            <summary>View evidence</summary>
+            <pre>[Example] PKI infrastructure:
+  Root CA: RSA-4096 (valid to 2035)
+  Intermediate CAs: RSA-3072
+  Issuing CAs: RSA-2048
+  Avg certificate validity: 3-5 years
+  PQC certificate profiles: not created
+  Hybrid certificate support: none
+  Automated PQC enrollment: not configured</pre>
+          </details>
+        </div>
+
+        <div class="pillar-finding">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+            <span class="domain-tag domain-tag--om">OM</span>
+            <span class="severity-badge severity-badge--medium">Medium</span>
+          </div>
+          <h4 style="font-size:0.95rem;font-weight:500;color:var(--color-text);margin-bottom:6px;">
+            Regulatory Countdown Clock Exposure
+            <span class="info-icon" data-tooltip="Multiple overlapping regulatory deadlines create compliance scheduling risk">?</span>
+          </h4>
+          <p style="font-size:0.82rem;color:var(--color-text-dim);line-height:1.6;font-weight:300;">
+            [Example] Overlapping regulatory deadlines (CNSA 2.0 2030, EU Cyber Resilience Act 2027, FIPS 140-3 2026) create scheduling conflicts and resource contention for quantum readiness programs.
+          </p>
+          <details class="evidence-details">
+            <summary>View evidence</summary>
+            <pre>[Example] Regulatory timeline overlap:
+  Sep 2026: FIPS 140-3 transition deadline
+  2027: EU Cyber Resilience Act effective
+  2028: NIST PQC algorithm final standards
+  2030: CNSA 2.0 software deadline
+  2033: CNSA 2.0 hardware deadline
+  2035: NSA expected CRQC arrival estimate</pre>
+          </details>
+        </div>
+      </div>
+
+      <div class="pillar-insight">
+        <strong style="color:var(--color-accent);font-weight:500;">Insight:</strong> The compliance burden is escalating with multiple overlapping deadlines. FIPS 140-3 transition is nearest (Sep 2026). CNSA 2.0 software deadline (2030) is the primary compliance driver. PKI modernization is a prerequisite for all other PQC migration activities and should be prioritized accordingly.
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       PILLAR 3: TECHNOLOGY MATURITY RISK
+       ============================================================ -->
+  <section class="pillar-section" id="pillar3">
+    <div class="container">
+      <div class="pillar-header">
+        <div class="pillar-number">03</div>
+        <h2 class="pillar-title">Technology Maturity Risk</h2>
+        <p class="pillar-subtitle">
+          Quantum networking readiness, optimization &amp; ML investment risk, hardware readiness, error correction overhead, vendor lock-in, and unsolved problems on the Watch List.
+        </p>
+      </div>
+
+      <div class="pillar-summary">
+        <div class="pillar-summary-card">
+          <div class="pillar-summary-card__value">2.6</div>
+          <div class="pillar-summary-card__label">QN Readiness Score / 5</div>
+        </div>
+        <div class="pillar-summary-card">
+          <div class="pillar-summary-card__value">3.2</div>
+          <div class="pillar-summary-card__label">OM Readiness Score / 5</div>
+        </div>
+        <div class="pillar-summary-card">
+          <div class="pillar-summary-card__value">3</div>
+          <div class="pillar-summary-card__label">Watch List Items</div>
+        </div>
+        <div class="pillar-summary-card">
+          <div class="pillar-summary-card__value" style="color:#FFBD2E;">Medium</div>
+          <div class="pillar-summary-card__label">Maturity Risk Level</div>
+        </div>
+      </div>
+
+      <div class="pillar-headline">
+        <span class="pillar-headline__title">Technology Maturity Findings</span>
+        <span class="pillar-headline__count">6 findings</span>
+      </div>
+
+      <div class="grid-2col">
+        <div class="pillar-finding">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+            <span class="domain-tag domain-tag--qn">QN</span>
+            <span class="severity-badge severity-badge--high">High</span>
+          </div>
+          <h4 style="font-size:0.95rem;font-weight:500;color:var(--color-text);margin-bottom:6px;">
+            QKD Feasibility Unknown
+            <span class="info-icon" data-tooltip="Quantum Key Distribution — physics-based key exchange using quantum states">?</span>
+          </h4>
+          <p style="font-size:0.82rem;color:var(--color-text-dim);line-height:1.6;font-weight:300;">
+            [Example] QKD feasibility assessment not yet conducted. Fiber path audit, trust node analysis, and attenuation modeling are outstanding. Current network topology unknown for QKD integration.
+          </p>
+          <details class="evidence-details">
+            <summary>View evidence</summary>
+            <pre>[Example] QKD Readiness — 6 items:
+  1. Fiber path audit: NOT STARTED
+  2. Trusted node assessment: NOT STARTED
+  3. Attenuation modeling: NOT STARTED
+  4. QKD vendor evaluation: PLANNED
+  5. Integration architecture: NOT STARTED
+  6. Cost-benefit analysis: PLANNED
+  Overall QN readiness: 2.6/5</pre>
+          </details>
+        </div>
+
+        <div class="pillar-finding">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+            <span class="domain-tag domain-tag--qn">QN</span>
+            <span class="severity-badge severity-badge--medium">Medium</span>
+          </div>
+          <h4 style="font-size:0.95rem;font-weight:500;color:var(--color-text);margin-bottom:6px;">
+            Quantum Repeater Timeline
+            <span class="info-icon" data-tooltip="Quantum repeaters extend entanglement distribution beyond the direct fiber range (~100km)">?</span>
+          </h4>
+          <p style="font-size:0.82rem;color:var(--color-text-dim);line-height:1.6;font-weight:300;">
+            [Example] Quantum repeaters remain in R&amp;D phase. No commercial repeaters available for deployment. Long-haul quantum networking remains experimental beyond ~100km.
+          </p>
+          <details class="evidence-details">
+            <summary>View evidence</summary>
+            <pre>[Example] QN Repeater Readiness:
+  - Current max direct QKD link: ~100km
+  - Repeater technology: TRL 3-4 (lab demo)
+  - Commercial availability: estimated 2028-2030
+  - Impact: long-haul QDN not feasible today
+  - Mitigation: trusted node relay (reduces security)</pre>
+          </details>
+        </div>
+
+        <div class="pillar-finding">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+            <span class="domain-tag domain-tag--qn">QN</span>
+            <span class="severity-badge severity-badge--low">Low</span>
+          </div>
+          <h4 style="font-size:0.95rem;font-weight:500;color:var(--color-text);margin-bottom:6px;">
+            Fiber Network Audit
+            <span class="info-icon" data-tooltip="Physical fiber infrastructure audit for quantum networking compatibility">?</span>
+          </h4>
+          <p style="font-size:0.82rem;color:var(--color-text-dim);line-height:1.6;font-weight:300;">
+            [Example] Initial fiber audit identifies dark fiber availability between 2 of 3 data center sites. Third site requires lit fiber with shared spectrum, unsuitable for QKD without trust node.
+          </p>
+          <details class="evidence-details">
+            <summary>View evidence</summary>
+            <pre>[Example] Fiber Audit Results:
+  Site A-Site B: dark fiber available (QKD feasible)
+  Site B-Site C: lit fiber shared (QKD not feasible)
+  Site A-Site C: ~180km (exceeds direct QKD range)
+  Recommendation: trusted node at Site B</pre>
+          </details>
+        </div>
+
+        <div class="pillar-finding">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+            <span class="domain-tag domain-tag--om">OM</span>
+            <span class="severity-badge severity-badge--high">High</span>
+          </div>
+          <h4 style="font-size:0.95rem;font-weight:500;color:var(--color-text);margin-bottom:6px;">
+            Quantum Hardware Readiness Gap
+            <span class="info-icon" data-tooltip="Current quantum processors lack sufficient logical qubits for meaningful optimization workloads">?</span>
+          </h4>
+          <p style="font-size:0.82rem;color:var(--color-text-dim);line-height:1.6;font-weight:300;">
+            [Example] Current NISQ devices offer ~1000 physical qubits but fewer than 10 logical qubits. Optimization workloads require 100+ logical qubits for meaningful advantage. Hardware roadmap uncertain.
+          </p>
+          <details class="evidence-details">
+            <summary>View evidence</summary>
+            <pre>[Example] OM Readiness — 6 items:
+  1. Hardware availability: TRL 7 (limited)
+  2. Error correction overhead: 1000:1 ratio
+  3. Algorithm benchmarking: PRELIMINARY
+  4. Vendor lock-in risk: HIGH
+  5. Workload screening: PARTIAL
+  6. Hybrid architecture: PLANNED
+  Overall OM readiness: 3.2/5</pre>
+          </details>
+        </div>
+
+        <div class="pillar-finding">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+            <span class="domain-tag domain-tag--om">OM</span>
+            <span class="severity-badge severity-badge--medium">Medium</span>
+          </div>
+          <h4 style="font-size:0.95rem;font-weight:500;color:var(--color-text);margin-bottom:6px;">
+            Error Correction Overhead
+            <span class="info-icon" data-tooltip="Quantum error correction requires many physical qubits per logical qubit — currently ~1000:1">?</span>
+          </h4>
+          <p style="font-size:0.82rem;color:var(--color-text-dim);line-height:1.6;font-weight:300;">
+            [Example] Surface code error correction requires ~1000 physical qubits per logical qubit. At current hardware scales, meaningful optimization workloads remain 5&ndash;10 years from feasibility.
+          </p>
+          <details class="evidence-details">
+            <summary>View evidence</summary>
+            <pre>[Example] Error correction analysis:
+  Code: surface code (rotated)
+  Physical-to-logical ratio: ~1000:1
+  Required logical qubits for finance: ~100
+  Required physical qubits: ~100,000
+  Current maximum physical qubits: ~1,000
+  Estimated timeline: 2030-2035 for 100 logical qubits</pre>
+          </details>
+        </div>
+
+        <div class="pillar-finding">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+            <span class="domain-tag domain-tag--om">OM</span>
+            <span class="severity-badge severity-badge--medium">Medium</span>
+          </div>
+          <h4 style="font-size:0.95rem;font-weight:500;color:var(--color-text);margin-bottom:6px;">
+            Watch List: Unsolved Problems
+            <span class="info-icon" data-tooltip="Quantum computing challenges without known efficient classical or quantum solutions">?</span>
+          </h4>
+          <p style="font-size:0.82rem;color:var(--color-text-dim);line-height:1.6;font-weight:300;">
+            [Example] Three watch-list items lack clear quantum advantage paths: large-scale integer factorization on fault-tolerant hardware, quantum chemistry simulation accuracy, and optimization constraint scaling.
+          </p>
+          <details class="evidence-details">
+            <summary>View evidence</summary>
+            <pre>[Example] Watch List — 3 items:
+  1. Integer factorization (RSA): requires millions of physical qubits
+  2. Quantum chemistry: accuracy limited by current ansatze
+  3. Optimization scaling: QAOA performance degrades at scale
+  Status: monitor literature, no investment commitment</pre>
+          </details>
+        </div>
+      </div>
+
+      <div class="pillar-insight">
+        <strong style="color:var(--color-accent);font-weight:500;">Insight:</strong> Technology maturity varies significantly across domains. QN readiness is lowest (2.6/5) with fundamental infrastructure audits outstanding. OM readiness (3.2/5) is limited by hardware scale and error correction overhead. Both require 5&ndash;10 years for production readiness. PQC readiness is the most actionable domain today.
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       PILLAR 4: SUPPLY CHAIN & SYSTEMIC RISK
+       ============================================================ -->
+  <section class="pillar-section" id="pillar4">
+    <div class="container">
+      <div class="pillar-header">
+        <div class="pillar-number">04</div>
+        <h2 class="pillar-title">Supply Chain &amp; Systemic Risk</h2>
+        <p class="pillar-subtitle">
+          Vendor PQC roadmap gaps, cloud provider crypto dependencies, insurance/liability exposure, assessment scope limitations, and talent availability for quantum readiness programs.
+        </p>
+      </div>
+
+      <div class="pillar-summary">
+        <div class="pillar-summary-card">
+          <div class="pillar-summary-card__value">4</div>
+          <div class="pillar-summary-card__label">Vendors Assessed</div>
+        </div>
+        <div class="pillar-summary-card">
+          <div class="pillar-summary-card__value">3</div>
+          <div class="pillar-summary-card__label">Cloud Providers</div>
+        </div>
+        <div class="pillar-summary-card">
+          <div class="pillar-summary-card__value">50%</div>
+          <div class="pillar-summary-card__label">Vendors with PQC Roadmap</div>
+        </div>
+        <div class="pillar-summary-card">
+          <div class="pillar-summary-card__value" style="color:#FF5F57;">Critical</div>
+          <div class="pillar-summary-card__label">Supply Chain Risk Level</div>
+        </div>
+      </div>
+
+      <div class="pillar-headline">
+        <span class="pillar-headline__title">Supply Chain &amp; Systemic Findings</span>
+        <span class="pillar-headline__count">5 findings</span>
+      </div>
+
+      <div class="domain-grid">
+        <div class="pillar-finding">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+            <span class="domain-tag domain-tag--pqc">PQC</span>
+            <span class="severity-badge severity-badge--critical">Critical</span>
+          </div>
+          <h4 style="font-size:0.95rem;font-weight:500;color:var(--color-text);margin-bottom:6px;">
+            Vendor PQC Roadmap Gaps
+            <span class="info-icon" data-tooltip="Assessment of third-party vendors' post-quantum cryptography migration plans">?</span>
+          </h4>
+          <p style="font-size:0.82rem;color:var(--color-text-dim);line-height:1.6;font-weight:300;">
+            [Example] 4 critical vendors assessed: only 2 have published PQC roadmaps. 1 vendor plans PQC support by 2028. 1 vendor has no public roadmap. 1 vendor uses quantum-vulnerable TLS in their SaaS product.
+          </p>
+          <details class="evidence-details">
+            <summary>View evidence</summary>
+            <pre>[Example] Supply chain vendor PQC status — 4 vendors:
+  Vendor A (IAM): PQC roadmap published, ML-KEM by 2027
+  Vendor B (DB): PQC roadmap published, ML-KEM by 2028
+  Vendor C (Cloud): no public PQC roadmap — HIGH RISK
+  Vendor D (Network): PQC roadmap published, 2027 target
+  2/4 vendors have PQC roadmap
+  1/4 vendors has no roadmap at all
+  1/4 vendors uses quantum-vulnerable TLS today</pre>
+          </details>
+        </div>
+
+        <div class="pillar-finding">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+            <span class="domain-tag domain-tag--pqc">PQC</span>
+            <span class="severity-badge severity-badge--high">High</span>
+          </div>
+          <h4 style="font-size:0.95rem;font-weight:500;color:var(--color-text);margin-bottom:6px;">
+            Cloud Provider Crypto Dependencies
+            <span class="info-icon" data-tooltip="Cryptographic dependencies on cloud service provider implementations">?</span>
+          </h4>
+          <p style="font-size:0.82rem;color:var(--color-text-dim);line-height:1.6;font-weight:300;">
+            [Example] Workloads across 3 cloud providers use KMS, TLS, and signing services that depend on provider-managed crypto. Provider PQC migration timelines create systemic dependency risk.
+          </p>
+          <details class="evidence-details">
+            <summary>View evidence</summary>
+            <pre>[Example] Cloud provider crypto dependency analysis:
+  Provider 1: KMS with RSA key wrapping (PQC planned 2027)
+  Provider 2: TLS 1.3 with ECDSA (PQC planned 2028)
+  Provider 3: Managed HSM with RSA-4096 (PQC TBD)
+  All 3 providers use quantum-vulnerable algorithms today
+  Migration depends on provider timelines, not internal control</pre>
+          </details>
+        </div>
+
+        <div class="pillar-finding">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+            <span class="domain-tag domain-tag--pqc">PQC</span>
+            <span class="severity-badge severity-badge--medium">Medium</span>
+          </div>
+          <h4 style="font-size:0.95rem;font-weight:500;color:var(--color-text);margin-bottom:6px;">
+            Insurance &amp; Liability Exposure
+            <span class="info-icon" data-tooltip="Cyber insurance and liability implications of quantum-vulnerable cryptography">?</span>
+          </h4>
+          <p style="font-size:0.82rem;color:var(--color-text-dim);line-height:1.6;font-weight:300;">
+            [Example] Current cyber insurance policies do not exclude quantum-related claims, but industry is moving toward quantum exclusion clauses. Data retention liability exposure increases with HNDL risk window.
+          </p>
+          <details class="evidence-details">
+            <summary>View evidence</summary>
+            <pre>[Example] Insurance & liability analysis:
+  Cyber policy: no quantum exclusion today
+  Industry trend: quantum exclusions expected by 2028
+  Data retention liability: 7+ year retention at HNDL risk
+  Regulatory fine exposure: GDPR art. 32 (security)
+  Estimated financial exposure: confidential</pre>
+          </details>
+        </div>
+
+        <div class="pillar-finding">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+            <span class="domain-tag domain-tag--pqc">PQC</span>
+            <span class="severity-badge severity-badge--high">High</span>
+          </div>
+          <h4 style="font-size:0.95rem;font-weight:500;color:var(--color-text);margin-bottom:6px;">
+            Assessment Scope Limitations
+            <span class="info-icon" data-tooltip="Known limitations in the current quantum readiness assessment coverage">?</span>
+          </h4>
+          <p style="font-size:0.82rem;color:var(--color-text-dim);line-height:1.6;font-weight:300;">
+            [Example] Current assessment covers crypto inventory, TLS, and PKI but does not include: embedded device firmware, IoT sensor networks, legacy mainframe crypto, or third-party SaaS integrations.
+          </p>
+          <details class="evidence-details">
+            <summary>View evidence</summary>
+            <pre>[Example] Scope limitations identified:
+  - Embedded device firmware: NOT ASSESSED
+  - IoT sensor networks: NOT ASSESSED
+  - Legacy mainframe crypto: NOT ASSESSED
+  - Third-party SaaS integrations: PARTIALLY ASSESSED
+  - Custom cryptographic implementations: NOT ASSESSED
+  - Hardware security module firmware: NOT ASSESSED</pre>
+          </details>
+        </div>
+
+        <div class="pillar-finding">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+            <span class="domain-tag domain-tag--om">OM</span>
+            <span class="severity-badge severity-badge--high">High</span>
+          </div>
+          <h4 style="font-size:0.95rem;font-weight:500;color:var(--color-text);margin-bottom:6px;">
+            Talent Availability Shortfall
+            <span class="info-icon" data-tooltip="Available talent pool for quantum computing and PQC migration expertise">?</span>
+          </h4>
+          <p style="font-size:0.82rem;color:var(--color-text-dim);line-height:1.6;font-weight:300;">
+            [Example] Global shortage of quantum security engineers, PQC migration architects, and quantum networking specialists. Internal team has 2 PQC-aware engineers; requirement is 6&ndash;8 for migration program delivery.
+          </p>
+          <details class="evidence-details">
+            <summary>View evidence</summary>
+            <pre>[Example] Talent assessment:
+  Current PQC-aware engineers: 2
+  Required for migration program: 6-8
+  Quantum networking specialists: 0
+  Quantum algorithm engineers: 0
+  Average time-to-hire: 6-9 months
+  Market salary premium: 30-50% above infosec baseline</pre>
+          </details>
+        </div>
+      </div>
+
+      <div class="pillar-insight">
+        <strong style="color:var(--color-accent);font-weight:500;">Insight:</strong> Supply chain risk is critical because it is largely outside the organization's direct control. Vendor PQC roadmap gaps, cloud provider dependencies, and talent shortages create systemic risk that cannot be resolved through internal action alone. Assessment scope gaps also mean the full risk surface is larger than currently measured.
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       OVERALL READINESS SCORE + DONUT
+       ============================================================ -->
+  <section class="readiness-section" style="background:var(--color-base-alt);">
+    <div class="container">
+      <h2 class="section-heading">Overall Readiness Score</h2>
+      <p class="section-subtitle">Composite quantum readiness score across all three assessment domains. Score is weighted by domain criticality and calibrated against CNSA 2.0 compliance milestones.</p>
+
+      <div class="readiness-grid">
+        <div class="readiness-score">
+          <div class="donut-wrapper">
+            <canvas id="readinessDonut" width="200" height="200"></canvas>
+            <div class="donut-center">
+              <div class="donut-center__value">56</div>
+              <div class="donut-center__label">/100</div>
+            </div>
+          </div>
+          <div class="readiness-score__label">Composite Readiness</div>
+          <p class="readiness-score__sub">
+            Score reflects current PQC migration progress, quantum networking readiness, and optimization &amp; ML maturity. 56/100 indicates significant work remains across all pillars.
+          </p>
+        </div>
+        <div>
+          <div style="margin-bottom:28px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+              <span style="font-size:0.85rem;font-weight:400;color:var(--color-text);">PQC Migration</span>
+              <span style="font-size:0.85rem;font-weight:500;color:var(--color-accent);">34%</span>
+            </div>
+            <div style="height:4px;background:var(--color-base-deep);overflow:hidden;">
+              <div style="height:100%;width:34%;background:var(--color-accent);transition:width 1.2s ease-out;"></div>
+            </div>
+            <div style="display:flex;justify-content:space-between;margin-top:4px;">
+              <span style="font-size:0.62rem;color:var(--color-text-muted);">Key exchange: 4/8 migrated</span>
+              <span style="font-size:0.62rem;color:var(--color-text-muted);">Certs: 0/8 migrated</span>
+            </div>
+          </div>
+          <div style="margin-bottom:28px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+              <span style="font-size:0.85rem;font-weight:400;color:var(--color-text);">Quantum Networking</span>
+              <span style="font-size:0.85rem;font-weight:500;color:var(--color-green);">61%</span>
+            </div>
+            <div style="height:4px;background:var(--color-base-deep);overflow:hidden;">
+              <div style="height:100%;width:61%;background:var(--color-green);transition:width 1.2s ease-out;"></div>
+            </div>
+            <div style="display:flex;justify-content:space-between;margin-top:4px;">
+              <span style="font-size:0.62rem;color:var(--color-text-muted);">Fiber audit: partial</span>
+              <span style="font-size:0.62rem;color:var(--color-text-muted);">QKD feasibility: planned</span>
+            </div>
+          </div>
+          <div>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+              <span style="font-size:0.85rem;font-weight:400;color:var(--color-text);">Optimization &amp; ML</span>
+              <span style="font-size:0.85rem;font-weight:500;color:#FFBD2E;">72%</span>
+            </div>
+            <div style="height:4px;background:var(--color-base-deep);overflow:hidden;">
+              <div style="height:100%;width:72%;background:#FFBD2E;transition:width 1.2s ease-out;"></div>
+            </div>
+            <div style="display:flex;justify-content:space-between;margin-top:4px;">
+              <span style="font-size:0.62rem;color:var(--color-text-muted);">Workload screening: partial</span>
+              <span style="font-size:0.62rem;color:var(--color-text-muted);">Hardware: limited</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       DOMAIN BREAKDOWN CARDS
+       ============================================================ -->
+  <section class="readiness-section">
+    <div class="container">
+      <h2 class="section-heading">Domain Breakdown</h2>
+      <p class="section-subtitle">Detailed readiness scores per assessment domain with key metrics and migration status.</p>
+
+      <div class="breakdown-cards">
+        <div class="breakdown-card">
+          <div class="breakdown-card__score breakdown-card__score--pqc">34</div>
+          <div class="breakdown-card__label">PQC Migration</div>
+          <div class="breakdown-card__bar">
+            <div class="breakdown-card__bar-fill" style="width:34%;"></div>
+          </div>
+          <div style="margin-top:16px;text-align:left;font-size:0.78rem;color:var(--color-text-dim);line-height:1.7;font-weight:300;">
+            <div>Key exchange migration: 4/8 (50%)</div>
+            <div>Certificate migration: 0/8 (0%)</div>
+            <div>CNSA 2.0 compliant assets: 0/6</div>
+            <div>ML-KEM-768: 10.5&micro;s bench</div>
+          </div>
+        </div>
+        <div class="breakdown-card">
+          <div class="breakdown-card__score breakdown-card__score--qn">61</div>
+          <div class="breakdown-card__label">Quantum Networking</div>
+          <div class="breakdown-card__bar">
+            <div class="breakdown-card__bar-fill breakdown-card__bar-fill--qn" style="width:61%;"></div>
+          </div>
+          <div style="margin-top:16px;text-align:left;font-size:0.78rem;color:var(--color-text-dim);line-height:1.7;font-weight:300;">
+            <div>Fiber audit: partial (2/3 sites)</div>
+            <div>QKD feasibility: planned</div>
+            <div>Repeater R&amp;D: TRL 3-4</div>
+            <div>Trusted node analysis: not started</div>
+          </div>
+        </div>
+        <div class="breakdown-card">
+          <div class="breakdown-card__score breakdown-card__score--om">72</div>
+          <div class="breakdown-card__label">Optimization &amp; ML</div>
+          <div class="breakdown-card__bar">
+            <div class="breakdown-card__bar-fill breakdown-card__bar-fill--om" style="width:72%;"></div>
+          </div>
+          <div style="margin-top:16px;text-align:left;font-size:0.78rem;color:var(--color-text-dim);line-height:1.7;font-weight:300;">
+            <div>Workload screening: partial</div>
+            <div>Hardware: NISQ limited</div>
+            <div>Error correction: 1000:1 ratio</div>
+            <div>Vendor lock-in risk: high</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       REMEDIATION BACKLOG
+       ============================================================ -->
+  <section class="readiness-section" style="background:var(--color-base-alt);">
+    <div class="container">
+      <h2 class="section-heading">Remediation Backlog</h2>
+      <p class="section-subtitle">Cross-pillar prioritized remediation items ranked by risk reduction, compliance urgency, and implementation feasibility.</p>
+
+      <div style="overflow-x:auto;">
+        <table class="remediation-table">
+          <thead>
+            <tr>
+              <th>Priority</th>
+              <th>Item</th>
+              <th>Pillar</th>
+              <th>Domain</th>
+              <th>Effort</th>
+              <th>Target Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="severity-badge severity-badge--critical">P1</span></td>
+              <td style="color:var(--color-text);font-weight:400;">TLS endpoint PQC migration</td>
+              <td>HNDL</td>
+              <td><span class="domain-tag domain-tag--pqc">PQC</span></td>
+              <td>3 months</td>
+              <td>Q3 2026</td>
+            </tr>
+            <tr>
+              <td><span class="severity-badge severity-badge--critical">P1</span></td>
+              <td style="color:var(--color-text);font-weight:400;">Database TDE key wrapping replacement</td>
+              <td>HNDL</td>
+              <td><span class="domain-tag domain-tag--pqc">PQC</span></td>
+              <td>4 months</td>
+              <td>Q4 2026</td>
+            </tr>
+            <tr>
+              <td><span class="severity-badge severity-badge--high">P2</span></td>
+              <td style="color:var(--color-text);font-weight:400;">PKI infrastructure modernization</td>
+              <td>Compliance</td>
+              <td><span class="domain-tag domain-tag--pqc">PQC</span></td>
+              <td>6 months</td>
+              <td>Q2 2027</td>
+            </tr>
+            <tr>
+              <td><span class="severity-badge severity-badge--high">P2</span></td>
+              <td style="color:var(--color-text);font-weight:400;">Vendor PQC roadmap assessment &amp; engagement</td>
+              <td>Supply Chain</td>
+              <td><span class="domain-tag domain-tag--pqc">PQC</span></td>
+              <td>3 months</td>
+              <td>Q3 2026</td>
+            </tr>
+            <tr>
+              <td><span class="severity-badge severity-badge--high">P2</span></td>
+              <td style="color:var(--color-text);font-weight:400;">CNSA 2.0 compliance gap analysis</td>
+              <td>Compliance</td>
+              <td><span class="domain-tag domain-tag--pqc">PQC</span></td>
+              <td>2 months</td>
+              <td>Q3 2026</td>
+            </tr>
+            <tr>
+              <td><span class="severity-badge severity-badge--medium">P3</span></td>
+              <td style="color:var(--color-text);font-weight:400;">QKD feasibility study &amp; fiber audit</td>
+              <td>Technology</td>
+              <td><span class="domain-tag domain-tag--qn">QN</span></td>
+              <td>4 months</td>
+              <td>Q1 2027</td>
+            </tr>
+            <tr>
+              <td><span class="severity-badge severity-badge--medium">P3</span></td>
+              <td style="color:var(--color-text);font-weight:400;">Talent acquisition program (quantum security)</td>
+              <td>Supply Chain</td>
+              <td><span class="domain-tag domain-tag--om">OM</span></td>
+              <td>6 months</td>
+              <td>Q2 2027</td>
+            </tr>
+            <tr>
+              <td><span class="severity-badge severity-badge--medium">P3</span></td>
+              <td style="color:var(--color-text);font-weight:400;">Assessment scope expansion (embedded/IoT)</td>
+              <td>Supply Chain</td>
+              <td><span class="domain-tag domain-tag--pqc">PQC</span></td>
+              <td>3 months</td>
+              <td>Q1 2027</td>
+            </tr>
+            <tr>
+              <td><span class="severity-badge severity-badge--low">P4</span></td>
+              <td style="color:var(--color-text);font-weight:400;">OM hardware benchmarking &amp; vendor eval</td>
+              <td>Technology</td>
+              <td><span class="domain-tag domain-tag--om">OM</span></td>
+              <td>4 months</td>
+              <td>Q2 2027</td>
+            </tr>
+            <tr>
+              <td><span class="severity-badge severity-badge--low">P4</span></td>
+              <td style="color:var(--color-text);font-weight:400;">Insurance policy quantum clause review</td>
+              <td>Supply Chain</td>
+              <td><span class="domain-tag domain-tag--pqc">PQC</span></td>
+              <td>1 month</td>
+              <td>Q3 2026</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div style="display:flex;justify-content:center;gap:32px;margin-top:28px;flex-wrap:wrap;font-size:0.78rem;color:var(--color-text-dim);font-weight:300;">
+        <div style="text-align:center;">
+          <span class="severity-badge severity-badge--critical">P1</span>
+          <span style="margin-left:8px;">Critical &mdash; immediate action</span>
+        </div>
+        <div style="text-align:center;">
+          <span class="severity-badge severity-badge--high">P2</span>
+          <span style="margin-left:8px;">High &mdash; next quarter</span>
+        </div>
+        <div style="text-align:center;">
+          <span class="severity-badge severity-badge--medium">P3</span>
+          <span style="margin-left:8px;">Medium &mdash; this year</span>
+        </div>
+        <div style="text-align:center;">
+          <span class="severity-badge severity-badge--low">P4</span>
+          <span style="margin-left:8px;">Low &mdash; monitor</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       TECHNOLOGY TRENDS CHART
+       ============================================================ -->
+  <section class="readiness-section">
+    <div class="container">
+      <h2 class="section-heading">Technology Adoption Trends</h2>
+      <p class="section-subtitle">PQC adoption trajectory based on benchmark data, industry indicators, and projected migration pace across sectors.</p>
+
+      <div class="trend-container">
+        <canvas id="trendChart" width="800" height="350" style="width:100%;height:auto;max-height:350px;"></canvas>
+      </div>
+
+      <div style="display:flex;justify-content:center;gap:32px;margin-top:20px;flex-wrap:wrap;font-size:0.72rem;color:var(--color-text-dim);font-weight:300;">
+        <span><span style="display:inline-block;width:12px;height:12px;background:var(--color-accent);margin-right:6px;vertical-align:middle;border-radius:2px;"></span>PQC Adoption %</span>
+        <span style="color:var(--color-text-muted);">Data: benchmark results, industry surveys, projected milestones</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       GLOSSARY
+       ============================================================ -->
+  <section class="readiness-section" style="background:var(--color-base-alt);">
+    <div class="container">
+      <h2 class="section-heading">Glossary</h2>
+      <p class="section-subtitle">Technical terms and acronyms used throughout this risk dashboard.</p>
+
+      <div class="glossary-grid">
+        <div class="glossary-term">
+          <div class="glossary-term__term">CNSA 2.0</div>
+          <div class="glossary-term__def">Commercial National Security Algorithm Suite 2.0 &mdash; NSA-mandated suite of PQC algorithms for National Security Systems, with software deadline 2030 and hardware deadline 2033.</div>
+        </div>
+        <div class="glossary-term">
+          <div class="glossary-term__term">CRQC</div>
+          <div class="glossary-term__def">Cryptographically Relevant Quantum Computer &mdash; a quantum computer capable of breaking current public-key cryptography (RSA, ECDSA). Estimated arrival 2030&ndash;2035.</div>
+        </div>
+        <div class="glossary-term">
+          <div class="glossary-term__term">FIPS 140-3</div>
+          <div class="glossary-term__def">Federal Information Processing Standard 140-3 &mdash; security requirements for cryptographic modules, successor to FIPS 140-2. Transition deadline September 2026.</div>
+        </div>
+        <div class="glossary-term">
+          <div class="glossary-term__term">HNDL</div>
+          <div class="glossary-term__def">Harvest Now, Decrypt Later &mdash; an active threat where encrypted data is collected today and stored for future decryption once CRQC becomes available.</div>
+        </div>
+        <div class="glossary-term">
+          <div class="glossary-term__term">ML-KEM</div>
+          <div class="glossary-term__term">ML-DSA</div>
+          <div class="glossary-term__def">ML-KEM (FIPS 203): Module-Lattice Key Encapsulation Mechanism. ML-DSA (FIPS 204): Module-Lattice Digital Signature Algorithm. NIST-standardized PQC algorithms.</div>
+        </div>
+        <div class="glossary-term">
+          <div class="glossary-term__term">QKD</div>
+          <div class="glossary-term__def">Quantum Key Distribution &mdash; physics-based key exchange protocol using quantum states. Provides information-theoretic security but requires dedicated fiber or free-space optical links.</div>
+        </div>
+        <div class="glossary-term">
+          <div class="glossary-term__term">TDE</div>
+          <div class="glossary-term__def">Transparent Data Encryption &mdash; database encryption at rest. Typically uses AES with RSA key wrapping. RSA wrapping is vulnerable to quantum decryption.</div>
+        </div>
+        <div class="glossary-term">
+          <div class="glossary-term__term">TRL</div>
+          <div class="glossary-term__def">Technology Readiness Level &mdash; NASA/DoD scale from 1 (basic principles) to 9 (proven in operational environment). Quantum repeaters are currently TRL 3&ndash;4.</div>
+        </div>
+        <div class="glossary-term">
+          <div class="glossary-term__term">NISQ</div>
+          <div class="glossary-term__def">Noisy Intermediate-Scale Quantum &mdash; current generation of quantum processors with 50&ndash;1000 physical qubits but insufficient error correction for fault-tolerant computation.</div>
+        </div>
+        <div class="glossary-term">
+          <div class="glossary-term__term">PKI</div>
+          <div class="glossary-term__def">Public Key Infrastructure &mdash; the system of certificate authorities, registration authorities, and policies that manage digital certificates and public-key encryption.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       CTA + FOOTER
+       ============================================================ -->
+  <section class="readiness-section">
+    <div class="container">
+      <div class="cta-bar">
+        <h3 style="font-family:var(--font-display);font-size:1.6rem;font-weight:400;color:var(--color-text);letter-spacing:0.03em;text-transform:uppercase;margin-bottom:12px;">Next Steps</h3>
+        <p>
+          This risk-first assessment identifies the most urgent threats to your quantum readiness. Schedule a strategy session to prioritize remediation items and build your migration roadmap.
+        </p>
+        <div style="display:flex;justify-content:center;gap:16px;flex-wrap:wrap;">
+          <a href="index.html#contact" class="btn btn--primary">Book a Strategy Session</a>
+          <button id="pdfDownloadBtn" class="btn btn--outline">Download PDF Report</button>
+        </div>
+      </div>
+
+      <div class="footer-bar">
+        <span>&copy; 2026 Q-Readiness. All rights reserved.</span>
+        <div class="footer-bar__links">
+          <a href="index.html">Home</a>
+          <a href="index.html#methodology">Methodology</a>
+          <a href="quantum-status.html">Timeline</a>
+          <a href="index.html#contact">Contact</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       EMBEDDED DATA OBJECT
+       ============================================================ -->
+  <script>
+    window.DASHBOARD_DATA = {
+      cbom: { cryptoAssets: 6, rsa2048: 3, ecdsaP256: 2, aes256: 1, cnsa2Compliant: 0 },
+      surveyorScan: { targets: 4, vulnerable: 4, risk: 'HIGH' },
+      pqcBenchmark: { keyExchangeMigrated: '4/8', certMigrated: '0/8' },
+      liboqs: { mlKem768: '10.5 microseconds', mlDsa65: '102.5 microseconds' },
+      domains: { pqc: 34, qn: 61, om: 72 },
+      remediation: [
+        { priority: 'P1', item: 'TLS endpoint PQC migration', pillar: 'HNDL', domain: 'PQC', effort: '3 months', target: 'Q3 2026' },
+        { priority: 'P1', item: 'Database TDE key wrapping replacement', pillar: 'HNDL', domain: 'PQC', effort: '4 months', target: 'Q4 2026' },
+        { priority: 'P2', item: 'PKI infrastructure modernization', pillar: 'Compliance', domain: 'PQC', effort: '6 months', target: 'Q2 2027' },
+        { priority: 'P2', item: 'Vendor PQC roadmap assessment', pillar: 'Supply Chain', domain: 'PQC', effort: '3 months', target: 'Q3 2026' },
+        { priority: 'P2', item: 'CNSA 2.0 compliance gap analysis', pillar: 'Compliance', domain: 'PQC', effort: '2 months', target: 'Q3 2026' },
+        { priority: 'P3', item: 'QKD feasibility study & fiber audit', pillar: 'Technology', domain: 'QN', effort: '4 months', target: 'Q1 2027' },
+        { priority: 'P3', item: 'Talent acquisition (quantum security)', pillar: 'Supply Chain', domain: 'OM', effort: '6 months', target: 'Q2 2027' },
+        { priority: 'P3', item: 'Assessment scope expansion', pillar: 'Supply Chain', domain: 'PQC', effort: '3 months', target: 'Q1 2027' },
+        { priority: 'P4', item: 'OM hardware benchmarking', pillar: 'Technology', domain: 'OM', effort: '4 months', target: 'Q2 2027' },
+        { priority: 'P4', item: 'Insurance quantum clause review', pillar: 'Supply Chain', domain: 'PQC', effort: '1 month', target: 'Q3 2026' }
+      ],
+      supplyChainVendors: [
+        { name: 'Vendor A (IAM)', roadmap: 'Published', pqcYear: 2027, risk: 'Low' },
+        { name: 'Vendor B (DB)', roadmap: 'Published', pqcYear: 2028, risk: 'Low' },
+        { name: 'Vendor C (Cloud)', roadmap: 'None', pqcYear: 'TBD', risk: 'HIGH' },
+        { name: 'Vendor D (Network)', roadmap: 'Published', pqcYear: 2027, risk: 'Low' }
+      ],
+      riskDataTypes: ['TLS certificates', 'Database TDE keys', 'Identity JWT tokens'],
+      qnReadiness: [
+        'Fiber path audit: NOT STARTED',
+        'Trusted node assessment: NOT STARTED',
+        'Attenuation modeling: NOT STARTED',
+        'QKD vendor evaluation: PLANNED',
+        'Integration architecture: NOT STARTED',
+        'Cost-benefit analysis: PLANNED'
+      ],
+      omReadiness: [
+        'Hardware availability: TRL 7 (limited)',
+        'Error correction overhead: 1000:1 ratio',
+        'Algorithm benchmarking: PRELIMINARY',
+        'Vendor lock-in risk: HIGH',
+        'Workload screening: PARTIAL',
+        'Hybrid architecture: PLANNED'
+      ],
+      watchList: [
+        'Integer factorization (RSA) — millions of physical qubits required',
+        'Quantum chemistry — accuracy limited by current ansatze',
+        'QAOA optimization — performance degrades at scale'
+      ],
+      pqcAdoptionTrend: [5, 15, 30, 50, 70, 85, 95],
+      yearLabels: ['2024', '2025', '2026', '2027', '2028', '2029', '2030']
+    };
+  </script>
+
+  <!-- ============================================================
+       CHARTS JS
+       ============================================================ -->
+  <script>
+    (function() {
+      'use strict';
+
+      // --- Donut Chart ---
+      var donutCanvas = document.getElementById('readinessDonut');
+      if (donutCanvas && typeof Chart !== 'undefined') {
+        var ctx = donutCanvas.getContext('2d');
+        new Chart(ctx, {
+          type: 'doughnut',
+          data: {
+            labels: ['PQC Migration', 'Quantum Networking', 'Optimization & ML'],
+            datasets: [{
+              data: [34, 61, 72],
+              backgroundColor: ['#D4A043', '#5CB87A', '#FFBD2E'],
+              borderColor: '#0A0E17',
+              borderWidth: 3,
+              hoverBorderColor: '#0A0E17',
+              hoverBorderWidth: 3
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            cutout: '70%',
+            plugins: {
+              legend: { display: false },
+              tooltip: {
+                backgroundColor: '#121826',
+                titleColor: '#E8E4DA',
+                bodyColor: '#9A9585',
+                borderColor: 'rgba(212,160,67,0.15)',
+                borderWidth: 0.5,
+                padding: 12,
+                cornerRadius: 4,
+                callbacks: {
+                  label: function(ctx) {
+                    return ctx.label + ': ' + ctx.parsed + '/100';
+                  }
+                }
+              }
+            },
+            animation: {
+              animateRotate: true,
+              duration: 1200,
+              easing: 'easeOutQuart'
+            }
+          }
+        });
+      }
+
+      // --- Trend Line Chart ---
+      var trendCanvas = document.getElementById('trendChart');
+      if (trendCanvas && typeof Chart !== 'undefined') {
+        var data = window.DASHBOARD_DATA || { pqcAdoptionTrend: [5,15,30,50,70,85,95], yearLabels: ['2024','2025','2026','2027','2028','2029','2030'] };
+        var ctx2 = trendCanvas.getContext('2d');
+        new Chart(ctx2, {
+          type: 'line',
+          data: {
+            labels: data.yearLabels,
+            datasets: [{
+              label: 'PQC Adoption %',
+              data: data.pqcAdoptionTrend,
+              borderColor: '#D4A043',
+              backgroundColor: 'rgba(212,160,67,0.06)',
+              borderWidth: 2,
+              pointBackgroundColor: '#D4A043',
+              pointBorderColor: '#0A0E17',
+              pointBorderWidth: 2,
+              pointRadius: 5,
+              pointHoverRadius: 7,
+              fill: true,
+              tension: 0.4
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            plugins: {
+              legend: {
+                display: false
+              },
+              tooltip: {
+                backgroundColor: '#121826',
+                titleColor: '#E8E4DA',
+                bodyColor: '#9A9585',
+                borderColor: 'rgba(212,160,67,0.15)',
+                borderWidth: 0.5,
+                padding: 12,
+                cornerRadius: 4,
+                callbacks: {
+                  label: function(ctx) {
+                    return 'Adoption: ' + ctx.parsed.y + '%';
+                  }
+                }
+              }
+            },
+            scales: {
+              x: {
+                grid: {
+                  color: 'rgba(212,160,67,0.06)',
+                  drawBorder: false
+                },
+                ticks: {
+                  color: '#6B6658',
+                  font: { family: 'Inter', size: 11 }
+                }
+              },
+              y: {
+                grid: {
+                  color: 'rgba(212,160,67,0.06)',
+                  drawBorder: false
+                },
+                ticks: {
+                  color: '#6B6658',
+                  font: { family: 'Inter', size: 11 },
+                  callback: function(val) { return val + '%'; }
+                },
+                min: 0,
+                max: 100
+              }
+            },
+            animation: {
+              duration: 1500,
+              easing: 'easeOutQuart'
+            },
+            interaction: {
+              intersect: false,
+              mode: 'index'
+            }
+          }
+        });
+      }
+
+      // --- PDF Download ---
+      var pdfBtn = document.getElementById('pdfDownloadBtn');
+      if (pdfBtn && typeof html2pdf !== 'undefined') {
+        pdfBtn.addEventListener('click', function() {
+          var element = document.body;
+          var opt = {
+            margin:        [0.5, 0.5, 0.5, 0.5],
+            filename:      'Q-Readiness_Risk-First_Dashboard.pdf',
+            image:         { type: 'jpeg', quality: 0.95 },
+            html2canvas:   { scale: 2, useCORS: true, logging: false, letterRendering: true },
+            jsPDF:         { unit: 'in', format: 'a3', orientation: 'portrait' },
+            pagebreak:     { mode: ['avoid-all', 'css', 'legacy'] }
+          };
+          this.textContent = 'Generating PDF...';
+          this.disabled = true;
+          html2pdf().set(opt).from(element).save().then(function() {
+            pdfBtn.textContent = 'Download PDF Report';
+            pdfBtn.disabled = false;
+          }).catch(function() {
+            pdfBtn.textContent = 'Download PDF Report';
+            pdfBtn.disabled = false;
+          });
+        });
+      }
+    })();
+  </script>
+
+  <!-- ============================================================
+       MAIN JS — navigation, scroll, reveal, mobile menu
+       ============================================================ -->
+  <script src="js/main.js"></script>
+</body>
+</html>

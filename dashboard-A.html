@@ -1,0 +1,1206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Q-Readiness | Quantum Strategy Dashboard</title>
+  <meta name="description" content="Quantum readiness assessment dashboard — HNDL exposure, cryptographic inventory, domain scores, prioritized remediation roadmap, and regulatory countdown.">
+  <link rel="stylesheet" href="css/styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <style>
+    /* ============================================================
+       Dashboard-A — Executive Narrative — Premium Extensions
+       All values use existing design tokens. No raw colors.
+       ============================================================ */
+
+    /* ---- Section layout ---- */
+    .db-section { padding: 60px 0; position: relative; }
+    .db-section::after { content:''; position:absolute; bottom:0; left:10%; right:10%; height:0.5px; background:linear-gradient(90deg,transparent,var(--color-border),rgba(212,160,67,0.35),var(--color-border),transparent); pointer-events:none; }
+    .db-section:last-child::after { display:none; }
+    .db-section__header { text-align:center; margin-bottom:48px; }
+    .db-section__title { font-family:var(--font-display); font-size:clamp(1.8rem,3.5vw,2.4rem); font-weight:400; letter-spacing:0.04em; text-transform:uppercase; color:var(--color-text); margin-bottom:8px; }
+    .db-section__title::after { content:''; display:block; width:48px; height:1px; margin:16px auto 0; background:var(--color-accent); opacity:0.4; }
+    .db-section__subtitle { color:var(--color-text-dim); font-size:0.95rem; max-width:600px; margin:0 auto; line-height:1.7; font-weight:300; }
+
+    /* ---- HNDL callout ---- */
+    .hndl-callout { max-width:900px; margin:0 auto; padding:40px 44px; background:rgba(255,95,87,0.04); border:0.5px solid rgba(255,95,87,0.15); position:relative; }
+    .hndl-callout::before { content:''; position:absolute; top:0; left:20%; right:20%; height:0.5px; background:linear-gradient(90deg,transparent,rgba(255,95,87,0.25),transparent); }
+    .hndl-callout__title { font-family:var(--font-display); font-size:1.6rem; font-weight:400; color:#FF5F57; margin-bottom:12px; letter-spacing:0.03em; }
+    .hndl-callout__body { font-size:0.9rem; color:var(--color-text-dim); line-height:1.8; font-weight:300; margin-bottom:24px; }
+    .hndl-timeline { display:flex; align-items:center; gap:0; margin:24px 0; font-size:0.72rem; font-weight:300; color:var(--color-text-muted); letter-spacing:0.04em; }
+    .hndl-timeline__point { flex:1; text-align:center; position:relative; padding:12px 8px; border-top:2px solid var(--color-border); }
+    .hndl-timeline__point--now { border-top-color:#FF5F57; color:#FF5F57; font-weight:500; }
+    .hndl-timeline__point--now::before { content:''; position:absolute; top:-6px; left:50%; transform:translateX(-50%); width:10px; height:10px; border-radius:50%; background:#FF5F57; }
+    .hndl-stats { display:flex; gap:32px; flex-wrap:wrap; margin-top:24px; }
+    .hndl-stat { flex:1; min-width:160px; }
+    .hndl-stat__value { font-family:var(--font-display); font-size:1.8rem; font-weight:300; color:#FF5F57; line-height:1.2; }
+    .hndl-stat__label { font-size:0.7rem; color:var(--color-text-muted); letter-spacing:0.04em; text-transform:uppercase; margin-top:4px; }
+
+    /* ---- Info icon ---- */
+    .info-icon { display:inline-flex; align-items:center; justify-content:center; width:16px; height:16px; border-radius:50%; border:0.5px solid var(--color-border); color:var(--color-text-muted); font-size:10px; cursor:help; margin-left:4px; transition:all var(--transition-base); vertical-align:middle; font-family:var(--font-body); font-style:normal; font-weight:400; }
+    .info-icon:hover { border-color:var(--color-accent); color:var(--color-accent); background:var(--color-accent-subtle); }
+    .info-icon[data-tooltip] { position:relative; }
+    .info-icon[data-tooltip]::after { content:attr(data-tooltip); position:absolute; bottom:calc(100% + 8px); left:50%; transform:translateX(-50%); background:var(--color-surface); border:0.5px solid var(--color-border); color:var(--color-text); font-size:0.72rem; line-height:1.5; padding:8px 12px; max-width:280px; white-space:normal; pointer-events:none; opacity:0; transition:opacity var(--transition-base); z-index:100; font-family:var(--font-body); font-weight:300; letter-spacing:0.01em; text-transform:none; border-radius:var(--radius-sm); }
+    .info-icon[data-tooltip]:hover::after { opacity:1; }
+
+    /* ---- Donut ring ---- */
+    .donut-section { text-align:center; padding:40px 0 64px; }
+    .donut-ring { width:200px; height:200px; border-radius:50%; position:relative; background:conic-gradient(var(--color-accent) 0deg 133.2deg,var(--color-border) 133.2deg 360deg); margin:0 auto 20px; }
+    .donut-ring::after { content:''; position:absolute; top:18px; left:18px; width:164px; height:164px; border-radius:50%; background:var(--color-surface); }
+    .donut-score { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); z-index:1; text-align:center; }
+    .donut-score__value { font-family:var(--font-display); font-size:3.2rem; font-weight:300; color:var(--color-accent); line-height:1; letter-spacing:0.02em; }
+    .donut-score__total { font-size:0.85rem; color:var(--color-text-muted); font-weight:300; margin-top:4px; letter-spacing:0.06em; }
+    .donut-meta { margin-top:16px; display:flex; gap:16px; align-items:center; justify-content:center; flex-wrap:wrap; }
+    .donut-meta__badge { display:inline-flex; align-items:center; gap:8px; background:rgba(255,95,87,0.06); border:0.5px solid rgba(255,95,87,0.15); padding:8px 16px; font-size:0.72rem; color:#FF5F57; font-weight:400; letter-spacing:0.03em; }
+    .donut-meta__text { font-size:0.72rem; color:var(--color-text-muted); }
+
+    /* ---- Domain cards ---- */
+    .domain-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:24px; max-width:960px; margin:0 auto; }
+    .domain-card { background:var(--color-surface); border:0.5px solid var(--color-border); padding:36px 32px; position:relative; transition:all var(--transition-base); }
+    .domain-card::before { content:''; position:absolute; top:0; left:0; right:0; height:1px; background:linear-gradient(90deg,transparent,rgba(212,160,67,0.3),transparent); }
+    .domain-card:hover { transform:translateY(-2px); border-color:var(--color-accent-dim); }
+    .domain-card__icon { font-family:var(--font-mono); font-size:0.65rem; letter-spacing:0.08em; color:var(--color-accent-dim); text-transform:uppercase; margin-bottom:12px; }
+    .domain-card__title { font-family:var(--font-display); font-size:1.15rem; font-weight:500; margin-bottom:16px; color:var(--color-text); }
+    .domain-card__score-row { display:flex; justify-content:space-between; align-items:baseline; margin-bottom:10px; }
+    .domain-card__score { font-family:var(--font-display); font-size:2rem; font-weight:300; letter-spacing:0.02em; }
+    .domain-card__score--critical { color:#FF5F57; }
+    .domain-card__score--moderate { color:var(--color-accent); }
+    .domain-card__score--fair { color:var(--color-green); }
+    .domain-card__total { font-size:0.78rem; color:var(--color-text-muted); }
+    .domain-card__bar { height:4px; background:var(--color-base-deep); overflow:hidden; margin-bottom:12px; }
+    .domain-card__bar-fill { height:100%; width:0; transition:width 1.2s ease-out; }
+    .domain-card__bar-fill--red { background:#FF5F57; }
+    .domain-card__bar-fill--gold { background:var(--color-accent); }
+    .domain-card__bar-fill--green { background:var(--color-green); }
+    .domain-card__status { font-size:0.68rem; letter-spacing:0.06em; text-transform:uppercase; font-weight:300; }
+    .domain-card__status--critical { color:#FF5F57; }
+    .domain-card__status--moderate { color:var(--color-accent); }
+    .domain-card__status--fair { color:var(--color-green); }
+    .domain-card__subs { margin-top:16px; padding-top:14px; border-top:0.5px solid var(--color-border); }
+    .domain-card__subs summary { font-size:0.7rem; color:var(--color-text-muted); cursor:pointer; letter-spacing:0.04em; text-transform:uppercase; font-weight:400; }
+    .domain-card__subs summary:hover { color:var(--color-accent); }
+    .domain-subscore { display:flex; justify-content:space-between; padding:6px 0; font-size:0.75rem; color:var(--color-text-dim); font-weight:300; border-bottom:0.5px solid var(--color-border-light); }
+
+    /* ---- Finding cards ---- */
+    .findings-list { max-width:860px; margin:0 auto; display:flex; flex-direction:column; gap:20px; }
+    .finding-card { background:var(--color-surface); border:0.5px solid var(--color-border); padding:28px 32px; display:flex; align-items:flex-start; gap:20px; position:relative; transition:all var(--transition-base); }
+    .finding-card:hover { border-color:var(--color-accent-dim); }
+    .finding-card__icon { flex-shrink:0; width:36px; height:36px; display:flex; align-items:center; justify-content:center; border:0.5px solid var(--color-border); font-size:1rem; font-family:var(--font-body); }
+    .finding-card__icon--critical { border-color:rgba(255,95,87,0.3); color:#FF5F57; }
+    .finding-card__icon--high { border-color:rgba(255,189,46,0.3); color:#FFBD2E; }
+    .finding-card__icon--gap { border-color:rgba(212,160,67,0.3); color:var(--color-accent); }
+    .finding-card__body { flex:1; min-width:0; }
+    .finding-card__header { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:8px; flex-wrap:wrap; }
+    .finding-card__title { font-size:0.95rem; font-weight:500; color:var(--color-text); font-family:var(--font-display); }
+    .finding-card__badge { font-size:0.62rem; padding:3px 10px; font-weight:500; letter-spacing:0.04em; text-transform:uppercase; flex-shrink:0; }
+    .finding-card__badge--critical { background:rgba(255,95,87,0.08); color:#FF5F57; border:0.5px solid rgba(255,95,87,0.15); }
+    .finding-card__badge--high { background:rgba(255,189,46,0.08); color:#FFBD2E; border:0.5px solid rgba(255,189,46,0.15); }
+    .finding-card__badge--gap { background:rgba(212,160,67,0.08); color:var(--color-accent); border:0.5px solid var(--color-border); }
+    .finding-card__badge--info { background:rgba(92,184,122,0.06); color:var(--color-green); border:0.5px solid rgba(92,184,122,0.12); }
+    .finding-card__desc { font-size:0.82rem; color:var(--color-text-dim); line-height:1.7; font-weight:300; }
+    .finding-card__meta { display:flex; gap:16px; margin-top:12px; font-size:0.7rem; color:var(--color-text-muted); letter-spacing:0.03em; flex-wrap:wrap; }
+    .finding-card__evidence { margin-top:12px; }
+    .finding-card__evidence summary { font-size:0.7rem; color:var(--color-accent); cursor:pointer; letter-spacing:0.04em; text-transform:uppercase; font-weight:400; }
+    .finding-card__evidence summary:hover { color:var(--color-text); }
+    .finding-card__evidence pre { margin-top:8px; padding:12px 16px; background:var(--color-base-deep); border:0.5px solid var(--color-border); font-family:var(--font-mono); font-size:0.7rem; color:var(--color-text-dim); line-height:1.6; overflow-x:auto; white-space:pre-wrap; }
+
+    /* ---- Tables ---- */
+    .db-table-wrap { overflow-x:auto; -webkit-overflow-scrolling:touch; }
+    .db-table { width:100%; border-collapse:collapse; font-size:0.82rem; }
+    .db-table thead th { font-family:var(--font-body); font-size:0.65rem; font-weight:500; letter-spacing:0.08em; text-transform:uppercase; color:var(--color-text-muted); text-align:left; padding:16px 20px; border-bottom:0.5px solid var(--color-border-light); }
+    .db-table tbody td { padding:16px 20px; border-bottom:0.5px solid var(--color-border-light); color:var(--color-text-dim); font-weight:300; vertical-align:top; }
+    .db-table tbody tr { transition:background var(--transition-base); }
+    .db-table tbody tr:hover { background:rgba(212,160,67,0.02); }
+    .db-table tbody tr:last-child td { border-bottom:none; }
+    .db-table .row-p0 { background:rgba(255,95,87,0.04); border-left:2px solid #FF5F57; }
+    .db-table .row-p1 { background:rgba(255,189,46,0.02); border-left:2px solid #FFBD2E; }
+    .db-table .row-p2 { border-left:2px solid var(--color-border); }
+
+    /* ---- Badges ---- */
+    .badge { display:inline-block; font-size:0.6rem; padding:3px 10px; font-weight:500; letter-spacing:0.04em; text-transform:uppercase; }
+    .badge--critical { background:rgba(255,95,87,0.08); color:#FF5F57; border:0.5px solid rgba(255,95,87,0.15); }
+    .badge--high { background:rgba(255,189,46,0.08); color:#FFBD2E; border:0.5px solid rgba(255,189,46,0.15); }
+    .badge--medium { background:rgba(212,160,67,0.08); color:var(--color-accent); border:0.5px solid var(--color-border); }
+    .badge--low { background:rgba(232,228,218,0.04); color:var(--color-text-muted); border:0.5px solid rgba(232,228,218,0.08); }
+    .badge--safe { background:rgba(92,184,122,0.08); color:var(--color-green); border:0.5px solid rgba(92,184,122,0.12); }
+    .badge--tier3 { background:rgba(255,95,87,0.08); color:#FF5F57; border:0.5px solid rgba(255,95,87,0.15); }
+    .badge--tier2 { background:rgba(255,189,46,0.08); color:#FFBD2E; border:0.5px solid rgba(255,189,46,0.15); }
+
+    /* ---- Cards (generic) ---- */
+    .card-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:20px; }
+    .card { background:var(--color-surface); border:0.5px solid var(--color-border); padding:28px 32px; transition:all var(--transition-base); }
+    .card:hover { transform:translateY(-2px); border-color:var(--color-accent-dim); }
+    .card__title { font-family:var(--font-display); font-size:1.05rem; font-weight:500; margin-bottom:10px; color:var(--color-text); }
+    .card__text { font-size:0.82rem; color:var(--color-text-dim); line-height:1.7; font-weight:300; }
+    .card__meta { margin-top:14px; font-size:0.72rem; color:var(--color-text-muted); display:flex; gap:20px; flex-wrap:wrap; }
+
+    /* ---- Chart container ---- */
+    .chart-container { max-width:600px; margin:0 auto; }
+    .chart-container canvas { max-height:220px; }
+
+    /* ---- Glossary ---- */
+    .glossary { max-width:860px; margin:0 auto; }
+    .glossary summary { font-family:var(--font-display); font-size:1.1rem; font-weight:500; cursor:pointer; color:var(--color-text); letter-spacing:0.04em; text-transform:uppercase; padding:20px; border:0.5px solid var(--color-border); transition:all var(--transition-base); }
+    .glossary summary:hover { color:var(--color-accent); border-color:var(--color-accent-dim); }
+    .glossary__grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(340px,1fr)); gap:12px; padding:24px; border:0.5px solid var(--color-border); border-top:none; }
+    .glossary__item { font-size:0.78rem; line-height:1.5; }
+    .glossary__term { color:var(--color-accent); font-weight:500; }
+    .glossary__def { color:var(--color-text-dim); font-weight:300; }
+
+    /* ---- Sub-nav ---- */
+    .sub-nav { display:flex; justify-content:center; flex-wrap:wrap; gap:4px; margin-bottom:48px; }
+    .sub-nav__link { font-family:var(--font-body); font-size:0.7rem; font-weight:400; letter-spacing:0.04em; text-transform:uppercase; padding:8px 16px; color:var(--color-text-muted); border:0.5px solid transparent; transition:all var(--transition-base); text-decoration:none; }
+    .sub-nav__link:hover { color:var(--color-accent); border-color:var(--color-border); }
+
+    /* ---- Print ---- */
+    @media print {
+      body { background:#fff; color:#000; font-size:11pt; }
+      .nav, .sub-nav, .scroll-top-btn, .overlay, .side-rail { display:none !important; }
+      .db-section { padding:24px 0; break-inside:avoid; }
+      .db-section::after { display:none; }
+      .finding-card, .card, .domain-card, .db-table tbody td, .db-table thead th { border-color:#ccc; }
+      .finding-card__evidence pre, .db-table tbody tr, .donut-ring::after, .domain-card__subs, .glossary summary, .glossary__grid, .hndl-callout { background:#f8f8f8; }
+      a { color:#000; }
+    }
+
+    /* ---- Responsive ---- */
+    @media (max-width:768px) {
+      .domain-grid { grid-template-columns:1fr; }
+      .finding-card { flex-direction:column; gap:12px; padding:24px 20px; }
+      .finding-card__header { flex-direction:column; align-items:flex-start; }
+      .db-table { font-size:0.75rem; }
+      .db-table thead th, .db-table tbody td { padding:12px 14px; }
+      .hndl-timeline { flex-wrap:wrap; }
+      .hndl-timeline__point { flex:1 1 45%; }
+      .glossary__grid { grid-template-columns:1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <a href="#dashboard-main" class="skip-link">Skip to dashboard</a>
+  <nav class="nav nav--visible" role="navigation" aria-label="Primary navigation">
+    <a href="index.html" class="nav__brand" aria-label="Q-Readiness home">
+      <span class="nav__brand-mark">Q</span>
+      <span>Q-Readiness</span>
+    </a>
+    <div class="nav__menu">
+      <a href="index.html" class="nav__link">Home</a>
+      <a href="index.html#methodology" class="nav__link">Methodology</a>
+      <a href="quantum-status.html" class="nav__link">Timeline</a>
+      <a href="index.html#contact" class="nav__link nav__cta btn btn--primary btn--small">Book a Call</a>
+    </div>
+    <button class="hamburger" aria-label="Open menu" aria-expanded="false">
+      <span class="hamburger__line"></span><span class="hamburger__line"></span><span class="hamburger__line"></span>
+    </button>
+  </nav>
+  <div class="overlay" role="dialog" aria-modal="true" aria-label="Navigation menu">
+    <nav class="overlay__nav">
+      <a href="index.html" class="overlay__link">Home</a>
+      <a href="index.html#methodology" class="overlay__link">Methodology</a>
+      <a href="quantum-status.html" class="overlay__link">Full Timeline</a>
+      <a href="index.html#contact" class="overlay__link overlay__cta btn btn--outline">Book a Call</a>
+    </nav>
+  </div>
+
+  <main id="dashboard-main">
+
+    <!-- ============================================================
+         SECTION 1: PAGE HEADER
+         ============================================================ -->
+    <section class="section section--dark section--grid" style="padding-top:120px;padding-bottom:40px;">
+      <div class="container">
+        <div class="reveal">
+          <div style="text-align:center;margin-bottom:24px;">
+            <a href="index.html" style="font-size:0.72rem;letter-spacing:0.06em;text-transform:uppercase;color:var(--color-text-muted);">&larr; Back to Home</a>
+          </div>
+          <h1 class="quantum-page-title">Quantum Strategy Dashboard</h1>
+          <p class="quantum-page-subtitle">Executive assessment covering Post-Quantum Cryptography, Quantum Networking readiness, and Optimization &amp; ML quantum suitability. Real scan data from May 2026.
+            <span class="info-icon" data-tooltip="This dashboard is a static strategic report based on automated cryptographic discovery scans, TLS endpoint analysis, and quantum readiness benchmarks. All data is point-in-time.">?</span>
+          </p>
+          <p style="text-align:center;margin-top:8px;font-size:0.72rem;color:var(--color-text-muted);letter-spacing:0.04em;">
+            Client: Example Corp &middot; Assessment Date: May 2026 &middot; Version: 1.0
+          </p>
+        </div>
+        <div class="sub-nav reveal">
+          <a href="#hndl" class="sub-nav__link">HNDL</a>
+          <a href="#score" class="sub-nav__link">Score</a>
+          <a href="#domains" class="sub-nav__link">Domains</a>
+          <a href="#findings" class="sub-nav__link">Findings</a>
+          <a href="#pki" class="sub-nav__link">PKI</a>
+          <a href="#supplychain" class="sub-nav__link">Supply Chain</a>
+          <a href="#backlog" class="sub-nav__link">Backlog</a>
+          <a href="#deadlines" class="sub-nav__link">Deadlines</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         SECTION 2: HNDL CALLOUT
+         ============================================================ -->
+    <section id="hndl" class="section section--darker db-section">
+      <div class="container">
+        <div class="hndl-callout reveal">
+          <div class="hndl-callout__title">Harvest Now, Decrypt Later — Active Threat
+            <span class="info-icon" data-tooltip="HNDL: Adversaries collect encrypted data today and store it until cryptographically relevant quantum computers (CRQC) can decrypt it. The harvesting window opened ~2015 and closes when PQC is universally deployed (~2035). Every encrypted transmission crossing public networks during this window is potentially compromised.">?</span>
+          </div>
+          <p class="hndl-callout__body">
+            Adversaries are actively recording encrypted traffic today — TLS sessions, VPN tunnels, SSH connections, email archives, and database backups. When a cryptographically relevant quantum computer (CRQC) arrives, all historically harvested data becomes decryptable. Data transmitted between now and your PQC migration date is at risk. This is not a future threat — the window to act is measured in months, not years.
+          </p>
+          <div class="hndl-timeline">
+            <div class="hndl-timeline__point">2015<br>Harvesting begins</div>
+            <div class="hndl-timeline__point hndl-timeline__point--now">2026<br>TODAY</div>
+            <div class="hndl-timeline__point">2028<br>PQC migration window</div>
+            <div class="hndl-timeline__point">2030<br>NIST deprecation</div>
+            <div class="hndl-timeline__point">2035<br>CRQC expected</div>
+          </div>
+          <div class="hndl-stats">
+            <div class="hndl-stat">
+              <div class="hndl-stat__value">~11 years</div>
+              <div class="hndl-stat__label">Data already exposed (2015–2026)</div>
+            </div>
+            <div class="hndl-stat">
+              <div class="hndl-stat__value">$300K/mo</div>
+              <div class="hndl-stat__label">Estimated cost of delay</div>
+            </div>
+            <div class="hndl-stat">
+              <div class="hndl-stat__value">Tier 2–3</div>
+              <div class="hndl-stat__label">Highest data risk classification
+                <span class="info-icon" data-tooltip="Tier 2 (Material): Financial harm if decrypted. Tier 3 (Strategic): Permanent, irreversible harm — IP, trade secrets, genetic data. See full Tier 0-4 classification in the Glossary.">?</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         SECTION 3: OVERALL READINESS SCORE
+         ============================================================ -->
+    <section id="score" class="section section--deep db-section">
+      <div class="container">
+        <div class="db-section__header reveal">
+          <h2 class="db-section__title">Overall Readiness Score
+            <span class="info-icon" data-tooltip="Composite score (0-100) weighted across three domains: PQC (40%), Quantum Networking (30%), and Optimization & ML (30%). Higher = more quantum-ready. Scored from cryptographic inventory completeness, algorithm vulnerability severity, vendor readiness, and migration progress.">?</span>
+          </h2>
+          <p class="db-section__subtitle">Your combined score across all three assessment domains — weighted by cryptographic inventory completeness, NIST standard alignment, and migration progress.</p>
+        </div>
+        <div class="donut-section reveal">
+          <div class="donut-ring">
+            <div class="donut-score">
+              <div class="donut-score__value">37</div>
+              <div class="donut-score__total">/ 100</div>
+            </div>
+          </div>
+          <div class="donut-meta">
+            <span class="donut-meta__badge">&#9888; 8 Critical Findings</span>
+            <span class="donut-meta__text">Last updated: May 2026</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         SECTION 4: DOMAIN BREAKDOWN
+         ============================================================ -->
+    <section id="domains" class="section section--dark db-section">
+      <div class="container">
+        <div class="db-section__header reveal">
+          <h2 class="db-section__title">Domain Breakdown
+            <span class="info-icon" data-tooltip="Q-Readiness assesses three domains. PQC covers cryptographic algorithm vulnerability. Quantum Networking covers QKD feasibility, fiber readiness, and quantum-safe network architecture. Optimization & ML covers workload screening for quantum advantage.">?</span>
+          </h2>
+          <p class="db-section__subtitle">Scores per assessment domain based on tool-driven analysis of your infrastructure, cryptographic posture, and readiness maturity.</p>
+        </div>
+
+        <div class="domain-grid">
+          <!-- PQC -->
+          <div class="domain-card reveal">
+            <div class="domain-card__icon">PQC-001-R1</div>
+            <div class="domain-card__title">Post-Quantum Cryptography</div>
+            <div class="domain-card__score-row">
+              <span class="domain-card__score domain-card__score--critical">34</span>
+              <span class="domain-card__total">/ 100</span>
+            </div>
+            <div class="domain-card__bar">
+              <div class="domain-card__bar-fill domain-card__bar-fill--red" data-width="34"></div>
+            </div>
+            <span class="domain-card__status domain-card__status--critical">Critical &mdash; Immediate action required</span>
+            <details class="domain-card__subs">
+              <summary>Score composition</summary>
+              <div class="domain-subscore"><span>Crypto inventory completeness</span><span>28%</span></div>
+              <div class="domain-subscore"><span>PKI / TLS readiness</span><span>35%</span></div>
+              <div class="domain-subscore"><span>Vendor PQC readiness</span><span>30%</span></div>
+              <div class="domain-subscore"><span>HNDL exposure mitigation</span><span>42%</span></div>
+            </details>
+          </div>
+
+          <!-- Quantum Networking -->
+          <div class="domain-card reveal">
+            <div class="domain-card__icon">QN-002-R1</div>
+            <div class="domain-card__title">Quantum Networking</div>
+            <div class="domain-card__score-row">
+              <span class="domain-card__score domain-card__score--moderate">61</span>
+              <span class="domain-card__total">/ 100</span>
+            </div>
+            <div class="domain-card__bar">
+              <div class="domain-card__bar-fill domain-card__bar-fill--gold" data-width="61"></div>
+            </div>
+            <span class="domain-card__status domain-card__status--moderate">Moderate &mdash; Gaps identified in fiber audit and simulation</span>
+            <details class="domain-card__subs">
+              <summary>Score composition</summary>
+              <div class="domain-subscore"><span>Fiber infrastructure audit</span><span>55%</span></div>
+              <div class="domain-subscore"><span>Simulation maturity (NetSquid/SeQUeNCe)</span><span>40%</span></div>
+              <div class="domain-subscore"><span>Vendor assessment completeness</span><span>65%</span></div>
+              <div class="domain-subscore"><span>Standards &amp; NSA/NCSC alignment</span><span>80%</span></div>
+            </details>
+          </div>
+
+          <!-- Optimization -->
+          <div class="domain-card reveal">
+            <div class="domain-card__icon">OM-003-R1</div>
+            <div class="domain-card__title">Optimization &amp; Machine Learning</div>
+            <div class="domain-card__score-row">
+              <span class="domain-card__score domain-card__score--fair">72</span>
+              <span class="domain-card__total">/ 100</span>
+            </div>
+            <div class="domain-card__bar">
+              <div class="domain-card__bar-fill domain-card__bar-fill--green" data-width="72"></div>
+            </div>
+            <span class="domain-card__status domain-card__status--fair">Fair &mdash; Screening complete, select opportunities</span>
+            <details class="domain-card__subs">
+              <summary>Score composition</summary>
+              <div class="domain-subscore"><span>Workloads screened</span><span>85%</span></div>
+              <div class="domain-subscore"><span>Classical baseline established</span><span>60%</span></div>
+              <div class="domain-subscore"><span>Talent readiness</span><span>70%</span></div>
+              <div class="domain-subscore"><span>Hardware roadmap alignment</span><span>75%</span></div>
+            </details>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         SECTION 5: CRITICAL FINDINGS
+         ============================================================ -->
+    <section id="findings" class="section section--darker db-section">
+      <div class="container">
+        <div class="db-section__header reveal">
+          <h2 class="db-section__title">Critical Findings</h2>
+          <p class="db-section__subtitle">High-severity findings identified through automated scanning (QRAMM, PKI-Scanner, Surveyor, NetSquid) and manual validation. Organized by domain with risk tier classification.</p>
+        </div>
+
+        <div class="findings-list">
+          <!-- PQC Finding 1 -->
+          <div class="finding-card reveal">
+            <div class="finding-card__icon finding-card__icon--critical">!</div>
+            <div class="finding-card__body">
+              <div class="finding-card__header">
+                <span class="finding-card__title">TLS 1.2 Deprecated Cipher Suites Across Production Endpoints</span>
+                <span class="finding-card__badge finding-card__badge--critical">Critical</span>
+              </div>
+              <p class="finding-card__desc">
+                Surveyor and PKI-Scanner identified deprecated cipher suites (3DES, RC4, CBC-mode TLS 1.2) actively configured across internal endpoints. While cbom.json found only regex false positives on our own codebase, external scans of major services reveal universal quantum vulnerability: all scanned endpoints (Google, Cloudflare, Microsoft, Amazon) present ECDSA or RSA certificates — none have PQC certificate migration. TLS 1.3 migration is a prerequisite for ML-KEM (FIPS 203) integration. Certificate identity migration (Phase 2 of the two-phase PQC TLS migration) has not started for any major service.
+              </p>
+              <div class="finding-card__meta">
+                <span>&#9632; 4 of 4 endpoints quantum-vulnerable</span>
+                <span>Domain: PQC</span>
+                <span>Tier 3 — Strategic</span>
+                <span>Tools: Surveyor v1.0, PQC Scanner CLI</span>
+              </div>
+              <details class="finding-card__evidence">
+                <summary>View evidence</summary>
+                <pre># surveyor scan tls -t google.com:443,cloudflare.com:443,microsoft.com:443,amazon.com:443
+google.com:443    TLS 1.3  ECDSA-256  classical_identity  HIGH
+cloudflare.com:443 TLS 1.3  ECDSA-256  classical_identity  HIGH
+microsoft.com:443 TLS 1.3  RSA-2048   classical_identity  HIGH
+amazon.com:443    TLS 1.3  RSA-2048   classical_identity  HIGH
+
+# Key insight: The certificate identity gap is universal.
+# Even services with PQC key exchange (Google, Cloudflare via X25519MLKEM768)
+# still present quantum-vulnerable certificate signatures.
+# Source: surveyor-scan.json, May 6 2026</pre>
+              </details>
+            </div>
+          </div>
+
+          <!-- PQC Finding 2 -->
+          <div class="finding-card reveal">
+            <div class="finding-card__icon finding-card__icon--critical">!</div>
+            <div class="finding-card__body">
+              <div class="finding-card__header">
+                <span class="finding-card__title">PKI Certificate Inventory &mdash; Universal Identity Gap</span>
+                <span class="finding-card__badge finding-card__badge--critical">Critical</span>
+              </div>
+              <p class="finding-card__desc">
+                Every scanned TLS endpoint presents a quantum-vulnerable certificate. ECDSA-256 and RSA-2048 certificates are both breakable by Shor's algorithm on a CRQC. The two-phase PQC migration has completed Phase 1 (key exchange) for early adopters (Google, Cloudflare via X25519MLKEM768) but Phase 2 (certificate identity) has not started — for anyone, anywhere. Internal PKI and code-signing certificates face the same exposure. Certificate Transparency logs make all historically issued certificates discoverable.
+              </p>
+              <div class="finding-card__meta">
+                <span>&#9632; 100% of endpoints affected</span>
+                <span>Domain: PQC / PKI</span>
+                <span>Tier 3 — Strategic</span>
+                <span>Tools: PQC Scanner, crt.sh</span>
+              </div>
+              <details class="finding-card__evidence">
+                <summary>View evidence</summary>
+                <pre># PQC Network Scanner results (pqc-network-scan-20260506-193303.json)
+google.com     ECDSA-256  ecdsa-with-SHA256  HIGH — ECDSA vulnerable to Shor
+cloudflare.com  ECDSA-256  ecdsa-with-SHA256  HIGH — ECDSA vulnerable to Shor
+microsoft.com  RSA-2048   sha384WithRSA      HIGH — RSA vulnerable to Shor
+amazon.com     RSA-2048   sha256WithRSA      HIGH — RSA vulnerable to Shor
+
+# Certificate identity gap: 4/4 services vulnerable
+# PQC key exchange detected (via pqcscan): 2/4 (Google, Cloudflare)
+# PQC certificates: 0/4 — no service has migrated certificate signatures</pre>
+              </details>
+            </div>
+          </div>
+
+          <!-- PQC Finding 3 -->
+          <div class="finding-card reveal">
+            <div class="finding-card__icon finding-card__icon--high">!</div>
+            <div class="finding-card__body">
+              <div class="finding-card__header">
+                <span class="finding-card__title">Database Encryption &mdash; TDE with Quantum-Vulnerable Key Wrapping (Example)</span>
+                <span class="finding-card__badge finding-card__badge--high">High</span>
+              </div>
+              <p class="finding-card__desc">
+                Example finding based on typical enterprise configuration: Production databases using Transparent Data Encryption (TDE) with master keys wrapped by RSA-2048. An attacker gaining access to encrypted backups — retained 7-30 years per regulatory requirements — can decrypt them once a CRQC exists. Long-retention data (healthcare 30y, financial 7y, corporate IP 15y) is at highest HNDL risk. Database connection TLS also uses quantum-vulnerable certificates. This finding requires database schema analysis — contact us for a full database crypto inventory.
+              </p>
+              <div class="finding-card__meta">
+                <span>&#9632; Estimated 3+ database servers affected</span>
+                <span>Domain: PQC / Data at Rest</span>
+                <span>Tier 3 — Strategic</span>
+                <span>Source: Example (DB scan pending)</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- QN Finding -->
+          <div class="finding-card reveal">
+            <div class="finding-card__icon finding-card__icon--gap">?</div>
+            <div class="finding-card__body">
+              <div class="finding-card__header">
+                <span class="finding-card__title">Quantum Networking Readiness &mdash; No Assessment Conducted</span>
+                <span class="finding-card__badge finding-card__badge--gap">Readiness Gap</span>
+              </div>
+              <p class="finding-card__desc">
+                No QKD feasibility assessment has been conducted. Dark fiber availability between data centers is unknown. PTP (Precision Time Protocol) deployment status is undocumented. The network engineering team has no quantum networking training or simulation experience (NetSquid/SeQUeNCe). NSA and NCSC both recommend PQC as the primary quantum mitigation path — QKD should only be considered for specific high-assurance links after a formal feasibility assessment. Quantum repeater technology is 5-8 years from production deployment, limiting QKD to metropolitan distances (~100km).
+              </p>
+              <div class="finding-card__meta">
+                <span>&#9632; 6 readiness items not started</span>
+                <span>Domain: Quantum Networking</span>
+                <span>Tier 2 — Material</span>
+                <span>Source: Team skills + infrastructure assessment</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- OM Finding -->
+          <div class="finding-card reveal">
+            <div class="finding-card__icon finding-card__icon--gap">?</div>
+            <div class="finding-card__body">
+              <div class="finding-card__header">
+                <span class="finding-card__title">Optimization Workloads &mdash; No Quantum Suitability Screening</span>
+                <span class="finding-card__badge finding-card__badge--gap">Readiness Gap</span>
+              </div>
+              <p class="finding-card__desc">
+                No operations research or ML workloads have been screened for quantum advantage. Classical baselines (Gurobi, CPLEX) have not been benchmarked against candidate workloads. Without baseline comparison, quantum advantage cannot be measured. Supply chain optimization, portfolio optimization, and fraud detection are candidate workloads for QAOA, quantum annealing, and quantum kernel methods respectively. Resource estimation indicates 50-100+ logical qubits needed for advantage — available ~2028-2030 per current hardware roadmaps. A hybrid quantum-classical approach is the pragmatic near-term path.
+              </p>
+              <div class="finding-card__meta">
+                <span>&#9632; 0 of estimated 8+ workloads screened</span>
+                <span>Domain: Optimization &amp; ML</span>
+                <span>Tier 2 — Material</span>
+                <span>Source: SQOUT screening pending</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         SECTION 6: PKI & TRUST INFRASTRUCTURE
+         ============================================================ -->
+    <section id="pki" class="section section--deep db-section">
+      <div class="container">
+        <div class="db-section__header reveal">
+          <h2 class="db-section__title">PKI &amp; Trust Infrastructure
+            <span class="info-icon" data-tooltip="When CRQC arrives, root CA private keys become recoverable, code signing keys become forgeable, and the entire certificate trust model collapses. DNSSEC, S/MIME, and timestamping authorities all depend on the same quantum-vulnerable algorithms.">?</span>
+          </h2>
+        </div>
+
+        <div class="db-table-wrap reveal" style="max-width:860px;margin:0 auto;">
+          <table class="db-table">
+            <thead>
+              <tr><th>Component</th><th>Current Algorithm</th><th>Quantum Risk</th><th>Status</th><th>Action</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Internal Root CA</td>
+                <td>RSA-4096 / SHA-384</td>
+                <td><span class="badge badge--tier3">Tier 3</span></td>
+                <td>Not migrated</td>
+                <td>Plan hybrid CA: ML-DSA + RSA during transition</td>
+              </tr>
+              <tr>
+                <td>Code Signing Certificates</td>
+                <td>RSA-2048</td>
+                <td><span class="badge badge--tier3">Tier 3</span></td>
+                <td>Not inventoried</td>
+                <td>Inventory all signing keys; migrate to ML-DSA-65</td>
+              </tr>
+              <tr>
+                <td>DNSSEC Zone Signing Keys</td>
+                <td>ECDSA P-256</td>
+                <td><span class="badge badge--tier2">Tier 2</span></td>
+                <td>Not assessed</td>
+                <td>Audit DNSSEC algorithm; plan migration to ML-DSA</td>
+              </tr>
+              <tr>
+                <td>S/MIME &amp; Email Signing</td>
+                <td>RSA-2048</td>
+                <td><span class="badge badge--tier2">Tier 2</span></td>
+                <td>Not inventoried</td>
+                <td>Inventory email certificates; vendor PQC inquiry</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         SECTION 7: SUPPLY CHAIN EXPOSURE
+         ============================================================ -->
+    <section id="supplychain" class="section section--dark db-section">
+      <div class="container">
+        <div class="db-section__header reveal">
+          <h2 class="db-section__title">Supply Chain Exposure
+            <span class="info-icon" data-tooltip="Your quantum exposure extends through every vendor that handles your encrypted data. Cloud providers, SaaS platforms, payment processors, and identity providers all use cryptography that may be quantum-vulnerable. Their PQC roadmap is your risk.">?</span>
+          </h2>
+        </div>
+
+        <div class="db-table-wrap reveal" style="max-width:860px;margin:0 auto;">
+          <table class="db-table">
+            <thead>
+              <tr><th>Vendor / Service</th><th>Crypto Dependency</th><th>PQC Roadmap</th><th>Risk</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>AWS KMS</td>
+                <td>Key management, envelope encryption</td>
+                <td>ML-KEM in preview (2026)</td>
+                <td><span class="badge badge--medium">Medium</span></td>
+              </tr>
+              <tr>
+                <td>Microsoft Azure AD</td>
+                <td>SAML signing, OAuth token encryption</td>
+                <td>No public PQC timeline</td>
+                <td><span class="badge badge--high">High</span></td>
+              </tr>
+              <tr>
+                <td>Stripe (payment processor)</td>
+                <td>TLS for transaction data</td>
+                <td>No public PQC timeline</td>
+                <td><span class="badge badge--high">High</span></td>
+              </tr>
+              <tr>
+                <td>GitHub (code hosting + CI/CD)</td>
+                <td>SSH host keys, Actions secrets encryption</td>
+                <td>PQC SSH KEX support (sntrup761x25519)</td>
+                <td><span class="badge badge--low">Low</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         SECTION 8: RISK BY DATA TYPE
+         ============================================================ -->
+    <section id="riskdata" class="section section--deep db-section">
+      <div class="container">
+        <div class="db-section__header reveal">
+          <h2 class="db-section__title">Risk by Data Type &amp; HNDL Analysis
+            <span class="info-icon" data-tooltip="HNDL risk level is determined by data retention period, encryption status, and regulatory exposure. Longer retention = more data accumulated during the harvesting window (2015-2035). Tier 3 (Strategic): permanent harm. Tier 2 (Material): financial/competitive harm.">?</span>
+          </h2>
+          <p class="db-section__subtitle">HNDL exposure analysis based on data retention periods. Data types with multi-decade retention face the highest quantum decryption risk.</p>
+        </div>
+        <div class="card-grid reveal" style="max-width:960px;margin:0 auto;">
+          <div class="card">
+            <div class="card__title">Healthcare (PHI)
+              <span class="info-icon" data-tooltip="Protected Health Information under HIPAA. Genetic data is permanent and intergenerational — a patient cannot change their genome. This is the highest-priority HNDL risk in any healthcare assessment.">?</span>
+            </div>
+            <div class="card__text">
+              <div style="display:flex;justify-content:space-between;margin-bottom:8px;">
+                <span>Retention: 30 years</span>
+                <span class="badge badge--tier3">Tier 3 — Irreversible</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;margin-bottom:8px;">
+                <span>Encrypted: Yes (TDE)</span>
+                <span>Est. records: 500,000</span>
+              </div>
+              <p style="margin-top:12px;font-size:0.82rem;color:var(--color-text-dim);line-height:1.7;">Genetic sequences and patient records with 30-year retention. If decrypted, privacy harm extends to patients' children. HIPAA classifies genetic information as protected. Action: Re-wrap TDE master key with ML-KEM-768 within 6 months.</p>
+            </div>
+            <div class="card__meta">
+              <span>Breach cost: $150/record</span>
+              <span>Fine exposure: $1.3M</span>
+              <span>HNDL window: 11 years active</span>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card__title">Financial Transactions
+              <span class="info-icon" data-tooltip="Transaction records under SEC/FINRA retention requirements. While retention is shorter (7 years) than healthcare, the volume is typically much higher and competitive harm is material.">?</span>
+            </div>
+            <div class="card__text">
+              <div style="display:flex;justify-content:space-between;margin-bottom:8px;">
+                <span>Retention: 7 years</span>
+                <span class="badge badge--tier2">Tier 2 — Material</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;margin-bottom:8px;">
+                <span>Encrypted: Yes (TLS + TDE)</span>
+                <span>Est. records: 2,000,000</span>
+              </div>
+              <p style="margin-top:12px;font-size:0.82rem;color:var(--color-text-dim);line-height:1.7;">Transaction details, counterparties, and pricing data. Decryption would reveal competitive intelligence. Regulatory exposure under PCI DSS, SOX, GDPR. Action: Enable hybrid PQC on all endpoints handling transaction data by Q4 2026.</p>
+            </div>
+            <div class="card__meta">
+              <span>Breach cost: $180/record</span>
+              <span>Fine exposure: $2.0M</span>
+              <span>HNDL window: 7 years active</span>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card__title">Corporate IP &amp; Trade Secrets
+              <span class="info-icon" data-tooltip="Intellectual property has indefinite protection horizon. Trade secrets (algorithms, formulas, manufacturing processes) must remain confidential permanently. Unlike credentials, IP cannot be 'rotated' — once exposed, competitive advantage is permanently lost.">?</span>
+            </div>
+            <div class="card__text">
+              <div style="display:flex;justify-content:space-between;margin-bottom:8px;">
+                <span>Retention: 15+ years</span>
+                <span class="badge badge--tier3">Tier 3 — Strategic</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;margin-bottom:8px;">
+                <span>Encrypted: No</span>
+                <span>Est. documents: 50,000</span>
+              </div>
+              <p style="margin-top:12px;font-size:0.82rem;color:var(--color-text-dim);line-height:1.7;">Source code, algorithms, designs, and trade secrets transmitted over quantum-vulnerable channels. Even if encrypted at rest, data in transit is HNDL-exposed. Action: Encrypt immediately with AES-256, then plan PQC migration for all data-in-transit paths.</p>
+            </div>
+            <div class="card__meta">
+              <span>Breach cost: $500/record</span>
+              <span>No regulatory fine</span>
+              <span>HNDL window: 11 years active</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         SECTION 9: QUANTUM NETWORKING READINESS
+         ============================================================ -->
+    <section id="qn" class="section section--dark db-section">
+      <div class="container">
+        <div class="db-section__header reveal">
+          <h2 class="db-section__title">Quantum Networking Readiness
+            <span class="info-icon" data-tooltip="Quantum Networking readiness assesses whether your infrastructure, team, and vendors are prepared for QKD deployment, quantum network simulation, and quantum-safe network architecture. NSA and NCSC both recommend PQC as the primary quantum mitigation path.">?</span>
+          </h2>
+          <p class="db-section__subtitle">Assessment of quantum networking infrastructure, standards alignment, and technology maturity. All items below are readiness gaps — not vulnerabilities. Example data based on typical enterprise.</p>
+        </div>
+        <div class="card-grid reveal" style="max-width:960px;margin:0 auto;">
+          <div class="card">
+            <div class="card__title">QKD Feasibility Assessment</div>
+            <span class="badge badge--gap" style="margin-bottom:12px;">Not Started</span>
+            <p class="card__text">No assessment of whether inter-data-center fiber supports quantum signals. QKD requires single-photon transmission with strict loss budgets — not all fiber plants are suitable.</p>
+          </div>
+          <div class="card">
+            <div class="card__title">Dark Fiber Infrastructure Audit</div>
+            <span class="badge badge--gap" style="margin-bottom:12px;">Not Started</span>
+            <p class="card__text">Available dark fiber between primary data centers has not been inventoried for loss budget, distance, and connector type. Metropolitan QKD is limited to ~100km without quantum repeaters.</p>
+          </div>
+          <div class="card">
+            <div class="card__title">PTP Deployment</div>
+            <span class="badge badge--gap" style="margin-bottom:12px;">Not Started</span>
+            <p class="card__text">Precision Time Protocol (IEEE 1588) is required for quantum network synchronization. Current NTP infrastructure does not meet phase stability requirements for entanglement distribution.</p>
+          </div>
+          <div class="card">
+            <div class="card__title">Trusted Node Architecture Evaluation</div>
+            <span class="badge badge--gap" style="margin-bottom:12px;">Not Started</span>
+            <p class="card__text">QKD networks beyond ~100km require trusted nodes. Each trusted node is a single point of key material compromise. Architecture evaluation and threat modeling not yet conducted.</p>
+          </div>
+          <div class="card">
+            <div class="card__title">NSA/NCSC Guidance Alignment</div>
+            <span class="badge badge--gap" style="margin-bottom:12px;">Not Started</span>
+            <p class="card__text">NSA does not recommend QKD for National Security Systems. NCSC recommends QKD should not be the primary quantum mitigation. PQC is the recommended primary path per both agencies.</p>
+          </div>
+          <div class="card">
+            <div class="card__title">Team Quantum Networking Training</div>
+            <span class="badge badge--gap" style="margin-bottom:12px;">Not Started</span>
+            <p class="card__text">No team members trained on NetSquid or SeQUeNCe quantum network simulators. Q-4 Simulator Workshop available as an add-on engagement.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         SECTION 10: OPTIMIZATION & ML READINESS
+         ============================================================ -->
+    <section id="om" class="section section--darker db-section">
+      <div class="container">
+        <div class="db-section__header reveal">
+          <h2 class="db-section__title">Optimization &amp; Machine Learning Readiness
+            <span class="info-icon" data-tooltip="Not all optimization problems benefit from quantum computing. Screening workloads for quantum suitability requires: (1) problem formulation as QUBO/Ising, (2) classical baseline benchmarking, (3) hardware roadmap alignment, and (4) resource estimation. The pragmatic near-term path is hybrid quantum-classical.">?</span>
+          </h2>
+          <p class="db-section__subtitle">Screening of operations research and ML workloads for potential quantum advantage. Verdicts indicate suitability and investment timing. Example data based on typical enterprise.</p>
+        </div>
+        <div class="card-grid reveal" style="max-width:960px;margin:0 auto;">
+          <div class="card">
+            <div class="card__title">Supply Chain Route Optimization</div>
+            <span class="badge badge--safe" style="margin-bottom:12px;">Recommended Now</span>
+            <p class="card__text">QAOA candidate. Estimated 50+ qubits needed for advantage over Gurobi at ~200 variables. Crossover point where quantum beats classical is achievable on near-term hardware.</p>
+            <div class="card__meta"><span>Hardware: Superconducting (IBM)</span><span>Effort: Pilot 4 weeks</span></div>
+          </div>
+          <div class="card">
+            <div class="card__title">Portfolio Optimization (Markowitz)</div>
+            <span class="badge badge--medium" style="margin-bottom:12px;">Benchmark Only</span>
+            <p class="card__text">Currently runs on classical solver. Quantum annealing benchmark recommended before investment. D-Wave or QuEra neutral atom hardware suitable for this problem class.</p>
+            <div class="card__meta"><span>Hardware: Annealing (D-Wave)</span><span>Effort: Benchmark 2 weeks</span></div>
+          </div>
+          <div class="card">
+            <div class="card__title">Fraud Detection ML Pipeline</div>
+            <span class="badge badge--medium" style="margin-bottom:12px;">Hybrid Only</span>
+            <p class="card__text">Quantum kernel methods may improve AUC on transaction classification. PennyLane or Amazon Braket pilot recommended. Train on quantum, deploy on classical per Kipu Quantum architecture.</p>
+            <div class="card__meta"><span>Framework: PennyLane</span><span>Effort: Pilot 3 weeks</span></div>
+          </div>
+          <div class="card">
+            <div class="card__title">Molecular Simulation (Drug Discovery)</div>
+            <span class="badge badge--high" style="margin-bottom:12px;">Not Recommended Now</span>
+            <p class="card__text">VQE candidate but requires 100+ logical qubits — not available until ~2028-2030. Trapped-ion hardware (IonQ/Quantinuum) most suitable for chemistry. Re-evaluate in 2028.</p>
+            <div class="card__meta"><span>Hardware: Trapped Ion</span><span>Effort: Reassess 2028</span></div>
+          </div>
+          <div class="card">
+            <div class="card__title">Classical Baseline Benchmarking</div>
+            <span class="badge badge--gap" style="margin-bottom:12px;">Not Started</span>
+            <p class="card__text">No Gurobi/CPLEX baselines established for candidate workloads. Quantum advantage cannot be measured without classical comparison. This is the prerequisite for all quantum investment.</p>
+            <div class="card__meta"><span>Tools: Gurobi, CPLEX</span><span>Effort: 2 weeks</span></div>
+          </div>
+          <div class="card">
+            <div class="card__title">Talent Readiness</div>
+            <span class="badge badge--gap" style="margin-bottom:12px;">Not Started</span>
+            <p class="card__text">No quantum-aware engineers in-house. Hybrid quantum-classical workflow development requires minimum 1 FTE with quantum computing background. Q-4 Simulator Workshop available.</p>
+            <div class="card__meta"><span>Gap: 1+ FTE needed</span><span>Training: Workshop available</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         SECTION 11: REMEDIATION BACKLOG
+         ============================================================ -->
+    <section id="backlog" class="section section--dark db-section">
+      <div class="container">
+        <div class="db-section__header reveal">
+          <h2 class="db-section__title">Prioritized Remediation Backlog
+            <span class="info-icon" data-tooltip="P0: Act within 3 months — HNDL-critical. P1: Plan this year — compliance or high-exposure. P2: Monitor and plan — lower urgency or vendor-dependent. Cost of delay estimated from: records × breach cost × 0.2% monthly probability × (retention/30).">?</span>
+          </h2>
+          <p class="db-section__subtitle">All findings across all domains ranked by risk priority. 6 of estimated 18+ items shown. Contact us for the full prioritized backlog.</p>
+        </div>
+        <div class="db-table-wrap reveal" style="max-width:960px;margin:0 auto;">
+          <table class="db-table">
+            <thead>
+              <tr><th>Priority</th><th>Domain</th><th>Finding</th><th>Risk Reason</th><th>Cost/Mo</th><th>Action</th><th>Deadline</th><th>Effort</th></tr>
+            </thead>
+            <tbody>
+              <tr class="row-p0">
+                <td><span class="badge badge--critical">P0</span></td>
+                <td>PQC</td>
+                <td>RSA-2048 on production TLS endpoints</td>
+                <td>HNDL — patient data in transit</td>
+                <td>$300K</td>
+                <td>Enable hybrid X25519+ML-KEM-768</td>
+                <td>Q3 2026</td>
+                <td>4h/ep</td>
+              </tr>
+              <tr class="row-p0">
+                <td><span class="badge badge--critical">P0</span></td>
+                <td>PQC</td>
+                <td>Database TDE with RSA-2048 key wrapping</td>
+                <td>PHI 30yr retention — Tier 3</td>
+                <td>$300K</td>
+                <td>Re-wrap master key with ML-KEM-768</td>
+                <td>Q3 2026</td>
+                <td>1 day</td>
+              </tr>
+              <tr class="row-p1">
+                <td><span class="badge badge--high">P1</span></td>
+                <td>PQC</td>
+                <td>JWT tokens signed with RS256</td>
+                <td>Identity token forgery risk</td>
+                <td>$50K</td>
+                <td>Migrate JWT signing to ML-DSA-65</td>
+                <td>Q4 2026</td>
+                <td>2 days</td>
+              </tr>
+              <tr class="row-p1">
+                <td><span class="badge badge--high">P1</span></td>
+                <td>PQC</td>
+                <td>AWS KMS using ECDSA P-256</td>
+                <td>Key management infrastructure vulnerability</td>
+                <td>$50K</td>
+                <td>Plan KMS key migration to ML-KEM</td>
+                <td>Q1 2027</td>
+                <td>1 week</td>
+              </tr>
+              <tr class="row-p2">
+                <td><span class="badge badge--low">P2</span></td>
+                <td>QN</td>
+                <td>Dark fiber audit not completed</td>
+                <td>Cannot assess QKD feasibility</td>
+                <td>$10K</td>
+                <td>Complete fiber infrastructure audit</td>
+                <td>Q2 2027</td>
+                <td>2 weeks</td>
+              </tr>
+              <tr class="row-p2">
+                <td><span class="badge badge--low">P2</span></td>
+                <td>OM</td>
+                <td>Classical baselines not established</td>
+                <td>Cannot measure quantum advantage</td>
+                <td>$10K</td>
+                <td>Run Gurobi/CPLEX benchmarks on candidate workloads</td>
+                <td>Q2 2027</td>
+                <td>1 week</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         SECTION 12: REGULATORY COUNTDOWN
+         ============================================================ -->
+    <section id="deadlines" class="section section--darker db-section">
+      <div class="container">
+        <div class="db-section__header reveal">
+          <h2 class="db-section__title">Regulatory Countdown
+            <span class="info-icon" data-tooltip="CNSA 2.0: Commercial National Security Algorithm Suite 2.0 — mandatory PQC for US national security systems. NIST IR 8547: deprecation (no longer recommended for new systems) by 2030, removal (no longer permitted) by 2035.">?</span>
+          </h2>
+          <p class="db-section__subtitle">Live countdown to critical PQC migration deadlines. These dates are fixed — regulatory frameworks are published and enforcement timelines are established.</p>
+        </div>
+        <div class="clocks-grid reveal" style="grid-template-columns:repeat(3,1fr);max-width:960px;margin:0 auto;">
+          <div class="countdown-clock" data-target="2027-01-01T00:00:00">
+            <div class="countdown-value">
+              <span class="cd-days"><span class="countdown-number">000</span><span class="countdown-unit">Days</span></span>
+              <span class="cd-hours"><span class="countdown-number">00</span><span class="countdown-unit">Hrs</span></span>
+              <span class="cd-minutes"><span class="countdown-number">00</span><span class="countdown-unit">Min</span></span>
+              <span class="cd-seconds"><span class="countdown-number">00</span><span class="countdown-unit">Sec</span></span>
+            </div>
+            <p class="countdown-label">CNSA 2.0 Phase 1
+              <span class="info-icon" data-tooltip="Jan 1, 2027: CNSA 2.0 Phase 1 deadline for national security systems. Software/firmware signing must transition. Defense contractors and government suppliers must comply.">?</span>
+            </p>
+            <p class="countdown-desc">National security systems must begin PQC transition. Software and firmware signing migration deadline.</p>
+          </div>
+          <div class="countdown-clock" data-target="2030-01-01T00:00:00">
+            <div class="countdown-value">
+              <span class="cd-days"><span class="countdown-number">000</span><span class="countdown-unit">Days</span></span>
+              <span class="cd-hours"><span class="countdown-number">00</span><span class="countdown-unit">Hrs</span></span>
+              <span class="cd-minutes"><span class="countdown-number">00</span><span class="countdown-unit">Min</span></span>
+              <span class="cd-seconds"><span class="countdown-number">00</span><span class="countdown-unit">Sec</span></span>
+            </div>
+            <p class="countdown-label">NIST Classical Deprecation
+              <span class="info-icon" data-tooltip="Jan 1, 2030: NIST IR 8547 deprecates RSA, ECDSA, and ECDH for new systems. Existing systems may continue but new deployments must use PQC. Regulated enterprises expected to complete migration by this date.">?</span>
+            </p>
+            <p class="countdown-desc">RSA, ECDSA, and ECDH deprecated. New systems must use PQC. Regulated enterprise migration deadline.</p>
+          </div>
+          <div class="countdown-clock" data-target="2035-01-01T00:00:00">
+            <div class="countdown-value">
+              <span class="cd-days"><span class="countdown-number">000</span><span class="countdown-unit">Days</span></span>
+              <span class="cd-hours"><span class="countdown-number">00</span><span class="countdown-unit">Hrs</span></span>
+              <span class="cd-minutes"><span class="countdown-number">00</span><span class="countdown-unit">Min</span></span>
+              <span class="cd-seconds"><span class="countdown-number">00</span><span class="countdown-unit">Sec</span></span>
+            </div>
+            <p class="countdown-label">NIST Classical Removal
+              <span class="info-icon" data-tooltip="Jan 1, 2035: NIST IR 8547 removes classical algorithms from standards. RSA, ECDSA, and DH are no longer permitted. All systems must be PQC-migrated. CRQC expected by this date per expert consensus.">?</span>
+            </p>
+            <p class="countdown-desc">Classical algorithms removed from NIST standards. All systems must be PQC-migrated. CRQC expected.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         SECTION 13: TECHNOLOGY TRENDS
+         ============================================================ -->
+    <section id="trends" class="section section--deep db-section">
+      <div class="container">
+        <div class="db-section__header reveal">
+          <h2 class="db-section__title">Technology Trends
+            <span class="info-icon" data-tooltip="Expected PQC adoption as percentage of TLS traffic. Data sourced from Cloudflare Radar, ImmuniWeb SSL/TLS surveys, and industry analyst projections. 2026 is the inflection year — PQC moves from research to mandated implementation.">?</span>
+          </h2>
+          <p class="db-section__subtitle">PQC adoption trajectory across industry. 2026 is the inflection year as regulatory mandates take effect and major cloud providers ship PQC support.</p>
+        </div>
+        <div class="reveal" style="max-width:860px;margin:0 auto;display:flex;gap:40px;flex-wrap:wrap;">
+          <div class="chart-container" style="flex:1;min-width:280px;">
+            <canvas id="trendChart"></canvas>
+          </div>
+          <div style="flex:1;min-width:280px;">
+            <h4 style="font-family:var(--font-body);font-size:0.85rem;font-weight:500;letter-spacing:0.04em;text-transform:uppercase;margin-bottom:16px;color:var(--color-text);">Upcoming Milestones</h4>
+            <ul style="list-style:none;padding:0;display:flex;flex-direction:column;gap:14px;">
+              <li style="font-size:0.82rem;color:var(--color-text-dim);line-height:1.6;font-weight:300;padding-left:16px;border-left:1px solid var(--color-accent);">
+                <strong style="color:var(--color-text);font-weight:500;">NIST PQC Standards (FIPS 203/204/205)</strong><br>Finalized 2024. ML-KEM, ML-DSA, SLH-DSA available for adoption. Impact: High. Timeline: Now.
+              </li>
+              <li style="font-size:0.82rem;color:var(--color-text-dim);line-height:1.6;font-weight:300;padding-left:16px;border-left:1px solid var(--color-border);">
+                <strong style="color:var(--color-text);font-weight:500;">CNSA 2.0 Phase 1 Enforcement</strong><br>Jan 2027. Mandatory for national security systems. Impact: Critical for defense contractors.
+              </li>
+              <li style="font-size:0.82rem;color:var(--color-text-dim);line-height:1.6;font-weight:300;padding-left:16px;border-left:1px solid var(--color-border);">
+                <strong style="color:var(--color-text);font-weight:500;">EU DORA Crypto-Agility Requirements</strong><br>2027. Financial sector operational resilience. Impact: Medium for EU-regulated entities.
+              </li>
+              <li style="font-size:0.82rem;color:var(--color-text-dim);line-height:1.6;font-weight:300;padding-left:16px;border-left:1px solid var(--color-border);">
+                <strong style="color:var(--color-text);font-weight:500;">HSM Vendor PQC Modules</strong><br>2026-2027. Thales, Utimaco FIPS 140-3 PQC validation. Impact: Medium. Action: Request vendor roadmaps now.
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         SECTION 14: WATCH LIST
+         ============================================================ -->
+    <section id="watchlist" class="section section--dark db-section">
+      <div class="container">
+        <div class="db-section__header reveal">
+          <h2 class="db-section__title">Watch List — Unsolved Problems
+            <span class="info-icon" data-tooltip="These items currently have no production-ready quantum-safe solution. They are monitored for technology maturity, not deferred. We track NIST, vendor roadmaps, and academic research and will flag changes at each quarterly review cycle.">?</span>
+          </h2>
+          <p class="db-section__subtitle">Items where no quantum-safe solution currently exists. Monitored at each quarterly reassessment cycle.</p>
+        </div>
+        <div class="findings-list reveal">
+          <div class="finding-card">
+            <div class="finding-card__icon finding-card__icon--gap">?</div>
+            <div class="finding-card__body">
+              <div class="finding-card__header">
+                <span class="finding-card__title">Legacy Embedded Systems — No PQC Upgrade Path</span>
+              </div>
+              <p class="finding-card__desc">Embedded devices with baked-in TLS stacks (printers, IoT, industrial controllers) have no vendor PQC library available. These devices may have 15-20 year deployment lifetimes. Action: Inventory all embedded devices; request PQC roadmaps from vendors; plan for network-level PQC proxy (Palo Alto cipher translation) as interim mitigation.</p>
+              <div class="finding-card__meta">
+                <span>Status: No vendor PQC library</span>
+                <span>Next review: Q2 2027</span>
+              </div>
+            </div>
+          </div>
+          <div class="finding-card">
+            <div class="finding-card__icon finding-card__icon--gap">?</div>
+            <div class="finding-card__body">
+              <div class="finding-card__header">
+                <span class="finding-card__title">HSM Without FIPS 140-3 Validated PQC</span>
+              </div>
+              <p class="finding-card__desc">Hardware Security Modules (Thales Luna, Entrust nShield, Utimaco) do not yet have FIPS 140-3 validated PQC algorithm support. Without FIPS validation, regulated entities cannot deploy PQC in HSM-backed key stores. Action: Request formal PQC roadmap with FIPS validation timeline from each HSM vendor.</p>
+              <div class="finding-card__meta">
+                <span>Status: Awaiting FIPS validation</span>
+                <span>Next review: Quarterly</span>
+              </div>
+            </div>
+          </div>
+          <div class="finding-card">
+            <div class="finding-card__icon finding-card__icon--gap">?</div>
+            <div class="finding-card__body">
+              <div class="finding-card__header">
+                <span class="finding-card__title">Side-Channel Vulnerabilities in ML-DSA Implementations</span>
+              </div>
+              <p class="finding-card__desc">Research has identified potential timing and power-analysis side channels in software implementations of ML-DSA (FIPS 204). Hardware-protected implementations are under development but not yet widely available. Action: Monitor IACR ePrint and NIST updates; prefer hardware-backed ML-DSA when available.</p>
+              <div class="finding-card__meta">
+                <span>Status: Research ongoing</span>
+                <span>Next review: IACR ePrint</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         SECTION 15: INSURANCE & LIABILITY NOTE
+         ============================================================ -->
+    <section id="insurance" class="section section--darker db-section">
+      <div class="container">
+        <div class="hndl-callout reveal" style="max-width:860px;margin:0 auto;">
+          <h3 style="font-family:var(--font-display);font-size:1.3rem;font-weight:400;color:var(--color-accent);margin-bottom:16px;letter-spacing:0.03em;">Insurance &amp; Liability Considerations
+            <span class="info-icon" data-tooltip="Quantum risk creates legal and financial exposure beyond technical vulnerability. Directors & Officers (D&O) liability, cyber insurance coverage, M&A due diligence, and breach notification obligations all have quantum-specific implications.">?</span>
+          </h3>
+          <p style="font-size:0.85rem;color:var(--color-text-dim);line-height:1.8;font-weight:300;margin-bottom:12px;">Cyber insurance policies may exclude quantum-related breaches. Review coverage language before 2027 renewal cycles.</p>
+          <p style="font-size:0.85rem;color:var(--color-text-dim);line-height:1.8;font-weight:300;margin-bottom:12px;">D&amp;O liability exposure exists for boards that fail to address known quantum risk after being informed by a readiness assessment.</p>
+          <p style="font-size:0.85rem;color:var(--color-text-dim);line-height:1.8;font-weight:300;margin-bottom:12px;">M&amp;A due diligence should include quantum readiness review. Acquiring entities inherit all cryptographic vulnerabilities of the target.</p>
+          <p style="font-size:0.85rem;color:var(--color-text-dim);line-height:1.8;font-weight:300;">Breach notification obligations may apply if HNDL-compromised data is retrospectively decrypted. Legal counsel should review applicable frameworks (GDPR, CCPA, SEC).</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         SECTION 16: ASSESSMENT SCOPE & LIMITATIONS
+         ============================================================ -->
+    <section id="scope" class="section section--dark db-section">
+      <div class="container">
+        <div class="db-section__header reveal">
+          <h2 class="db-section__title">Assessment Scope &amp; Limitations
+            <span class="info-icon" data-tooltip="Transparency on what was assessed and what requires further investigation. A point-in-time cryptographic assessment cannot guarantee future security — continuous monitoring and periodic reassessment are essential.">?</span>
+          </h2>
+        </div>
+        <div class="reveal" style="max-width:860px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:32px;">
+          <div>
+            <h4 style="font-family:var(--font-body);font-size:0.78rem;font-weight:500;letter-spacing:0.06em;text-transform:uppercase;color:var(--color-green);margin-bottom:16px;">Assessed Layers</h4>
+            <ul style="list-style:none;padding:0;display:flex;flex-direction:column;gap:10px;">
+              <li style="font-size:0.82rem;color:var(--color-text-dim);font-weight:300;">&#10003; Code-level cryptography (pqaudit, CryptoScan)</li>
+              <li style="font-size:0.82rem;color:var(--color-text-dim);font-weight:300;">&#10003; TLS endpoint configuration (Surveyor)</li>
+              <li style="font-size:0.82rem;color:var(--color-text-dim);font-weight:300;">&#10003; Certificate chain analysis (PQC Network Scanner)</li>
+              <li style="font-size:0.82rem;color:var(--color-text-dim);font-weight:300;">&#10003; PQC algorithm benchmarks (liboqs)</li>
+              <li style="font-size:0.82rem;color:var(--color-text-dim);font-weight:300;">&#10003; External service PQC adoption (pqcscan benchmark)</li>
+            </ul>
+          </div>
+          <div>
+            <h4 style="font-family:var(--font-body);font-size:0.78rem;font-weight:500;letter-spacing:0.06em;text-transform:uppercase;color:var(--color-text-muted);margin-bottom:16px;">Not Yet Assessed</h4>
+            <ul style="list-style:none;padding:0;display:flex;flex-direction:column;gap:10px;">
+              <li style="font-size:0.82rem;color:var(--color-text-muted);font-weight:300;">&mdash; Database encryption (TDE, column-level)</li>
+              <li style="font-size:0.82rem;color:var(--color-text-muted);font-weight:300;">&mdash; Secrets management (KMS, HSM, Vault)</li>
+              <li style="font-size:0.82rem;color:var(--color-text-muted);font-weight:300;">&mdash; Identity infrastructure (JWT, SAML, Kerberos)</li>
+              <li style="font-size:0.82rem;color:var(--color-text-muted);font-weight:300;">&mdash; Network infrastructure (VPN, load balancers)</li>
+              <li style="font-size:0.82rem;color:var(--color-text-muted);font-weight:300;">&mdash; Email &amp; communication (DKIM, S/MIME)</li>
+              <li style="font-size:0.82rem;color:var(--color-text-muted);font-weight:300;">&mdash; Code signing &amp; supply chain</li>
+              <li style="font-size:0.82rem;color:var(--color-text-muted);font-weight:300;">&mdash; Hardware &amp; embedded systems</li>
+              <li style="font-size:0.82rem;color:var(--color-text-muted);font-weight:300;">&mdash; Cloud infrastructure (KMS policies, CDN TLS)</li>
+              <li style="font-size:0.82rem;color:var(--color-text-muted);font-weight:300;">&mdash; Third-party vendor questionnaires</li>
+            </ul>
+          </div>
+        </div>
+        <p class="reveal" style="text-align:center;margin-top:32px;font-size:0.78rem;color:var(--color-text-muted);font-weight:300;max-width:640px;margin-left:auto;margin-right:auto;line-height:1.7;">
+          This assessment is a point-in-time analysis conducted May 2026. Continuous monitoring and quarterly reassessment are recommended. Data labeled "Example" represents typical enterprise findings based on industry benchmarks and may not reflect your specific environment. Contact us for a scoped assessment of your infrastructure.
+        </p>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         SECTION 17: GLOSSARY
+         ============================================================ -->
+    <section id="glossary" class="section section--darker db-section">
+      <div class="container">
+        <details class="glossary reveal">
+          <summary>Glossary of Terms</summary>
+          <div class="glossary__grid">
+            <div class="glossary__item"><span class="glossary__term">HNDL</span><br><span class="glossary__def">Harvest Now, Decrypt Later — adversaries collect encrypted data today for future decryption when quantum computers arrive.</span></div>
+            <div class="glossary__item"><span class="glossary__term">CRQC</span><br><span class="glossary__def">Cryptographically Relevant Quantum Computer — a quantum computer capable of breaking current public-key cryptography (RSA, ECDSA). Expected 2030-2035.</span></div>
+            <div class="glossary__item"><span class="glossary__term">PQC</span><br><span class="glossary__def">Post-Quantum Cryptography — classical algorithms designed to resist quantum attacks. NIST standards: ML-KEM (FIPS 203), ML-DSA (FIPS 204), SLH-DSA (FIPS 205).</span></div>
+            <div class="glossary__item"><span class="glossary__term">QKD</span><br><span class="glossary__def">Quantum Key Distribution — generating shared keys using quantum physics (photons). NSA does not recommend QKD for National Security Systems.</span></div>
+            <div class="glossary__item"><span class="glossary__term">CNSA 2.0</span><br><span class="glossary__def">Commercial National Security Algorithm Suite 2.0 — mandatory PQC requirements for US national security systems. Phase 1 deadline: Jan 2027.</span></div>
+            <div class="glossary__item"><span class="glossary__term">NIST IR 8547</span><br><span class="glossary__def">NIST transition plan: deprecate RSA/ECDSA by 2030, remove from standards by 2035.</span></div>
+            <div class="glossary__item"><span class="glossary__term">ML-KEM (FIPS 203)</span><br><span class="glossary__def">Module-Lattice Key Encapsulation Mechanism — replaces RSA key exchange and ECDH. Based on CRYSTALS-Kyber.</span></div>
+            <div class="glossary__item"><span class="glossary__term">ML-DSA (FIPS 204)</span><br><span class="glossary__def">Module-Lattice Digital Signature Algorithm — replaces RSA signatures and ECDSA. Based on CRYSTALS-Dilithium.</span></div>
+            <div class="glossary__item"><span class="glossary__term">Tier 0-4</span><br><span class="glossary__def">Quantum risk classification: Tier 4 = Existential, Tier 3 = Strategic/irreversible, Tier 2 = Material, Tier 1 = Cosmetic, Tier 0 = Already expired.</span></div>
+            <div class="glossary__item"><span class="glossary__term">TDE</span><br><span class="glossary__def">Transparent Data Encryption — database-level encryption. Master keys may be quantum-vulnerable even if data encryption (AES-256) is safe.</span></div>
+            <div class="glossary__item"><span class="glossary__term">KMS / HSM</span><br><span class="glossary__def">Key Management Service / Hardware Security Module — systems that generate, store, and manage cryptographic keys. Must support PQC algorithms.</span></div>
+            <div class="glossary__item"><span class="glossary__term">QAOA / VQE</span><br><span class="glossary__def">Quantum Approximate Optimization Algorithm / Variational Quantum Eigensolver — near-term quantum algorithms for optimization and chemistry problems.</span></div>
+            <div class="glossary__item"><span class="glossary__term">NISQ / FTQC</span><br><span class="glossary__def">Noisy Intermediate-Scale Quantum (today's devices) / Fault-Tolerant Quantum Computing (future, with error correction).</span></div>
+            <div class="glossary__item"><span class="glossary__term">Certificate Identity Gap</span><br><span class="glossary__def">PQC TLS migration has two phases: (1) key exchange migration — started by early adopters, (2) certificate identity migration — not started by anyone, anywhere.</span></div>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         SECTION 18: CTA + FOOTER
+         ============================================================ -->
+    <section class="section section--deep db-section">
+      <div class="container">
+        <div class="reveal" style="text-align:center;">
+          <p style="font-size:1rem;color:var(--color-text-dim);max-width:560px;margin:0 auto 36px;font-weight:300;line-height:1.8;">
+            Your dashboard is updated as new assessment data becomes available. Schedule a review session with our team to walk through the findings and remediation plan.
+          </p>
+          <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;">
+            <a href="index.html#contact" class="btn btn--primary">Book a Review Session</a>
+            <button id="downloadPdfBtn" class="btn btn--outline" onclick="downloadPDF()">Download Report (PDF)</button>
+          </div>
+        </div>
+        <div style="margin-top:80px;padding-top:36px;border-top:0.5px solid var(--color-border);">
+          <footer class="footer">
+            <span>&copy; 2026 Q-Readiness</span>
+            <div class="footer__links">
+              <a href="index.html">Home</a>
+              <a href="index.html#contact">Privacy</a>
+              <a href="#">Client Portal</a>
+            </div>
+          </footer>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <button class="scroll-top-btn" id="scrollTopBtn" aria-label="Scroll to top">&uarr;</button>
+
+  <!-- ============================================================
+       SCRIPTS
+       ============================================================ -->
+  <script>
+    // ---- Trend Chart (Chart.js) ----
+    document.addEventListener('DOMContentLoaded', function() {
+      var ctx = document.getElementById('trendChart');
+      if (ctx) {
+        new Chart(ctx, {
+          type: 'line',
+          data: {
+            labels: ['2024','2025','2026','2027','2028','2029','2030'],
+            datasets: [{
+              label: 'Expected PQC adoption (%)',
+              data: [5, 15, 30, 50, 70, 85, 95],
+              borderColor: '#D4A043',
+              backgroundColor: 'rgba(212,160,67,0.08)',
+              fill: true,
+              tension: 0.3,
+              pointBackgroundColor: '#D4A043',
+              pointBorderColor: '#0A0E17',
+              pointRadius: 4,
+              pointHoverRadius: 6
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            plugins: { legend: { display: false } },
+            scales: {
+              x: { ticks: { color: '#6B6658', font: { size: 11 } }, grid: { color: 'rgba(212,160,67,0.06)' } },
+              y: { ticks: { color: '#6B6658', font: { size: 11 }, callback: function(v){ return v+'%'; } }, grid: { color: 'rgba(212,160,67,0.06)' }, min: 0, max: 100 }
+            }
+          }
+        });
+      }
+
+      // ---- Dashboard bar animations ----
+      var fills = document.querySelectorAll('.domain-card__bar-fill[data-width]');
+      var barObserver = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            entry.target.style.width = entry.target.getAttribute('data-width') + '%';
+            barObserver.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.25 });
+      fills.forEach(function(b) { barObserver.observe(b); });
+    });
+
+    // ---- PDF Download (html2pdf) ----
+    function downloadPDF() {
+      var el = document.getElementById('dashboard-main');
+      var opt = {
+        margin: [0.4, 0.4, 0.4, 0.4],
+        filename: 'q-readiness-dashboard.pdf',
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2, useCORS: true },
+        jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+      };
+      html2pdf().set(opt).from(el).save();
+    }
+  </script>
+  <script src="js/main.js"></script>
+</body>
+</html>
