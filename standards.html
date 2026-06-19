@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Q-Readiness | Quantum Standards</title>
+  <meta name="description" content="Quantum readiness standards we follow: NIST FIPS 203/204/205, CNSA 2.0, EU CFQT, ETSI QSC, China GB/T 47177. NIST-aligned methodology">
+  <link rel="stylesheet" href="css/styles.css">
+  <style>.nav__link { color: var(--color-text); }</style>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "Quantum Readiness Standards — Q-Readiness",
+    "description": "Comprehensive reference for quantum readiness standards: NIST FIPS 203/204/205, CNSA 2.0, EU CFQT, ETSI, China GB/T 47177.",
+    "datePublished": "2026-06-02",
+    "dateModified": "2026-06-02",
+    "author": { "@type": "Organization", "name": "Q-Readiness" }
+  }
+  </script>
+</head>
+<body>
+  <a href="#standards-main" class="skip-link">Skip to content</a>
+  <nav class="nav nav--visible nav--solid" role="navigation">
+    <a href="index.html" class="nav__brand"><span class="nav__brand-mark">Q</span><span>Q-Readiness</span></a>
+    <div class="nav__menu">
+      <a href="dashboard.html" class="nav__link">Dashboard</a>
+      <a href="quantum-status.html" class="nav__link">Timeline</a>
+      <a href="news.html" class="nav__link">News</a>
+      <a href="standards.html" class="nav__link nav__link--active">Standards</a>
+      <a href="faq.html" class="nav__link">FAQ</a>
+      <button class="btn btn--outline btn--small" disabled style="opacity:0.5;cursor:not-allowed;margin-right:8px;">Sign Up &mdash; Q3 2026</button>
+      <a href="index.html#contact" class="nav__link nav__cta btn btn--primary btn--small">Book a Call</a>
+    </div>
+    <button class="hamburger" aria-label="Open menu" aria-expanded="false">
+      <span class="hamburger__line"></span><span class="hamburger__line"></span><span class="hamburger__line"></span>
+    </button>
+  </nav>
+  <div class="overlay" role="dialog" aria-modal="true">
+    <nav class="overlay__nav">
+      <a href="dashboard.html" class="overlay__link">Dashboard</a>
+      <a href="quantum-status.html" class="overlay__link">Timeline</a>
+      <a href="news.html" class="overlay__link">News</a>
+      <a href="standards.html" class="overlay__link">Standards</a>
+      <a href="faq.html" class="overlay__link">FAQ</a>
+      <a href="index.html#contact" class="overlay__link overlay__cta btn btn--outline">Book a Call</a>
+    </nav>
+  </div>
+
+  <main id="standards-main">
+    <section class="section section--dark section--grid" style="padding-top:120px;padding-bottom:60px;">
+      <div class="container">
+        <h1 class="quantum-page-title">Quantum Standards</h1>
+        <p class="quantum-page-subtitle">The regulatory and technical frameworks that guide every Q-Readiness assessment. NIST-aligned, CNSA 2.0 compliant, globally aware.</p>
+      </div>
+    </section>
+
+    <section class="section section--darker" style="padding-top:0;">
+      <div class="container" style="max-width:860px;">
+
+        <!-- US -->
+        <div class="reveal" style="padding:40px 0;border-bottom:0.5px solid var(--color-border);">
+          <div style="display:flex;align-items:center;gap:16px;margin-bottom:16px;">
+            <span style="font-size:1.5rem;">&#127482;&#127480;</span>
+            <h2 style="font-family:var(--font-display);font-size:1.6rem;font-weight:500;color:var(--color-text);margin:0;">United States &mdash; NIST</h2>
+          </div>
+          <p style="font-size:0.92rem;color:var(--color-text-dim);line-height:1.8;font-weight:300;margin-bottom:24px;">The US National Institute of Standards and Technology finalized the world's first PQC standards in August 2024. These are the global benchmark and the foundation of our assessment methodology.</p>
+
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:16px;">
+            <div style="background:var(--color-surface);border:0.5px solid var(--color-border);padding:20px;">
+              <div style="font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.08em;color:var(--color-accent);text-transform:uppercase;margin-bottom:8px;">FIPS 203</div>
+              <h4 style="font-family:var(--font-body);font-size:0.85rem;font-weight:500;color:var(--color-text);margin-bottom:6px;">ML-KEM</h4>
+              <p style="font-size:0.75rem;color:var(--color-text-dim);line-height:1.6;font-weight:300;">Module-Lattice Key Encapsulation. Replaces RSA key exchange and ECDH. Based on CRYSTALS-Kyber.</p>
+            </div>
+            <div style="background:var(--color-surface);border:0.5px solid var(--color-border);padding:20px;">
+              <div style="font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.08em;color:var(--color-accent);text-transform:uppercase;margin-bottom:8px;">FIPS 204</div>
+              <h4 style="font-family:var(--font-body);font-size:0.85rem;font-weight:500;color:var(--color-text);margin-bottom:6px;">ML-DSA</h4>
+              <p style="font-size:0.75rem;color:var(--color-text-dim);line-height:1.6;font-weight:300;">Module-Lattice Digital Signature Algorithm. Replaces RSA signatures and ECDSA. Based on CRYSTALS-Dilithium.</p>
+            </div>
+            <div style="background:var(--color-surface);border:0.5px solid var(--color-border);padding:20px;">
+              <div style="font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.08em;color:var(--color-accent);text-transform:uppercase;margin-bottom:8px;">FIPS 205</div>
+              <h4 style="font-family:var(--font-body);font-size:0.85rem;font-weight:500;color:var(--color-text);margin-bottom:6px;">SLH-DSA</h4>
+              <p style="font-size:0.75rem;color:var(--color-text-dim);line-height:1.6;font-weight:300;">Stateless Hash-Based Digital Signature. Backup scheme for high-security applications. Based on SPHINCS+.</p>
+            </div>
+          </div>
+
+          <div style="background:var(--color-accent-subtle);border:0.5px solid var(--color-border);padding:20px 24px;">
+            <h4 style="font-family:var(--font-body);font-size:0.8rem;font-weight:500;color:var(--color-accent);letter-spacing:0.04em;text-transform:uppercase;margin-bottom:8px;">CNSA 2.0 Timeline</h4>
+            <p style="font-size:0.82rem;color:var(--color-text-dim);line-height:1.7;font-weight:300;">NSA's Commercial National Security Algorithm Suite 2.0 mandates PQC migration for national security systems. Phase 1 (software/firmware signing): <strong style="color:var(--color-accent);">January 2027</strong>. Full compliance required through 2033. Non-national-security organizations follow NIST IR 8547: deprecation by <strong style="color:var(--color-accent);">2030</strong>, removal by <strong style="color:var(--color-accent);">2035</strong>.</p>
+          </div>
+        </div>
+
+        <!-- EU -->
+        <div class="reveal" style="padding:40px 0;border-bottom:0.5px solid var(--color-border);">
+          <div style="display:flex;align-items:center;gap:16px;margin-bottom:16px;">
+            <span style="font-size:1.5rem;">&#127466;&#127482;</span>
+            <h2 style="font-family:var(--font-display);font-size:1.6rem;font-weight:500;color:var(--color-text);margin:0;">Europe &mdash; EU &amp; ETSI</h2>
+          </div>
+          <p style="font-size:0.92rem;color:var(--color-text-dim);line-height:1.8;font-weight:300;margin-bottom:24px;">Europe takes a coordinated approach combining a skills framework, an implementation roadmap, and technical standards from ETSI.</p>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;">
+            <div style="background:var(--color-surface);border:0.5px solid var(--color-border);padding:20px;">
+              <div style="font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.08em;color:var(--color-accent);text-transform:uppercase;margin-bottom:8px;">Workforce</div>
+              <h4 style="font-family:var(--font-body);font-size:0.85rem;font-weight:500;color:var(--color-text);margin-bottom:6px;">CFQT 3.0</h4>
+              <p style="font-size:0.75rem;color:var(--color-text-dim);line-height:1.6;font-weight:300;">European Competence Framework for Quantum Technologies. Defines quantum competencies from boardroom to lab. Central to the European Quantum Readiness Center. Version 3.0 released April 2025.</p>
+            </div>
+            <div style="background:var(--color-surface);border:0.5px solid var(--color-border);padding:20px;">
+              <div style="font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.08em;color:var(--color-accent);text-transform:uppercase;margin-bottom:8px;">Technical</div>
+              <h4 style="font-family:var(--font-body);font-size:0.85rem;font-weight:500;color:var(--color-text);margin-bottom:6px;">ETSI QSC &amp; EU Roadmap</h4>
+              <p style="font-size:0.75rem;color:var(--color-text-dim);line-height:1.6;font-weight:300;">EU Coordinated Implementation Roadmap aligns PQC adoption across member states. ETSI Quantum-Safe Cryptography working group develops complementary specs including Covercrypt hybrid encryption.</p>
+            </div>
+          </div>
+
+          <div style="background:var(--color-accent-subtle);border:0.5px solid var(--color-border);padding:20px 24px;">
+            <h4 style="font-family:var(--font-body);font-size:0.8rem;font-weight:500;color:var(--color-accent);letter-spacing:0.04em;text-transform:uppercase;margin-bottom:8px;">Regulatory Drivers</h4>
+            <p style="font-size:0.82rem;color:var(--color-text-dim);line-height:1.7;font-weight:300;">DORA (Digital Operational Resilience Act) requires crypto-agility for EU financial sector. NIS2 Directive covers essential entities. ENISA provides guidance on PQC migration aligned with NIST standards.</p>
+          </div>
+        </div>
+
+        <!-- China -->
+        <div class="reveal" style="padding:40px 0;border-bottom:0.5px solid var(--color-border);">
+          <div style="display:flex;align-items:center;gap:16px;margin-bottom:16px;">
+            <span style="font-size:1.5rem;">&#127464;&#127475;</span>
+            <h2 style="font-family:var(--font-display);font-size:1.6rem;font-weight:500;color:var(--color-text);margin:0;">China &mdash; GB/T &amp; Independent Standards</h2>
+          </div>
+          <p style="font-size:0.92rem;color:var(--color-text-dim);line-height:1.8;font-weight:300;margin-bottom:24px;">China is building independent infrastructure and cryptographic standards, deliberately diverging from the NIST path with a focus on "structureless lattice" algorithms.</p>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;">
+            <div style="background:var(--color-surface);border:0.5px solid var(--color-border);padding:20px;">
+              <div style="font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.08em;color:var(--color-accent);text-transform:uppercase;margin-bottom:8px;">Approved Feb 2026</div>
+              <h4 style="font-family:var(--font-body);font-size:0.85rem;font-weight:500;color:var(--color-text);margin-bottom:6px;">GB/T 47177.1-2026</h4>
+              <p style="font-size:0.75rem;color:var(--color-text-dim);line-height:1.6;font-weight:300;">China's first national standard for quantum computing services. Establishes a unified framework for cloud-based quantum computing platforms.</p>
+            </div>
+            <div style="background:var(--color-surface);border:0.5px solid var(--color-border);padding:20px;">
+              <div style="font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.08em;color:var(--color-accent);text-transform:uppercase;margin-bottom:8px;">In Development</div>
+              <h4 style="font-family:var(--font-body);font-size:0.85rem;font-weight:500;color:var(--color-text);margin-bottom:6px;">National PQC Standards</h4>
+              <p style="font-size:0.75rem;color:var(--color-text-dim);line-height:1.6;font-weight:300;">China launched a global call for PQC algorithm proposals in February 2025. Focus on "structureless lattice" algorithms. Standards expected within three years. Independent from NIST.</p>
+            </div>
+          </div>
+
+          <div style="background:var(--color-accent-subtle);border:0.5px solid var(--color-border);padding:20px 24px;">
+            <h4 style="font-family:var(--font-body);font-size:0.8rem;font-weight:500;color:var(--color-accent);letter-spacing:0.04em;text-transform:uppercase;margin-bottom:8px;">Divergence from NIST</h4>
+            <p style="font-size:0.82rem;color:var(--color-text-dim);line-height:1.7;font-weight:300;">Chinese experts have expressed concerns about the security of NIST's algebraic lattice algorithms. The national program focuses on alternative mathematical foundations, potentially creating a two-track global PQC ecosystem. Organizations with operations or supply chains in China should monitor this divergence.</p>
+          </div>
+        </div>
+
+        <!-- Comparison table -->
+        <div class="reveal" style="padding:40px 0;">
+          <h2 style="font-family:var(--font-display);font-size:1.6rem;font-weight:500;color:var(--color-text);margin-bottom:20px;">Comparison Summary</h2>
+          <div style="overflow-x:auto;">
+            <table style="width:100%;border-collapse:collapse;font-size:0.82rem;">
+              <thead><tr><th style="font-size:0.65rem;font-weight:500;letter-spacing:0.06em;text-transform:uppercase;color:var(--color-text-muted);text-align:left;padding:12px 16px;border-bottom:1px solid var(--color-border);">Feature</th><th style="font-size:0.65rem;font-weight:500;letter-spacing:0.06em;text-transform:uppercase;color:var(--color-text-muted);text-align:left;padding:12px 16px;border-bottom:1px solid var(--color-border);">US (NIST)</th><th style="font-size:0.65rem;font-weight:500;letter-spacing:0.06em;text-transform:uppercase;color:var(--color-text-muted);text-align:left;padding:12px 16px;border-bottom:1px solid var(--color-border);">EU</th><th style="font-size:0.65rem;font-weight:500;letter-spacing:0.06em;text-transform:uppercase;color:var(--color-text-muted);text-align:left;padding:12px 16px;border-bottom:1px solid var(--color-border);">China</th></tr></thead>
+              <tbody>
+                <tr><td style="padding:12px 16px;border-bottom:0.5px solid var(--color-border-light);color:var(--color-text-dim);">Primary Standards</td><td style="padding:12px 16px;border-bottom:0.5px solid var(--color-border-light);color:var(--color-text-dim);">FIPS 203, 204, 205</td><td style="padding:12px 16px;border-bottom:0.5px solid var(--color-border-light);color:var(--color-text-dim);">CFQT 3.0 + EU Roadmap + ETSI</td><td style="padding:12px 16px;border-bottom:0.5px solid var(--color-border-light);color:var(--color-text-dim);">GB/T 47177.1 + National PQC (dev)</td></tr>
+                <tr><td style="padding:12px 16px;border-bottom:0.5px solid var(--color-border-light);color:var(--color-text-dim);">Status</td><td style="padding:12px 16px;border-bottom:0.5px solid var(--color-border-light);color:var(--color-green);">Finalized (Aug 2024)</td><td style="padding:12px 16px;border-bottom:0.5px solid var(--color-border-light);color:var(--color-accent);">Active (2025)</td><td style="padding:12px 16px;border-bottom:0.5px solid var(--color-border-light);color:var(--color-accent);">Partial (2026) / Dev (PQC)</td></tr>
+                <tr><td style="padding:12px 16px;border-bottom:0.5px solid var(--color-border-light);color:var(--color-text-dim);">Focus</td><td style="padding:12px 16px;border-bottom:0.5px solid var(--color-border-light);color:var(--color-text-dim);">Cryptographic algorithms</td><td style="padding:12px 16px;border-bottom:0.5px solid var(--color-border-light);color:var(--color-text-dim);">Workforce + coordinated migration</td><td style="padding:12px 16px;border-bottom:0.5px solid var(--color-border-light);color:var(--color-text-dim);">Infrastructure + independent algorithms</td></tr>
+                <tr><td style="padding:12px 16px;border-bottom:0.5px solid var(--color-border-light);color:var(--color-text-dim);">Global Alignment</td><td style="padding:12px 16px;border-bottom:0.5px solid var(--color-border-light);color:var(--color-green);">Global benchmark</td><td style="padding:12px 16px;border-bottom:0.5px solid var(--color-border-light);color:var(--color-accent);">Aligning with NIST, building own ecosystem</td><td style="padding:12px 16px;border-bottom:0.5px solid var(--color-border-light);color:#FF5F57;">Independent path</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <section class="section section--deep" style="padding:80px 0;">
+      <div class="container">
+        <div style="text-align:center;">
+          <p style="font-size:0.92rem;color:var(--color-text-dim);max-width:560px;margin:0 auto 36px;font-weight:300;line-height:1.8;">Every Q-Readiness assessment is NIST-aligned and CNSA 2.0 compliant. We track all three regulatory ecosystems to ensure global coverage.</p>
+          <a href="index.html#contact" class="btn btn--primary">Book a Scoping Call</a>
+        </div>
+        <div style="margin-top:80px;padding-top:36px;border-top:0.5px solid var(--color-border);">
+          <footer class="footer">
+            <span>&copy; 2026 Q-Readiness &mdash; Launching Q3 2026</span>
+            <div class="footer__links">
+              <a href="index.html">Home</a>
+              <a href="dashboard.html">Dashboard</a>
+              <a href="faq.html">FAQ</a>
+              <a href="index.html#contact">Contact</a>
+            </div>
+          </footer>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <button class="scroll-top-btn" id="scrollTopBtn" aria-label="Scroll to top">&uarr;</button>
+  <script src="js/main.js"></script>
+</body>
+</html>

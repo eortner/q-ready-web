@@ -112,10 +112,6 @@
   <div class="nav__menu">
     <a href="dashboard.html" class="nav__link nav__link--active">Dashboard</a>
     <a href="quantum-status.html" class="nav__link">Timeline</a>
-    <a href="news.html" class="nav__link">News</a>
-    <a href="standards.html" class="nav__link">Standards</a>
-    <a href="faq.html" class="nav__link">FAQ</a>
-    <button class="btn btn--outline btn--small" disabled style="opacity:0.5;cursor:not-allowed;margin-right:8px;">Sign Up &mdash; Q3 2026</button>
     <a href="index.html#contact" class="nav__link nav__cta btn btn--primary btn--small">Book a Call</a>
   </div>
   <button class="hamburger" aria-label="Open menu" aria-expanded="false">
@@ -126,9 +122,6 @@
   <nav class="overlay__nav">
     <a href="dashboard.html" class="overlay__link">Dashboard</a>
     <a href="quantum-status.html" class="overlay__link">Timeline</a>
-    <a href="news.html" class="overlay__link">News</a>
-    <a href="standards.html" class="overlay__link">Standards</a>
-    <a href="faq.html" class="overlay__link">FAQ</a>
     <a href="index.html#contact" class="overlay__link overlay__cta btn btn--outline">Book a Call</a>
   </nav>
 </div>
@@ -158,26 +151,22 @@
   <!-- KPI ROW -->
   <div class="kpi-row" id="kpiRow">
     <div class="kpi-card">
-      <div class="kpi-card__value">5 P0</div>
-      <div class="kpi-card__value" style="font-size:0.9rem;color:var(--color-text-dim);margin-top:2px;">3 P1 &middot; 4 P2</div>
+      <div class="kpi-card__value" id="kpi-p0">—</div>
       <div class="kpi-card__label">HNDL-Urgent — Act Now</div>
-      <div class="kpi-card__source">P0: keys protecting harvested data today</div>
+      <div class="kpi-card__source" id="kpi-p0-src">P0: keys protecting harvested data today</div>
     </div>
     <div class="kpi-card">
-      <div class="kpi-card__value">7 <span style="font-size:0.9rem;color:var(--color-text-muted);">endpoints</span></div>
-      <div class="kpi-card__value" style="font-size:0.9rem;color:#FF5F57;margin-top:2px;">5 HIGH &middot; 2 CRIT</div>
+      <div class="kpi-card__value" id="kpi-tls">—</div>
       <div class="kpi-card__label">TLS &amp; Certificate Exposure</div>
-      <div class="kpi-card__source">Surveyor + testssl.sh, May 2026</div>
+      <div class="kpi-card__source">Surveyor + testssl.sh + pqcscan</div>
     </div>
     <div class="kpi-card">
-      <div class="kpi-card__value">12 <span style="font-size:0.9rem;color:var(--color-text-muted);">findings</span></div>
-      <div class="kpi-card__value" style="font-size:0.9rem;color:var(--color-accent);margin-top:2px;">across 7 layers</div>
+      <div class="kpi-card__value" id="kpi-inventory">—</div>
       <div class="kpi-card__label">Crypto Inventory Coverage</div>
-      <div class="kpi-card__source">acdi + Vault + DB scan + DNSSEC</div>
+      <div class="kpi-card__source" id="kpi-inventory-src">All 12 tools integrated</div>
     </div>
     <div class="kpi-card">
-      <div class="kpi-card__value">-2.9<span style="font-size:0.9rem;color:var(--color-text-muted);">%</span></div>
-      <div class="kpi-card__value" style="font-size:0.9rem;color:var(--color-green);margin-top:2px;">PQC vs Classical TLS</div>
+      <div class="kpi-card__value" id="kpi-perf">—</div>
       <div class="kpi-card__label">Performance Impact</div>
       <div class="kpi-card__source">PQC-LEO + liboqs, x86_64</div>
     </div>
@@ -394,75 +383,127 @@
     switchTab(item.getAttribute('data-tab'));
   });
 
-  // Chart 1: Severity donut
-  var donutCtx = document.getElementById('severityDonut');
-  if (donutCtx) {
-    new Chart(donutCtx, {
-      type: 'doughnut',
-      data: {
-        labels: ['HNDL-Urgent (P0)','High (P1)','Medium (P2)','Low (P3)'],
-        datasets: [{
-          data: [5, 10, 9, 2],
-          backgroundColor: ['rgba(255,95,87,0.75)','rgba(255,189,46,0.75)','rgba(212,160,67,0.55)','rgba(156,150,138,0.35)'],
-          borderColor: ['#FF5F57','#FFBD2E','#D4A043','#9C968A'],
-          borderWidth: 1
-        }]
-      },
-      options: {
-        responsive: true, maintainAspectRatio: false,
-        plugins: { legend: { position: 'bottom', labels: { color: '#9A9585', font: { family: 'Inter', size: 11 }, padding: 16 } } }
-      }
-    });
+  // ── Load data & render ──────────────────────────────────
+  fetch('dashboard-data.json')
+    .then(function(r) { return r.json(); })
+    .then(function(D) {
+      renderKPIs(D);
+      renderCharts(D);
+      renderFindingsTable(D);
+      renderRemediation(D);
+    })
+    .catch(function(e) { console.error('Data load failed:', e); });
+
+  // ── KPI cards ───────────────────────────────────────────
+  function renderKPIs(D) {
+    var k = D.kpis;
+    var sev = k.category_2_crypto_inventory.findings_by_severity;
+    var lay = k.category_2_crypto_inventory.findings_by_layer;
+
+    document.getElementById('kpi-p0').innerHTML = k.category_1_hndl_urgency.p0_items + ' <span style="font-size:0.9rem;color:var(--color-text-muted);">P0 items</span>';
+    document.getElementById('kpi-p0-src').textContent = k.category_1_hndl_urgency.p0_layers_affected + ' layers affected — HNDL-urgent';
+    document.getElementById('kpi-tls').innerHTML = sev.CRITICAL + sev.HIGH + ' <span style="font-size:0.9rem;color:var(--color-text-muted);">CRIT+HIGH</span><br><span style="font-size:0.75rem;color:var(--color-accent);">' + (sev.SAFE||0) + ' SAFE &middot; ' + (sev.MEDIUM||0) + ' MED &middot; ' + (sev.LOW||0) + ' LOW</span>';
+    document.getElementById('kpi-inventory').innerHTML = k.overview.total_findings + ' <span style="font-size:0.9rem;color:var(--color-text-muted);">findings</span><br><span style="font-size:0.75rem;color:var(--color-accent);">' + k.overview.layers_covered + ' layers &middot; ' + k.overview.tools_run + ' tools</span>';
+    document.getElementById('kpi-perf').innerHTML = '<span style="color:var(--color-green);">' + k.category_4_performance_impact.pqc_tls_overhead_pct + '%</span> <span style="font-size:0.9rem;color:var(--color-text-muted);">overhead</span><br><span style="font-size:0.75rem;color:var(--color-accent);">+22µs on TLS handshake</span>';
   }
 
-  // Chart 2: Findings by layer (horizontal bar)
-  var layerCtx = document.getElementById('layerBar');
-  if (layerCtx) {
-    new Chart(layerCtx, {
-      type: 'bar',
-      data: {
-        labels: ['TLS','Code','Secrets','PKI','Database','DNSSEC','Email'],
-        datasets: [{
-          data: [15, 9, 5, 4, 4, 2, 1],
-          backgroundColor: ['rgba(255,95,87,0.6)','rgba(255,95,87,0.6)','rgba(255,189,46,0.6)','rgba(255,189,46,0.6)','rgba(255,95,87,0.6)','rgba(212,160,67,0.5)','rgba(212,160,67,0.5)'],
-          borderColor: 'rgba(212,160,67,0.3)',
-          borderWidth: 1
-        }]
-      },
-      options: {
-        indexAxis: 'y', responsive: true, maintainAspectRatio: false,
-        plugins: { legend: { display: false } },
-        scales: {
-          x: { ticks: { color: '#6B6658', font: { family: 'Inter', size: 11 } }, grid: { color: 'rgba(212,160,67,0.06)' } },
-          y: { ticks: { color: '#9A9585', font: { family: 'Inter', size: 11 } }, grid: { display: false } }
+  // ── Charts ──────────────────────────────────────────────
+  function renderCharts(D) {
+    var sev = D.kpis.category_2_crypto_inventory.findings_by_severity;
+    var lay = D.kpis.category_2_crypto_inventory.findings_by_layer;
+
+    // Donut
+    var donutCtx = document.getElementById('severityDonut');
+    if (donutCtx) {
+      new Chart(donutCtx, {
+        type: 'doughnut',
+        data: {
+          labels: ['Critical','High','Medium','Low','Safe'],
+          datasets: [{
+            data: [sev.CRITICAL||0, sev.HIGH||0, sev.MEDIUM||0, sev.LOW||0, sev.SAFE||0],
+            backgroundColor: ['rgba(255,95,87,0.75)','rgba(255,189,46,0.75)','rgba(212,160,67,0.55)','rgba(156,150,138,0.35)','rgba(92,184,122,0.5)'],
+            borderColor: ['#FF5F57','#FFBD2E','#D4A043','#9C968A','#5CB87A'],
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true, maintainAspectRatio: false,
+          plugins: { legend: { position: 'bottom', labels: { color: '#9A9585', font: { family: 'Inter', size: 11 }, padding: 16 } } }
         }
-      }
-    });
+      });
+    }
+
+    // Layer bar chart
+    var layers = Object.entries(lay).sort(function(a,b) { return b[1] - a[1]; });
+    var layerCtx = document.getElementById('layerBar');
+    if (layerCtx) {
+      var colors = layers.map(function(l) {
+        if (l[0]==='TLS'||l[0]==='Database') return 'rgba(255,95,87,0.6)';
+        if (l[0]==='Secrets'||l[0]==='Certificates') return 'rgba(255,189,46,0.6)';
+        return 'rgba(212,160,67,0.5)';
+      });
+      new Chart(layerCtx, {
+        type: 'bar',
+        data: { labels: layers.map(function(l){return l[0];}), datasets: [{ data: layers.map(function(l){return l[1];}), backgroundColor: colors, borderColor: 'rgba(212,160,67,0.3)', borderWidth: 1 }] },
+        options: {
+          indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+          plugins: { legend: { display: false } },
+          scales: {
+            x: { ticks: { color: '#6B6658', font: { family: 'Inter', size: 11 } }, grid: { color: 'rgba(212,160,67,0.06)' } },
+            y: { ticks: { color: '#9A9585', font: { family: 'Inter', size: 11 } }, grid: { display: false } }
+          }
+        }
+      });
+    }
+
+    // PQC Adoption chart
+    var pqc = D.pqc_adoption;
+    var benchCtx = document.getElementById('benchmarkChart');
+    if (benchCtx) {
+      new Chart(benchCtx, {
+        type: 'bar',
+        data: {
+          labels: pqc.map(function(s){return s.service;}),
+          datasets: [{
+            data: pqc.map(function(s){return s.pqc_kex ? 1 : 0;}),
+            backgroundColor: pqc.map(function(s){return s.pqc_kex ? 'rgba(212,160,67,0.6)' : 'rgba(255,95,87,0.35)';}),
+            borderColor: pqc.map(function(s){return s.pqc_kex ? 'rgba(212,160,67,0.8)' : 'rgba(255,95,87,0.5)';}),
+            borderWidth: 1
+          }]
+        },
+        options: {
+          indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+          plugins: { legend: { display: false } },
+          scales: {
+            x: { max: 1, ticks: { stepSize: 1, callback: function(v){return v?'PQC KEX':'None';}, color: '#6B6658', font: { family: 'Inter', size: 11 } }, grid: { color: 'rgba(212,160,67,0.06)' } },
+            y: { ticks: { color: '#9A9585', font: { family: 'Inter', size: 12 } }, grid: { display: false } }
+          }
+        }
+      });
+    }
   }
 
-  // Chart 3: PQC Benchmark (horizontal bar)
-  var benchCtx = document.getElementById('benchmarkChart');
-  if (benchCtx) {
-    new Chart(benchCtx, {
-      type: 'bar',
-      data: {
-        labels: ['Google','Cloudflare','Apple','Facebook','Microsoft','Amazon','Netflix','GitHub'],
-        datasets: [{
-          data: [1, 1, 1, 1, 0, 0, 0, 0],
-          backgroundColor: ['rgba(212,160,67,0.6)','rgba(212,160,67,0.6)','rgba(212,160,67,0.6)','rgba(212,160,67,0.6)','rgba(255,95,87,0.35)','rgba(255,95,87,0.35)','rgba(255,95,87,0.35)','rgba(255,95,87,0.35)'],
-          borderColor: ['rgba(212,160,67,0.8)','rgba(212,160,67,0.8)','rgba(212,160,67,0.8)','rgba(212,160,67,0.8)','rgba(255,95,87,0.5)','rgba(255,95,87,0.5)','rgba(255,95,87,0.5)','rgba(255,95,87,0.5)'],
-          borderWidth: 1
-        }]
-      },
-      options: {
-        indexAxis: 'y', responsive: true, maintainAspectRatio: false,
-        plugins: { legend: { display: false } },
-        scales: {
-          x: { max: 1, ticks: { stepSize: 1, callback: function(v) { return v ? 'PQC KEX' : 'Vulnerable'; }, color: '#6B6658', font: { family: 'Inter', size: 11 } }, grid: { color: 'rgba(212,160,67,0.06)' } },
-          y: { ticks: { color: '#9A9585', font: { family: 'Inter', size: 12 } }, grid: { display: false } }
-        }
-      }
-    });
+  // ── Findings table (Top P0 & P1) ──────────────────────
+  function renderFindingsTable(D) {
+    var tbody = document.querySelector('#tab-dashboard .data-table tbody');
+    if (!tbody) return;
+    var top = D.findings.filter(function(f){ return f.severity === 'CRITICAL' || f.severity === 'HIGH'; }).slice(0, 8);
+    tbody.innerHTML = top.map(function(f){
+      var sevClass = f.severity === 'CRITICAL' ? 'sev-critical' : 'sev-high';
+      return '<tr><td><span class="badge ' + sevClass + '">' + f.severity + '</span></td><td>' + f.asset + '</td><td>' + f.layer + '</td><td>' + f.algorithm + '</td><td><span style="font-size:0.75rem">' + (f.evidence||'').substring(0,120) + '</span></td></tr>';
+    }).join('');
+  }
+
+  // ── Remediation table ──────────────────────────────────
+  function renderRemediation(D) {
+    var tbody = document.querySelector('#tab-actions .data-table tbody');
+    if (!tbody) return;
+    var items = D.remediation.p0_act_now.concat(D.remediation.p1_18_months).slice(0, 8);
+    tbody.innerHTML = items.map(function(r, i){
+      var prio = i < D.remediation.p0_act_now.length ? 'P0' : 'P1';
+      var sevClass = prio === 'P0' ? 'sev-critical' : 'sev-high';
+      return '<tr class="backlog-' + prio.toLowerCase() + '"><td><span class="badge ' + sevClass + '">' + prio + '</span></td><td>' + r.layer + '</td><td>' + r.asset + '</td><td><span style="font-size:0.78rem">' + (r.issue||'').substring(0,100) + '</span></td></tr>';
+    }).join('');
   }
 
   // PDF export

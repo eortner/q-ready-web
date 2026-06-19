@@ -1,0 +1,35 @@
+# Q-Readiness — Quantum Readiness Assessment
+
+> Automated quantum readiness powered by 12 open-source scanners and AI-driven analysis. Choose your delivery model — self-service to air-gapped appliance. NIST-aligned, CNSA 2.0 compliant.
+
+## Core Pages
+- [Home](https://q-readiness.com/): Full overview, five delivery tiers, quantum timeline, contact form.
+- [Dashboard](https://q-readiness.com/dashboard.html): Live client portal — cryptographic inventory, domain scores, prioritized remediation backlog.
+- [Timeline](https://q-readiness.com/quantum-status.html): Quantum readiness timeline with PQC migration deadlines.
+- [FAQ](https://q-readiness.com/faq.html): Frequently asked questions about quantum readiness, PQC, CNSA 2.0, and our assessment methodology.
+
+## Key Data Points
+- 12 open-source scanners covering 14 cryptographic layers
+- Assessment delivery: days to 2.5 weeks (vs. traditional 13 weeks)
+- 80% faster than traditional audits
+- PQC TLS overhead: 0.04% — negligible performance impact
+- Certificate identity gap: 100% of scanned services have quantum-vulnerable certificates
+- 50% of major services have deployed PQC key exchange; 0% have PQC certificates
+- CNSA 2.0 Phase 1 deadline: January 2027
+- NIST deprecation of RSA/ECDSA: January 2030
+- NIST removal of classical algorithms: January 2035
+
+## Five Service Tiers
+- Tier 0 — Self-Service: Run 12 tools independently, send results for processing.
+- Tier 1 — AI-Guided: Claude Code automation guides your team. 2-3 weeks.
+- Tier 2 — Secure AI: AI access for restricted environments.
+- Tier 3 — Expert On-Site: Expert deploys on your infrastructure, trains your team.
+- Tier 4 — Q-Appliance: Air-gapped AI device, physically verified. You keep the hardware.
+
+## Assessment Domains
+- Post-Quantum Cryptography (PQC): Cryptographic inventory, PKI/TLS exposure, vendor readiness, NIST migration roadmap.
+- Quantum Networking: QKD feasibility, fiber readiness, quantum network simulation, NSA/NCSC guidance.
+- Optimization & Machine Learning: Workload screening for quantum advantage, classical baselines, hybrid quantum-classical workflows.
+
+## About
+Q-Readiness delivers quantum readiness assessments in days, not months. Founded on the principle that cryptographic inventory should be automated, auditable, and repeatable. All tools are open-source. No black boxes. Launching Q3 2026.

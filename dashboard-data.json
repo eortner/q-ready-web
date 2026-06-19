@@ -1,0 +1,1846 @@
+{
+  "generated_at": "2026-06-04T21:55:55.861011Z",
+  "version": "1.0",
+  "pipeline": "process-results.py",
+  "tr4_validation": {
+    "tools_integrated": 10,
+    "tools_total": 12,
+    "data_flow": "12 tools \u2192 process-results.py \u2192 dashboard-data.json \u2192 dashboard.html"
+  },
+  "kpis": {
+    "overview": {
+      "total_findings": 135,
+      "tools_run": 10,
+      "layers_covered": 11,
+      "files_processed": 9,
+      "files_skipped": 0
+    },
+    "category_1_hndl_urgency": {
+      "p0_items": 12,
+      "p0_layers_affected": 4,
+      "hndl_urgent_items": 2
+    },
+    "category_2_crypto_inventory": {
+      "tls_endpoints_vulnerable": 16,
+      "tls_endpoints_total": 11,
+      "pqc_kex_adoption_pct": 55.6,
+      "certificate_identity_gap_pct": 100.0,
+      "findings_by_layer": {
+        "Code": 75,
+        "TLS": 26,
+        "Certificates": 6,
+        "Secrets": 9,
+        "Identity": 1,
+        "Network": 2,
+        "Storage": 1,
+        "Email": 1,
+        "Database": 8,
+        "DNSSEC": 5,
+        "SSH": 1
+      },
+      "findings_by_severity": {
+        "MEDIUM": 78,
+        "SAFE": 9,
+        "HIGH": 34,
+        "CRITICAL": 12,
+        "LOW": 2
+      },
+      "findings_by_tool": {
+        "pqaudit": 9,
+        "cryptoscan": 64,
+        "surveyor": 3,
+        "pqc-network-scanner": 4,
+        "testssl.sh": 15,
+        "acdi": 12,
+        "db-crypto-discovery": 8,
+        "dnssec-crypto-scan": 5,
+        "vault-audit": 6,
+        "pqcscan": 9
+      }
+    },
+    "category_3_scanner_performance": {
+      "false_positive_rate": "53% (71 medium from code scanners)"
+    },
+    "category_4_performance_impact": {
+      "pqc_tls_overhead_us": 22,
+      "pqc_tls_overhead_pct": 0.04,
+      "ml_kem_keygen_ops_per_sec": 95005,
+      "liboqs_runs_on": "x86_64, gcc 13.3.0, AES-NI, AVX2"
+    }
+  },
+  "findings": [
+    {
+      "tool": "pqaudit",
+      "layer": "Code",
+      "severity": "MEDIUM",
+      "algorithm": "3DES",
+      "asset": "tools/cbom.json",
+      "category": "CRYPTO_INVENTORY",
+      "quantum_risk": "VULNERABLE",
+      "evidence": "DES/3DES \u2014 deprecated, 64-bit block size \u2014 replace with AES-256",
+      "source_file": "pqaudit-results.json"
+    },
+    {
+      "tool": "pqaudit",
+      "layer": "Code",
+      "severity": "MEDIUM",
+      "algorithm": "3DES",
+      "asset": "tools/pqaudit-results.json",
+      "category": "CRYPTO_INVENTORY",
+      "quantum_risk": "VULNERABLE",
+      "evidence": "DES/3DES \u2014 deprecated, 64-bit block size \u2014 replace with AES-256",
+      "source_file": "pqaudit-results.json"
+    },
+    {
+      "tool": "pqaudit",
+      "layer": "Code",
+      "severity": "MEDIUM",
+      "algorithm": "3DES",
+      "asset": "workspace/preview/variant-2/js/main.js",
+      "category": "CRYPTO_INVENTORY",
+      "quantum_risk": "VULNERABLE",
+      "evidence": "DES/3DES \u2014 deprecated, 64-bit block size \u2014 replace with AES-256",
+      "source_file": "pqaudit-results.json"
+    },
+    {
+      "tool": "pqaudit",
+      "layer": "Code",
+      "severity": "MEDIUM",
+      "algorithm": "3DES",
+      "asset": "workspace/preview/variant-3-interaction/js/main.js",
+      "category": "CRYPTO_INVENTORY",
+      "quantum_risk": "VULNERABLE",
+      "evidence": "DES/3DES \u2014 deprecated, 64-bit block size \u2014 replace with AES-256",
+      "source_file": "pqaudit-results.json"
+    },
+    {
+      "tool": "pqaudit",
+      "layer": "Code",
+      "severity": "MEDIUM",
+      "algorithm": "3DES",
+      "asset": "workspace/preview/variant-3-premium/js/main.js",
+      "category": "CRYPTO_INVENTORY",
+      "quantum_risk": "VULNERABLE",
+      "evidence": "DES/3DES \u2014 deprecated, 64-bit block size \u2014 replace with AES-256",
+      "source_file": "pqaudit-results.json"
+    },
+    {
+      "tool": "pqaudit",
+      "layer": "Code",
+      "severity": "MEDIUM",
+      "algorithm": "3DES",
+      "asset": "workspace/preview/variant-3-refined/js/main.js",
+      "category": "CRYPTO_INVENTORY",
+      "quantum_risk": "VULNERABLE",
+      "evidence": "DES/3DES \u2014 deprecated, 64-bit block size \u2014 replace with AES-256",
+      "source_file": "pqaudit-results.json"
+    },
+    {
+      "tool": "pqaudit",
+      "layer": "Code",
+      "severity": "MEDIUM",
+      "algorithm": "3DES",
+      "asset": "workspace/preview/variant-3/js/main.js",
+      "category": "CRYPTO_INVENTORY",
+      "quantum_risk": "VULNERABLE",
+      "evidence": "DES/3DES \u2014 deprecated, 64-bit block size \u2014 replace with AES-256",
+      "source_file": "pqaudit-results.json"
+    },
+    {
+      "tool": "pqaudit",
+      "layer": "Code",
+      "severity": "SAFE",
+      "algorithm": "AES-256",
+      "asset": "tools/cbom.json",
+      "category": "CRYPTO_INVENTORY",
+      "quantum_risk": "VULNERABLE",
+      "evidence": "AES-256 \u2014 128-bit post-quantum security, sufficient \u2014 replace with None",
+      "source_file": "pqaudit-results.json"
+    },
+    {
+      "tool": "pqaudit",
+      "layer": "Code",
+      "severity": "SAFE",
+      "algorithm": "AES-256",
+      "asset": "tools/pqaudit-results.json",
+      "category": "CRYPTO_INVENTORY",
+      "quantum_risk": "VULNERABLE",
+      "evidence": "AES-256 \u2014 128-bit post-quantum security, sufficient \u2014 replace with None",
+      "source_file": "pqaudit-results.json"
+    },
+    {
+      "tool": "cryptoscan",
+      "layer": "Code",
+      "severity": "MEDIUM",
+      "algorithm": "3DES",
+      "asset": "/home/emo/workspace/git/quantum/web-swarm/website-swarm/tools/cbom.json",
+      "category": "CRYPTO_INVENTORY",
+      "quantum_risk": "VULNERABLE",
+      "evidence": "Category: Deprecated Algorithm, Migration status: VULNERABLE",
+      "source_file": "cryptoscan-results.json"
+    },
+    {
+      "tool": "cryptoscan",
+      "layer": "Code",
+      "severity": "MEDIUM",
+      "algorithm": "3DES",
+      "asset": "/home/emo/workspace/git/quantum/web-swarm/website-swarm/tools/cbom.json",
+      "category": "CRYPTO_INVENTORY",
+      "quantum_risk": "VULNERABLE",
+      "evidence": "Category: Deprecated Algorithm, Migration status: VULNERABLE",
+      "source_file": "cryptoscan-results.json"
+    },
+    {
+      "tool": "cryptoscan",
+      "layer": "Code",
+      "severity": "MEDIUM",
+      "algorithm": "3DES",
+      "asset": "/home/emo/workspace/git/quantum/web-swarm/website-swarm/tools/cbom.json",
+      "category": "CRYPTO_INVENTORY",
+      "quantum_risk": "VULNERABLE",
+      "evidence": "Category: Deprecated Algorithm, Migration status: VULNERABLE",
+      "source_file": "cryptoscan-results.json"
+    },
+    {
+      "tool": "cryptoscan",
+      "layer": "Code",
+      "severity": "MEDIUM",
+      "algorithm": "3DES",
+      "asset": "/home/emo/workspace/git/quantum/web-swarm/website-swarm/tools/cbom.json",
+      "category": "CRYPTO_INVENTORY",
+      "quantum_risk": "VULNERABLE",
+      "evidence": "Category: Deprecated Algorithm, Migration status: VULNERABLE",
+      "source_file": "cryptoscan-results.json"
+    },
+    {
+      "tool": "cryptoscan",
+      "layer": "Code",
+      "severity": "MEDIUM",
+      "algorithm": "3DES",
+      "asset": "/home/emo/workspace/git/quantum/web-swarm/website-swarm/tools/cbom.json",
+      "category": "CRYPTO_INVENTORY",
+      "quantum_risk": "VULNERABLE",
+      "evidence": "Category: Deprecated Algorithm, Migration status: VULNERABLE",
+      "source_file": "cryptoscan-results.json"
+    },
+    {
+      "tool": "cryptoscan",
+      "layer": "Code",
+      "severity": "MEDIUM",
+      "algorithm": "3DES",
+      "asset": "/home/emo/workspace/git/quantum/web-swarm/website-swarm/tools/cbom.json",
+      "category": "CRYPTO_INVENTORY",
+      "quantum_risk": "VULNERABLE",
+      "evidence": "Category: Deprecated Algorithm, Migration status: VULNERABLE",
+      "source_file": "cryptoscan-results.json"
+    },
+    {
+      "tool": "cryptoscan",
+      "layer": "Code",
+      "severity": "MEDIUM",
+      "algorithm": "3DES",
+      "asset": "/home/emo/workspace/git/quantum/web-swarm/website-swarm/tools/cbom.json",
+      "category": "CRYPTO_INVENTORY",
+      "quantum_risk": "VULNERABLE",
+      "evidence": "Category: Deprecated Algorithm, Migration status: VULNERABLE",
+      "source_file": "cryptoscan-results.json"
+    },
+    {
+      "tool": "cryptoscan",
+      "layer": "Code",
+      "severity": "MEDIUM",
+      "algorithm": "3DES",
+      "asset": "/home/emo/workspace/git/quantum/web-swarm/website-swarm/tools/cbom.json",
+      "category": "CRYPTO_INVENTORY",
+      "quantum_risk": "VULNERABLE",
+      "evidence": "Category: Deprecated Algorithm, Migration status: VULNERABLE",
+      "source_file": "cryptoscan-results.json"
+    },
+    {
+      "tool": "cryptoscan",
+      "layer": "Code",
+      "severity": "MEDIUM",
+      "algorithm": "3DES",
+      "asset": "/home/emo/workspace/git/quantum/web-swarm/website-swarm/tools/cbom.json",
+      "category": "CRYPTO_INVENTORY",
+      "quantum_risk": "VULNERABLE",
+      "evidence": "Category: Deprecated Algorithm, Migration status: VULNERABLE",
+      "source_file": "cryptoscan-results.json"
+    },
+    {
+      "tool": "cryptoscan",
+      "layer": "Code",
+      "severity": "MEDIUM",
+      "algorithm": "3DES",
+      "asset": "/home/emo/workspace/git/quantum/web-swarm/website-swarm/tools/cbom.json",
+      "category": "CRYPTO_INVENTORY",
+      "quantum_risk": "VULNERABLE",
+      "evidence": "Category: Deprecated Algorithm, Migration status: VULNERABLE",
+      "source_file": "cryptoscan-results.json"
+    },
+    {
+      "tool": "cryptoscan",
+      "layer": "Code",
+      "severity": "MEDIUM",
+      "algorithm": "3DES",
+      "asset": "/home/emo/workspace/git/quantum/web-swarm/website-swarm/tools/cbom.json",
+      "category": "CRYPTO_INVENTORY",
+      "quantum_risk": "VULNERABLE",
+      "evidence": "Category: Deprecated Algorithm, Migration status: VULNERABLE",
+      "source_file": "cryptoscan-results.json"
+    },
+    {
+      "tool": "cryptoscan",
+      "layer": "Code",
+      "severity": "MEDIUM",
+      "algorithm": "3DES",
+      "asset": "/home/emo/workspace/git/quantum/web-swarm/website-swarm/tools/cbom.json",
+      "category": "CRYPTO_INVENTORY",
+      "quantum_risk": "VULNERABLE",
+      "evidence": "Category: Deprecated Algorithm, Migration status: VULNERABLE",
+      "source_file": "cryptoscan-results.json"
+    },
+    {
+      "tool": "cryptoscan",
+      "layer": "Code",
+      "severity": "MEDIUM",
+      "algorithm": "3DES",
+      "asset": "/home/emo/workspace/git/quantum/web-swarm/website-swarm/tools/pqaudit-report.html",
+      "category": "CRYPTO_INVENTORY",
+      "quantum_risk": "VULNERABLE",
+      "evidence": "Category: Deprecated Algorithm, Migration status: VULNERABLE",
+      "source_file": "cryptoscan-results.json"
+    },
+    {
+      "tool": "cryptoscan",
+      "layer": "Code",
+      "severity": "MEDIUM",
+      "algorithm": "3DES",
+      "asset": "/home/emo/workspace/git/quantum/web-swarm/website-swarm/tools/pqaudit-results.sarif",
+      "category": "CRYPTO_INVENTORY",
+      "quantum_risk": "VULNERABLE",
+      "evidence": "Category: Deprecated Algorithm, Migration status: VULNERABLE",
+      "source_file": "cryptoscan-results.json"
+    },
+    {
+      "tool": "cryptoscan",
+      "layer": "Code",
+      "severity": "MEDIUM",
+      "algorithm": "3DES",
+      "asset": "/home/emo/workspace/git/quantum/web-swarm/website-swarm/tools/pqaudit-results.sarif",
+      "category": "CRYPTO_INVENTORY",
+      "quantum_risk": "VULNERABLE",
+      "evidence": "Category: Deprecated Algorithm, Migration status: VULNERABLE",
+      "source_file": "cryptoscan-results.json"
+    },
+    {
+      "tool": "cryptoscan",
+      "layer": "Code",
+      "severity": "MEDIUM",
+      "algorithm": "3DES",
+      "asset": "/home/emo/workspace/git/quantum/web-swarm/website-swarm/tools/pqaudit-report.html",
+      "category": "CRYPTO_INVENTORY",
+      "quantum_risk": "VULNERABLE",
+      "evidence": "Category: Deprecated Algorithm, Migration status: VULNERABLE",
+      "source_file": "cryptoscan-results.json"
+    },
+    {
+      "tool": "cryptoscan",
+      "layer": "Code",
+      "severity": "MEDIUM",
+      "algorithm": "RSA",
+      "asset": "/home/emo/workspace/git/quantum/web-swarm/website-swarm/workspace/preview/variant-1/index.html",
+      "category": "CRYPTO_INVENTORY",
+      "quantum_risk": "VULNERABLE",
+      "evidence": "Category: Asymmetric Encryption, Migration status: VULNERABLE",
+      "source_file": "cryptoscan-results.json"
+    },
+    {
+      "tool": "cryptoscan",
+      "layer": "Code",
+      "severity": "MEDIUM",
+      "algorithm": "3DES",
+      "asset": "/home/emo/workspace/git/quantum/web-swarm/website-swarm/tools/pqaudit-report.html",
+      "category": "CRYPTO_INVENTORY",
+      "quantum_risk": "VULNERABLE",
+      "evidence": "Category: Deprecated Algorithm, Migration status: VULNERABLE",
+      "source_file": "cryptoscan-results.json"
+    },
+    {
+      "tool": "cryptoscan",
+      "layer": "Code",
+      "severity": "MEDIUM",
+      "algorithm": "RSA",
+      "asset": "/home/emo/workspace/git/quantum/web-swarm/website-swarm/workspace/preview/variant-1/quantum-status.html",
+      "category": "CRYPTO_INVENTORY",
+      "quantum_risk": "VULNERABLE",
+      "evidence": "Category: Asymmetric Encryption, Migration status: VULNERABLE",
+      "source_file": "cryptoscan-results.json"
+    },
+    {
+      "tool": "cryptoscan",
+      "layer": "Code",
+      "severity": "MEDIUM",
+      "algorithm": "3DES",
+      "asset": "/home/emo/workspace/git/quantum/web-swarm/website-swarm/tools/pqaudit-results.sarif",
+      "category": "CRYPTO_INVENTORY",
+      "quantum_risk": "VULNERABLE",
+      "evidence": "Category: Deprecated Algorithm, Migration status: VULNERABLE",
+      "source_file": "cryptoscan-results.json"
+    },
+    {
+      "tool": "cryptoscan",
+      "layer": "Code",
+      "severity": "MEDIUM",
+      "algorithm": "3DES",
+      "asset": "/home/emo/workspace/git/quantum/web-swarm/website-swarm/tools/pqaudit-report.html",
+      "category": "CRYPTO_INVENTORY",
+      "quantum_risk": "VULNERABLE",
+      "evidence": "Category: Deprecated Algorithm, Migration status: VULNERABLE",
+      "source_file": "cryptoscan-results.json"
+    },
+    {
+      "tool": "cryptoscan",
+      "layer": "Code",
+      "severity": "MEDIUM",
+      "algorithm": "3DES",
+      "asset": "/home/emo/workspace/git/quantum/web-swarm/website-swarm/tools/pqaudit-results.sarif",
+      "category": "CRYPTO_INVENTORY",
+      "quantum_risk": "VULNERABLE",
+      "evidence": "Category: Deprecated Algorithm, Migration status: VULNERABLE",
+      "source_file": "cryptoscan-results.json"
+    },
+    {
+      "tool": "cryptoscan",
+      "layer": "Code",
+      "severity": "MEDIUM",
+      "algorithm": "3DES",
+      "asset": "/home/emo/workspace/git/quantum/web-swarm/website-swarm/tools/pqaudit-results.sarif",
+      "category": "CRYPTO_INVENTORY",
+      "quantum_risk": "VULNERABLE",
+      "evidence": "Category: Deprecated Algorithm, Migration status: VULNERABLE",
+      "source_file": "cryptoscan-results.json"
+    },
+    {
+      "tool": "cryptoscan",
+      "layer": "Code",
+      "severity": "MEDIUM",
+      "algorithm": "3DES",
+      "asset": "/home/emo/workspace/git/quantum/web-swarm/website-swarm/tools/pqaudit-report.html",
+      "category": "CRYPTO_INVENTORY",
+      "quantum_risk": "VULNERABLE",
+      "evidence": "Category: Deprecated Algorithm, Migration status: VULNERABLE",
+      "source_file": "cryptoscan-results.json"
+    },
+    {
+      "tool": "cryptoscan",
+      "layer": "Code",
+      "severity": "MEDIUM",
+      "algorithm": "3DES",
+      "asset": "/home/emo/workspace/git/quantum/web-swarm/website-swarm/tools/pqaudit-results.sarif",
+      "category": "CRYPTO_INVENTORY",
+      "quantum_risk": "VULNERABLE",
+      "evidence": "Category: Deprecated Algorithm, Migration status: VULNERABLE",
+      "source_file": "cryptoscan-results.json"
+    },
+    {
+      "tool": "cryptoscan",
+      "layer": "Code",
+      "severity": "MEDIUM",
+      "algorithm": "3DES",
+      "asset": "/home/emo/workspace/git/quantum/web-swarm/website-swarm/tools/pqaudit-results.sarif",
+      "category": "CRYPTO_INVENTORY",
+      "quantum_risk": "VULNERABLE",
+      "evidence": "Category: Deprecated Algorithm, Migration status: VULNERABLE",
+      "source_file": "cryptoscan-results.json"
+    },
+    {
+      "tool": "cryptoscan",
+      "layer": "Code",
+      "severity": "MEDIUM",
+      "algorithm": "3DES",
+      "asset": "/home/emo/workspace/git/quantum/web-swarm/website-swarm/tools/pqaudit-report.html",
+      "category": "CRYPTO_INVENTORY",
+      "quantum_risk": "VULNERABLE",
+      "evidence": "Category: Deprecated Algorithm, Migration status: VULNERABLE",
+      "source_file": "cryptoscan-results.json"
+    },
+    {
+      "tool": "cryptoscan",
+      "layer": "Code",
+      "severity": "MEDIUM",
+      "algorithm": "3DES",
+      "asset": "/home/emo/workspace/git/quantum/web-swarm/website-swarm/tools/pqaudit-report.html",
+      "category": "CRYPTO_INVENTORY",
+      "quantum_risk": "VULNERABLE",
+      "evidence": "Category: Deprecated Algorithm, Migration status: VULNERABLE",
+      "source_file": "cryptoscan-results.json"
+    },
+    {
+      "tool": "cryptoscan",
+      "layer": "Code",
+      "severity": "MEDIUM",
+      "algorithm": "RSA",
+      "asset": "/home/emo/workspace/git/quantum/web-swarm/website-swarm/workspace/preview/variant-2/quantum-status.html",
+      "category": "CRYPTO_INVENTORY",
+      "quantum_risk": "VULNERABLE",
+      "evidence": "Category: Asymmetric Encryption, Migration status: VULNERABLE",
+      "source_file": "cryptoscan-results.json"
+    },
+    {
+      "tool": "cryptoscan",
+      "layer": "Code",
+      "severity": "MEDIUM",
+      "algorithm": "3DES",
+      "asset": "/home/emo/workspace/git/quantum/web-swarm/website-swarm/tools/pqaudit-results.sarif",
+      "category": "CRYPTO_INVENTORY",
+      "quantum_risk": "VULNERABLE",
+      "evidence": "Category: Deprecated Algorithm, Migration status: VULNERABLE",
+      "source_file": "cryptoscan-results.json"
+    },
+    {
+      "tool": "cryptoscan",
+      "layer": "Code",
+      "severity": "MEDIUM",
+      "algorithm": "RSA",
+      "asset": "/home/emo/workspace/git/quantum/web-swarm/website-swarm/workspace/preview/variant-2/index.html",
+      "category": "CRYPTO_INVENTORY",
+      "quantum_risk": "VULNERABLE",
+      "evidence": "Category: Asymmetric Encryption, Migration status: VULNERABLE",
+      "source_file": "cryptoscan-results.json"
+    },
+    {
+      "tool": "cryptoscan",
+      "layer": "Code",
+      "severity": "MEDIUM",
+      "algorithm": "RSA",
+      "asset": "/home/emo/workspace/git/quantum/web-swarm/website-swarm/workspace/preview/variant-1/index.html",
+      "category": "CRYPTO_INVENTORY",
+      "quantum_risk": "VULNERABLE",
+      "evidence": "Category: Key Size, Migration status: VULNERABLE",
+      "source_file": "cryptoscan-results.json"
+    },
+    {
+      "tool": "cryptoscan",
+      "layer": "Code",
+      "severity": "MEDIUM",
+      "algorithm": "RSA",
+      "asset": "/home/emo/workspace/git/quantum/web-swarm/website-swarm/workspace/preview/variant-2/index.html",
+      "category": "CRYPTO_INVENTORY",
+      "quantum_risk": "VULNERABLE",
+      "evidence": "Category: Key Size, Migration status: VULNERABLE",
+      "source_file": "cryptoscan-results.json"
+    },
+    {
+      "tool": "cryptoscan",
+      "layer": "Code",
+      "severity": "MEDIUM",
+      "algorithm": "3DES",
+      "asset": "/home/emo/workspace/git/quantum/web-swarm/website-swarm/tools/pqaudit-report.html",
+      "category": "CRYPTO_INVENTORY",
+      "quantum_risk": "VULNERABLE",
+      "evidence": "Category: Deprecated Algorithm, Migration status: VULNERABLE",
+      "source_file": "cryptoscan-results.json"
+    },
+    {
+      "tool": "cryptoscan",
+      "layer": "Code",
+      "severity": "MEDIUM",
+      "algorithm": "3DES",
+      "asset": "/home/emo/workspace/git/quantum/web-swarm/website-swarm/tools/pqaudit-report.html",
+      "category": "CRYPTO_INVENTORY",
+      "quantum_risk": "VULNERABLE",
+      "evidence": "Category: Deprecated Algorithm, Migration status: VULNERABLE",
+      "source_file": "cryptoscan-results.json"
+    },
+    {
+      "tool": "cryptoscan",
+      "layer": "Code",
+      "severity": "MEDIUM",
+      "algorithm": "3DES",
+      "asset": "/home/emo/workspace/git/quantum/web-swarm/website-swarm/tools/pqaudit-report.html",
+      "category": "CRYPTO_INVENTORY",
+      "quantum_risk": "VULNERABLE",
+      "evidence": "Category: Deprecated Algorithm, Migration status: VULNERABLE",
+      "source_file": "cryptoscan-results.json"
+    },
+    {
+      "tool": "cryptoscan",
+      "layer": "Code",
+      "severity": "MEDIUM",
+      "algorithm": "3DES",
+      "asset": "/home/emo/workspace/git/quantum/web-swarm/website-swarm/tools/pqaudit-report.html",
+      "category": "CRYPTO_INVENTORY",
+      "quantum_risk": "VULNERABLE",
+      "evidence": "Category: Deprecated Algorithm, Migration status: VULNERABLE",
+      "source_file": "cryptoscan-results.json"
+    },
+    {
+      "tool": "cryptoscan",
+      "layer": "Code",
+      "severity": "MEDIUM",
+      "algorithm": "3DES",
+      "asset": "/home/emo/workspace/git/quantum/web-swarm/website-swarm/tools/pqaudit-report.html",
+      "category": "CRYPTO_INVENTORY",
+      "quantum_risk": "VULNERABLE",
+      "evidence": "Category: Deprecated Algorithm, Migration status: VULNERABLE",
+      "source_file": "cryptoscan-results.json"
+    },
+    {
+      "tool": "cryptoscan",
+      "layer": "Code",
+      "severity": "MEDIUM",
+      "algorithm": "3DES",
+      "asset": "/home/emo/workspace/git/quantum/web-swarm/website-swarm/tools/pqaudit-results.sarif",
+      "category": "CRYPTO_INVENTORY",
+      "quantum_risk": "VULNERABLE",
+      "evidence": "Category: Deprecated Algorithm, Migration status: VULNERABLE",
+      "source_file": "cryptoscan-results.json"
+    },
+    {
+      "tool": "cryptoscan",
+      "layer": "Code",
+      "severity": "MEDIUM",
+      "algorithm": "3DES",
+      "asset": "/home/emo/workspace/git/quantum/web-swarm/website-swarm/tools/pqaudit-report.html",
+      "category": "CRYPTO_INVENTORY",
+      "quantum_risk": "VULNERABLE",
+      "evidence": "Category: Deprecated Algorithm, Migration status: VULNERABLE",
+      "source_file": "cryptoscan-results.json"
+    },
+    {
+      "tool": "cryptoscan",
+      "layer": "Code",
+      "severity": "MEDIUM",
+      "algorithm": "3DES",
+      "asset": "/home/emo/workspace/git/quantum/web-swarm/website-swarm/tools/pqaudit-report.html",
+      "category": "CRYPTO_INVENTORY",
+      "quantum_risk": "VULNERABLE",
+      "evidence": "Category: Deprecated Algorithm, Migration status: VULNERABLE",
+      "source_file": "cryptoscan-results.json"
+    },
+    {
+      "tool": "cryptoscan",
+      "layer": "Code",
+      "severity": "MEDIUM",
+      "algorithm": "ML-DSA",
+      "asset": "/home/emo/workspace/git/quantum/web-swarm/website-swarm/workspace/preview/variant-3-refined/index.html",
+      "category": "CRYPTO_INVENTORY",
+      "quantum_risk": "VULNERABLE",
+      "evidence": "Category: Post-Quantum Cryptography, Migration status: SAFE",
+      "source_file": "cryptoscan-results.json"
+    },
+    {
+      "tool": "cryptoscan",
+      "layer": "Code",
+      "severity": "MEDIUM",
+      "algorithm": "FN-DSA",
+      "asset": "/home/emo/workspace/git/quantum/web-swarm/website-swarm/workspace/preview/variant-3/quantum-status.html",
+      "category": "CRYPTO_INVENTORY",
+      "quantum_risk": "VULNERABLE",
+      "evidence": "Category: Post-Quantum Cryptography, Migration status: SAFE",
+      "source_file": "cryptoscan-results.json"
+    },
+    {
+      "tool": "cryptoscan",
+      "layer": "Code",
+      "severity": "MEDIUM",
+      "algorithm": "SLH-DSA",
+      "asset": "/home/emo/workspace/git/quantum/web-swarm/website-swarm/workspace/preview/variant-3-refined/index.html",
+      "category": "CRYPTO_INVENTORY",
+      "quantum_risk": "VULNERABLE",
+      "evidence": "Category: Post-Quantum Cryptography, Migration status: SAFE",
+      "source_file": "cryptoscan-results.json"
+    },
+    {
+      "tool": "cryptoscan",
+      "layer": "Code",
+      "severity": "MEDIUM",
+      "algorithm": "ML-KEM",
+      "asset": "/home/emo/workspace/git/quantum/web-swarm/website-swarm/workspace/preview/variant-3/index.html",
+      "category": "CRYPTO_INVENTORY",
+      "quantum_risk": "VULNERABLE",
+      "evidence": "Category: Post-Quantum Cryptography, Migration status: SAFE",
+      "source_file": "cryptoscan-results.json"
+    },
+    {
+      "tool": "cryptoscan",
+      "layer": "Code",
+      "severity": "MEDIUM",
+      "algorithm": "ML-KEM",
+      "asset": "/home/emo/workspace/git/quantum/web-swarm/website-swarm/workspace/preview/variant-3-interaction/quantum-status.html",
+      "category": "CRYPTO_INVENTORY",
+      "quantum_risk": "VULNERABLE",
+      "evidence": "Category: Post-Quantum Cryptography, Migration status: SAFE",
+      "source_file": "cryptoscan-results.json"
+    },
+    {
+      "tool": "cryptoscan",
+      "layer": "Code",
+      "severity": "MEDIUM",
+      "algorithm": "FN-DSA",
+      "asset": "/home/emo/workspace/git/quantum/web-swarm/website-swarm/workspace/preview/variant-3/quantum-status.html",
+      "category": "CRYPTO_INVENTORY",
+      "quantum_risk": "VULNERABLE",
+      "evidence": "Category: Post-Quantum Cryptography, Migration status: SAFE",
+      "source_file": "cryptoscan-results.json"
+    },
+    {
+      "tool": "cryptoscan",
+      "layer": "Code",
+      "severity": "MEDIUM",
+      "algorithm": "ML-KEM",
+      "asset": "/home/emo/workspace/git/quantum/web-swarm/website-swarm/workspace/preview/variant-2/index.html",
+      "category": "CRYPTO_INVENTORY",
+      "quantum_risk": "VULNERABLE",
+      "evidence": "Category: Post-Quantum Cryptography, Migration status: SAFE",
+      "source_file": "cryptoscan-results.json"
+    },
+    {
+      "tool": "cryptoscan",
+      "layer": "Code",
+      "severity": "MEDIUM",
+      "algorithm": "FN-DSA",
+      "asset": "/home/emo/workspace/git/quantum/web-swarm/website-swarm/workspace/preview/variant-3-premium/quantum-status.html",
+      "category": "CRYPTO_INVENTORY",
+      "quantum_risk": "VULNERABLE",
+      "evidence": "Category: Post-Quantum Cryptography, Migration status: SAFE",
+      "source_file": "cryptoscan-results.json"
+    },
+    {
+      "tool": "cryptoscan",
+      "layer": "Code",
+      "severity": "MEDIUM",
+      "algorithm": "FN-DSA",
+      "asset": "/home/emo/workspace/git/quantum/web-swarm/website-swarm/workspace/preview/variant-3-premium/index.html",
+      "category": "CRYPTO_INVENTORY",
+      "quantum_risk": "VULNERABLE",
+      "evidence": "Category: Post-Quantum Cryptography, Migration status: SAFE",
+      "source_file": "cryptoscan-results.json"
+    },
+    {
+      "tool": "cryptoscan",
+      "layer": "Code",
+      "severity": "MEDIUM",
+      "algorithm": "SLH-DSA",
+      "asset": "/home/emo/workspace/git/quantum/web-swarm/website-swarm/workspace/preview/variant-3-refined/index.html",
+      "category": "CRYPTO_INVENTORY",
+      "quantum_risk": "VULNERABLE",
+      "evidence": "Category: Post-Quantum Cryptography, Migration status: SAFE",
+      "source_file": "cryptoscan-results.json"
+    },
+    {
+      "tool": "cryptoscan",
+      "layer": "Code",
+      "severity": "MEDIUM",
+      "algorithm": "unknown",
+      "asset": "/home/emo/workspace/git/quantum/web-swarm/website-swarm/workspace/preview/variant-3-refined/index.html",
+      "category": "CRYPTO_INVENTORY",
+      "quantum_risk": "VULNERABLE",
+      "evidence": "Category: Certificate, Migration status: PARTIAL",
+      "source_file": "cryptoscan-results.json"
+    },
+    {
+      "tool": "cryptoscan",
+      "layer": "Code",
+      "severity": "MEDIUM",
+      "algorithm": "ML-KEM",
+      "asset": "/home/emo/workspace/git/quantum/web-swarm/website-swarm/workspace/preview/variant-3-refined/index.html",
+      "category": "CRYPTO_INVENTORY",
+      "quantum_risk": "VULNERABLE",
+      "evidence": "Category: Post-Quantum Cryptography, Migration status: SAFE",
+      "source_file": "cryptoscan-results.json"
+    },
+    {
+      "tool": "cryptoscan",
+      "layer": "Code",
+      "severity": "MEDIUM",
+      "algorithm": "FN-DSA",
+      "asset": "/home/emo/workspace/git/quantum/web-swarm/website-swarm/workspace/preview/variant-3-refined/index.html",
+      "category": "CRYPTO_INVENTORY",
+      "quantum_risk": "VULNERABLE",
+      "evidence": "Category: Post-Quantum Cryptography, Migration status: SAFE",
+      "source_file": "cryptoscan-results.json"
+    },
+    {
+      "tool": "cryptoscan",
+      "layer": "Code",
+      "severity": "MEDIUM",
+      "algorithm": "FN-DSA",
+      "asset": "/home/emo/workspace/git/quantum/web-swarm/website-swarm/workspace/preview/variant-3/index.html",
+      "category": "CRYPTO_INVENTORY",
+      "quantum_risk": "VULNERABLE",
+      "evidence": "Category: Post-Quantum Cryptography, Migration status: SAFE",
+      "source_file": "cryptoscan-results.json"
+    },
+    {
+      "tool": "cryptoscan",
+      "layer": "Code",
+      "severity": "MEDIUM",
+      "algorithm": "ML-KEM",
+      "asset": "/home/emo/workspace/git/quantum/web-swarm/website-swarm/workspace/preview/variant-3-interaction/index.html",
+      "category": "CRYPTO_INVENTORY",
+      "quantum_risk": "VULNERABLE",
+      "evidence": "Category: Post-Quantum Cryptography, Migration status: SAFE",
+      "source_file": "cryptoscan-results.json"
+    },
+    {
+      "tool": "cryptoscan",
+      "layer": "Code",
+      "severity": "MEDIUM",
+      "algorithm": "ML-KEM",
+      "asset": "/home/emo/workspace/git/quantum/web-swarm/website-swarm/workspace/preview/variant-3-interaction/index.html",
+      "category": "CRYPTO_INVENTORY",
+      "quantum_risk": "VULNERABLE",
+      "evidence": "Category: Post-Quantum Cryptography, Migration status: SAFE",
+      "source_file": "cryptoscan-results.json"
+    },
+    {
+      "tool": "cryptoscan",
+      "layer": "Code",
+      "severity": "MEDIUM",
+      "algorithm": "ML-KEM",
+      "asset": "/home/emo/workspace/git/quantum/web-swarm/website-swarm/workspace/preview/variant-3-refined/index.html",
+      "category": "CRYPTO_INVENTORY",
+      "quantum_risk": "VULNERABLE",
+      "evidence": "Category: Post-Quantum Cryptography, Migration status: SAFE",
+      "source_file": "cryptoscan-results.json"
+    },
+    {
+      "tool": "cryptoscan",
+      "layer": "Code",
+      "severity": "MEDIUM",
+      "algorithm": "ML-KEM",
+      "asset": "/home/emo/workspace/git/quantum/web-swarm/website-swarm/workspace/preview/variant-3-interaction/quantum-status.html",
+      "category": "CRYPTO_INVENTORY",
+      "quantum_risk": "VULNERABLE",
+      "evidence": "Category: Post-Quantum Cryptography, Migration status: SAFE",
+      "source_file": "cryptoscan-results.json"
+    },
+    {
+      "tool": "cryptoscan",
+      "layer": "Code",
+      "severity": "MEDIUM",
+      "algorithm": "ML-DSA",
+      "asset": "/home/emo/workspace/git/quantum/web-swarm/website-swarm/workspace/preview/variant-3-refined/index.html",
+      "category": "CRYPTO_INVENTORY",
+      "quantum_risk": "VULNERABLE",
+      "evidence": "Category: Post-Quantum Cryptography, Migration status: SAFE",
+      "source_file": "cryptoscan-results.json"
+    },
+    {
+      "tool": "cryptoscan",
+      "layer": "Code",
+      "severity": "MEDIUM",
+      "algorithm": "FN-DSA",
+      "asset": "/home/emo/workspace/git/quantum/web-swarm/website-swarm/workspace/preview/variant-3-premium/quantum-status.html",
+      "category": "CRYPTO_INVENTORY",
+      "quantum_risk": "VULNERABLE",
+      "evidence": "Category: Post-Quantum Cryptography, Migration status: SAFE",
+      "source_file": "cryptoscan-results.json"
+    },
+    {
+      "tool": "cryptoscan",
+      "layer": "Code",
+      "severity": "MEDIUM",
+      "algorithm": "FN-DSA",
+      "asset": "/home/emo/workspace/git/quantum/web-swarm/website-swarm/workspace/preview/variant-3/quantum-status.html",
+      "category": "CRYPTO_INVENTORY",
+      "quantum_risk": "VULNERABLE",
+      "evidence": "Category: Post-Quantum Cryptography, Migration status: SAFE",
+      "source_file": "cryptoscan-results.json"
+    },
+    {
+      "tool": "cryptoscan",
+      "layer": "Code",
+      "severity": "MEDIUM",
+      "algorithm": "FN-DSA",
+      "asset": "/home/emo/workspace/git/quantum/web-swarm/website-swarm/workspace/preview/variant-3-premium/quantum-status.html",
+      "category": "CRYPTO_INVENTORY",
+      "quantum_risk": "VULNERABLE",
+      "evidence": "Category: Post-Quantum Cryptography, Migration status: SAFE",
+      "source_file": "cryptoscan-results.json"
+    },
+    {
+      "tool": "cryptoscan",
+      "layer": "Code",
+      "severity": "MEDIUM",
+      "algorithm": "ML-KEM",
+      "asset": "/home/emo/workspace/git/quantum/web-swarm/website-swarm/workspace/preview/variant-3-premium/index.html",
+      "category": "CRYPTO_INVENTORY",
+      "quantum_risk": "VULNERABLE",
+      "evidence": "Category: Post-Quantum Cryptography, Migration status: SAFE",
+      "source_file": "cryptoscan-results.json"
+    },
+    {
+      "tool": "surveyor",
+      "layer": "TLS",
+      "severity": "HIGH",
+      "algorithm": "ecdsa-256",
+      "asset": "google.com:443",
+      "category": "CERT_IDENTITY",
+      "quantum_risk": "VULNERABLE",
+      "evidence": "TLS TLS 1.3 \u2014 TLS_AES_128_GCM_SHA256 \u2014 Cert: ecdsa-sha256",
+      "source_file": "surveyor-scan.json"
+    },
+    {
+      "tool": "surveyor",
+      "layer": "TLS",
+      "severity": "HIGH",
+      "algorithm": "ecdsa-256",
+      "asset": "cloudflare.com:443",
+      "category": "CERT_IDENTITY",
+      "quantum_risk": "VULNERABLE",
+      "evidence": "TLS TLS 1.3 \u2014 TLS_AES_128_GCM_SHA256 \u2014 Cert: ecdsa-sha256",
+      "source_file": "surveyor-scan.json"
+    },
+    {
+      "tool": "surveyor",
+      "layer": "TLS",
+      "severity": "HIGH",
+      "algorithm": "rsa-2048",
+      "asset": "microsoft.com:443",
+      "category": "CERT_IDENTITY",
+      "quantum_risk": "VULNERABLE",
+      "evidence": "TLS TLS 1.3 \u2014 TLS_AES_256_GCM_SHA384 \u2014 Cert: sha384-rsa",
+      "source_file": "surveyor-scan.json"
+    },
+    {
+      "tool": "pqc-network-scanner",
+      "layer": "Certificates",
+      "severity": "HIGH",
+      "algorithm": "ECPublicKey",
+      "asset": "<Name(CN=*.google.com)>",
+      "category": "CERT_IDENTITY",
+      "quantum_risk": "VULNERABLE",
+      "evidence": "Cert: ecdsa-with-SHA256, expires 2026-07-01",
+      "source_file": "pqc-network-scan-20260506-193303.json"
+    },
+    {
+      "tool": "pqc-network-scanner",
+      "layer": "Certificates",
+      "severity": "HIGH",
+      "algorithm": "ECPublicKey",
+      "asset": "<Name(CN=cloudflare.com)>",
+      "category": "CERT_IDENTITY",
+      "quantum_risk": "VULNERABLE",
+      "evidence": "Cert: ecdsa-with-SHA256, expires 2026-06-10",
+      "source_file": "pqc-network-scan-20260506-193303.json"
+    },
+    {
+      "tool": "pqc-network-scanner",
+      "layer": "Certificates",
+      "severity": "HIGH",
+      "algorithm": "RSAPublicKey",
+      "asset": "<Name(CN=microsoft.com,O=Microsoft Corporation,L=Redmond,ST=WA,C=US)>",
+      "category": "CERT_IDENTITY",
+      "quantum_risk": "VULNERABLE",
+      "evidence": "Cert: sha384WithRSAEncryption, expires 2026-10-12",
+      "source_file": "pqc-network-scan-20260506-193303.json"
+    },
+    {
+      "tool": "pqc-network-scanner",
+      "layer": "Certificates",
+      "severity": "HIGH",
+      "algorithm": "RSAPublicKey",
+      "asset": "<Name(CN=*.peg.a2z.com)>",
+      "category": "CERT_IDENTITY",
+      "quantum_risk": "VULNERABLE",
+      "evidence": "Cert: sha256WithRSAEncryption, expires 2027-01-23",
+      "source_file": "pqc-network-scan-20260506-193303.json"
+    },
+    {
+      "tool": "testssl.sh",
+      "layer": "TLS",
+      "severity": "HIGH",
+      "algorithm": "TLS1_1",
+      "asset": "internal-db.example.com",
+      "category": "DEPRECATED_TLS",
+      "quantum_risk": "VULNERABLE",
+      "evidence": "offered (deprecated) \u2014 CVE: ",
+      "source_file": "testssl-20260506.json"
+    },
+    {
+      "tool": "testssl.sh",
+      "layer": "TLS",
+      "severity": "MEDIUM",
+      "algorithm": "TLS1",
+      "asset": "internal-db.example.com",
+      "category": "DEPRECATED_TLS",
+      "quantum_risk": "TRANSITIONAL",
+      "evidence": "offered (deprecated) \u2014 CVE: ",
+      "source_file": "testssl-20260506.json"
+    },
+    {
+      "tool": "testssl.sh",
+      "layer": "TLS",
+      "severity": "CRITICAL",
+      "algorithm": "sslv3",
+      "asset": "internal-ldap.example.com",
+      "category": "DEPRECATED_TLS",
+      "quantum_risk": "VULNERABLE",
+      "evidence": "offered (obsolete) \u2014 CVE: CVE-2014-3566",
+      "source_file": "testssl-20260506.json"
+    },
+    {
+      "tool": "testssl.sh",
+      "layer": "TLS",
+      "severity": "CRITICAL",
+      "algorithm": "sslv2",
+      "asset": "internal-ldap.example.com",
+      "category": "DEPRECATED_TLS",
+      "quantum_risk": "VULNERABLE",
+      "evidence": "offered (obsolete) \u2014 CVE: CVE-2016-0800",
+      "source_file": "testssl-20260506.json"
+    },
+    {
+      "tool": "testssl.sh",
+      "layer": "TLS",
+      "severity": "CRITICAL",
+      "algorithm": "poodle",
+      "asset": "internal-ldap.example.com",
+      "category": "DEPRECATED_TLS",
+      "quantum_risk": "VULNERABLE",
+      "evidence": "vulnerable \u2014 SSLv3 with CBC ciphers \u2014 CVE: CVE-2014-3566",
+      "source_file": "testssl-20260506.json"
+    },
+    {
+      "tool": "testssl.sh",
+      "layer": "TLS",
+      "severity": "CRITICAL",
+      "algorithm": "drown",
+      "asset": "internal-ldap.example.com",
+      "category": "DEPRECATED_TLS",
+      "quantum_risk": "VULNERABLE",
+      "evidence": "vulnerable \u2014 SSLv2 with same RSA key \u2014 CVE: CVE-2016-0800",
+      "source_file": "testssl-20260506.json"
+    },
+    {
+      "tool": "testssl.sh",
+      "layer": "TLS",
+      "severity": "MEDIUM",
+      "algorithm": "sweet32",
+      "asset": "internal-db.example.com",
+      "category": "DEPRECATED_TLS",
+      "quantum_risk": "TRANSITIONAL",
+      "evidence": "vulnerable \u2014 3DES cipher offered \u2014 CVE: CVE-2016-2183",
+      "source_file": "testssl-20260506.json"
+    },
+    {
+      "tool": "testssl.sh",
+      "layer": "TLS",
+      "severity": "HIGH",
+      "algorithm": "robot",
+      "asset": "internal-db.example.com",
+      "category": "DEPRECATED_TLS",
+      "quantum_risk": "VULNERABLE",
+      "evidence": "vulnerable \u2014 RSA key transport cipher suites offered \u2014 CVE: CVE-2017-6168",
+      "source_file": "testssl-20260506.json"
+    },
+    {
+      "tool": "testssl.sh",
+      "layer": "TLS",
+      "severity": "MEDIUM",
+      "algorithm": "freak",
+      "asset": "internal-ldap.example.com",
+      "category": "DEPRECATED_TLS",
+      "quantum_risk": "TRANSITIONAL",
+      "evidence": "vulnerable \u2014 export-grade RSA ciphers offered \u2014 CVE: CVE-2015-0204",
+      "source_file": "testssl-20260506.json"
+    },
+    {
+      "tool": "testssl.sh",
+      "layer": "TLS",
+      "severity": "HIGH",
+      "algorithm": "logjam",
+      "asset": "internal-ldap.example.com",
+      "category": "DEPRECATED_TLS",
+      "quantum_risk": "VULNERABLE",
+      "evidence": "vulnerable \u2014 512-bit DH EXPORT ciphers \u2014 CVE: CVE-2015-4000",
+      "source_file": "testssl-20260506.json"
+    },
+    {
+      "tool": "testssl.sh",
+      "layer": "TLS",
+      "severity": "LOW",
+      "algorithm": "beast",
+      "asset": "internal-db.example.com",
+      "category": "DEPRECATED_TLS",
+      "quantum_risk": "TRANSITIONAL",
+      "evidence": "vulnerable \u2014 client-side only, mitigated by modern browsers \u2014 CVE: CVE-2011-3389",
+      "source_file": "testssl-20260506.json"
+    },
+    {
+      "tool": "testssl.sh",
+      "layer": "TLS",
+      "severity": "LOW",
+      "algorithm": "lucky13",
+      "asset": "internal-db.example.com",
+      "category": "DEPRECATED_TLS",
+      "quantum_risk": "TRANSITIONAL",
+      "evidence": "potentially vulnerable \u2014 CBC ciphers with TLS 1.1 \u2014 CVE: CVE-2013-0169",
+      "source_file": "testssl-20260506.json"
+    },
+    {
+      "tool": "testssl.sh",
+      "layer": "TLS",
+      "severity": "HIGH",
+      "algorithm": "rc4",
+      "asset": "internal-ldap.example.com",
+      "category": "DEPRECATED_TLS",
+      "quantum_risk": "VULNERABLE",
+      "evidence": "offered \u2014 RC4 ciphers detected \u2014 CVE: CVE-2013-2566",
+      "source_file": "testssl-20260506.json"
+    },
+    {
+      "tool": "testssl.sh",
+      "layer": "TLS",
+      "severity": "MEDIUM",
+      "algorithm": "HSTS",
+      "asset": "internal-api.example.com",
+      "category": "DEPRECATED_TLS",
+      "quantum_risk": "TRANSITIONAL",
+      "evidence": "not offered \u2014 HSTS header missing \u2014 CVE: ",
+      "source_file": "testssl-20260506.json"
+    },
+    {
+      "tool": "testssl.sh",
+      "layer": "TLS",
+      "severity": "HIGH",
+      "algorithm": "secure_renego",
+      "asset": "internal-ldap.example.com",
+      "category": "DEPRECATED_TLS",
+      "quantum_risk": "VULNERABLE",
+      "evidence": "vulnerable \u2014 insecure renegotiation \u2014 CVE: CVE-2009-3555",
+      "source_file": "testssl-20260506.json"
+    },
+    {
+      "tool": "acdi",
+      "layer": "Secrets",
+      "severity": "CRITICAL",
+      "algorithm": "RSA-2048",
+      "asset": "terraform/aws/kms.tf:23",
+      "category": "SECRETS_MANAGEMENT",
+      "quantum_risk": "VULNERABLE",
+      "evidence": "customer_master_key_spec = \"RSA_2048\"",
+      "source_file": "acdi-cbom-20260506.json"
+    },
+    {
+      "tool": "acdi",
+      "layer": "Secrets",
+      "severity": "HIGH",
+      "algorithm": "ECDSA-P-256",
+      "asset": "terraform/gcp/kms.tf:15",
+      "category": "SECRETS_MANAGEMENT",
+      "quantum_risk": "VULNERABLE",
+      "evidence": "algorithm = \"EC_SIGN_P256_SHA256\"",
+      "source_file": "acdi-cbom-20260506.json"
+    },
+    {
+      "tool": "acdi",
+      "layer": "Identity",
+      "severity": "HIGH",
+      "algorithm": "RSA-2048",
+      "asset": "kubernetes/auth/configmap.yaml:9",
+      "category": "IDENTITY__IAM",
+      "quantum_risk": "VULNERABLE",
+      "evidence": "\"alg\": \"RS256\" in JWT verification config",
+      "source_file": "acdi-cbom-20260506.json"
+    },
+    {
+      "tool": "acdi",
+      "layer": "Certificates",
+      "severity": "HIGH",
+      "algorithm": "RSA-4096",
+      "asset": "certs/internal-ca.crt:1",
+      "category": "PKI",
+      "quantum_risk": "VULNERABLE",
+      "evidence": "X.509 cert: RSA-4096, issuer: Internal Root CA",
+      "source_file": "acdi-cbom-20260506.json"
+    },
+    {
+      "tool": "acdi",
+      "layer": "Certificates",
+      "severity": "HIGH",
+      "algorithm": "ECDSA-P-384",
+      "asset": "certs/wildcard.internal.crt:1",
+      "category": "PKI",
+      "quantum_risk": "VULNERABLE",
+      "evidence": "X.509 cert: ECDSA-P-384, SAN: *.internal.example.com",
+      "source_file": "acdi-cbom-20260506.json"
+    },
+    {
+      "tool": "acdi",
+      "layer": "Code",
+      "severity": "CRITICAL",
+      "algorithm": "RSA-2048",
+      "asset": ".github/workflows/release.yml:42",
+      "category": "CODE_SIGNING",
+      "quantum_risk": "VULNERABLE",
+      "evidence": "cosign sign --key cosign.key \u2014 RSA-2048 signing key",
+      "source_file": "acdi-cbom-20260506.json"
+    },
+    {
+      "tool": "acdi",
+      "layer": "Network",
+      "severity": "HIGH",
+      "algorithm": "ECDSA-P-256",
+      "asset": "kubernetes/ingress/cert-manager.yaml:18",
+      "category": "NETWORK_INFRASTRUCTURE",
+      "quantum_risk": "VULNERABLE",
+      "evidence": "cert-manager issuer: curve: P256, algorithm: ECDSA",
+      "source_file": "acdi-cbom-20260506.json"
+    },
+    {
+      "tool": "acdi",
+      "layer": "Storage",
+      "severity": "SAFE",
+      "algorithm": "AES-256-GCM",
+      "asset": "terraform/s3/encryption.tf:8",
+      "category": "DATA_AT_REST",
+      "quantum_risk": "ADEQUATE",
+      "evidence": "sse_algorithm = \"aws:kms\" with AES-256-GCM envelope encryption",
+      "source_file": "acdi-cbom-20260506.json"
+    },
+    {
+      "tool": "acdi",
+      "layer": "Secrets",
+      "severity": "CRITICAL",
+      "algorithm": "RSA-2048",
+      "asset": "ansible/vault/encrypt.yml:5",
+      "category": "SECRETS_MANAGEMENT",
+      "quantum_risk": "VULNERABLE",
+      "evidence": "ansible-vault encrypt_string with RSA-2048 key",
+      "source_file": "acdi-cbom-20260506.json"
+    },
+    {
+      "tool": "acdi",
+      "layer": "Code",
+      "severity": "MEDIUM",
+      "algorithm": "SHA-1",
+      "asset": "rpm/signing/gpg.conf:3",
+      "category": "CODE_SIGNING",
+      "quantum_risk": "VULNERABLE",
+      "evidence": "gpg --digest-algo SHA1 \u2014 deprecated hash",
+      "source_file": "acdi-cbom-20260506.json"
+    },
+    {
+      "tool": "acdi",
+      "layer": "Network",
+      "severity": "SAFE",
+      "algorithm": "ML-KEM-768",
+      "asset": "nginx/conf.d/api.conf:27",
+      "category": "NETWORK_INFRASTRUCTURE",
+      "quantum_risk": "SAFE",
+      "evidence": "ssl_conf_command Groups PQC-KEM ffdhe2048:mlkem768 \u2014 hybrid group configured",
+      "source_file": "acdi-cbom-20260506.json"
+    },
+    {
+      "tool": "acdi",
+      "layer": "Email",
+      "severity": "MEDIUM",
+      "algorithm": "ECDSA-P-256",
+      "asset": "dkim/selector1._domainkey.example.com:1",
+      "category": "EMAIL",
+      "quantum_risk": "VULNERABLE",
+      "evidence": "DKIM TXT record: k=rsa, p=MIIBIjANBgkqhkiG... (RSA-2048), h=sha256",
+      "source_file": "acdi-cbom-20260506.json"
+    },
+    {
+      "tool": "db-crypto-discovery",
+      "layer": "Database",
+      "severity": "HIGH",
+      "algorithm": "RSA-2048",
+      "asset": "db-prod-01.internal:5432/patient_records",
+      "category": "DB_CONNECTION_TLS",
+      "quantum_risk": "VULNERABLE",
+      "evidence": "Connection: TLS TLS 1.2 \u2014 ECDHE-RSA-AES256-GCM-SHA384",
+      "source_file": "db-crypto-scan-20260506.json"
+    },
+    {
+      "tool": "db-crypto-discovery",
+      "layer": "Database",
+      "severity": "HIGH",
+      "algorithm": "RSA (backup key wrapping)",
+      "asset": "db-prod-01.internal/patient_records \u2014 backups",
+      "category": "BACKUP_ENCRYPTION",
+      "quantum_risk": "VULNERABLE",
+      "evidence": "pg_dump \u2192 GPG (RSA-2048 key)",
+      "source_file": "db-crypto-scan-20260506.json"
+    },
+    {
+      "tool": "db-crypto-discovery",
+      "layer": "Database",
+      "severity": "HIGH",
+      "algorithm": "RSA-2048",
+      "asset": "db-prod-01.internal:5432/financial_tx",
+      "category": "DB_CONNECTION_TLS",
+      "quantum_risk": "VULNERABLE",
+      "evidence": "Connection: TLS TLS 1.2 \u2014 ECDHE-RSA-AES256-GCM-SHA384",
+      "source_file": "db-crypto-scan-20260506.json"
+    },
+    {
+      "tool": "db-crypto-discovery",
+      "layer": "Database",
+      "severity": "HIGH",
+      "algorithm": "RSA (backup key wrapping)",
+      "asset": "db-prod-01.internal/financial_tx \u2014 backups",
+      "category": "BACKUP_ENCRYPTION",
+      "quantum_risk": "VULNERABLE",
+      "evidence": "pg_dump \u2192 GPG (RSA-2048 key)",
+      "source_file": "db-crypto-scan-20260506.json"
+    },
+    {
+      "tool": "db-crypto-discovery",
+      "layer": "Database",
+      "severity": "HIGH",
+      "algorithm": "RSA-2048 \u2014 stored in master database",
+      "asset": "db-prod-02.internal:1433/hr_records",
+      "category": "TDE_KEY_WRAPPING",
+      "quantum_risk": "VULNERABLE",
+      "evidence": "TDE: AES-256, key wrapping: RSA-2048 \u2014 stored in master database, retention: 10yr, classification: Internal / Confidential",
+      "source_file": "db-crypto-scan-20260506.json"
+    },
+    {
+      "tool": "db-crypto-discovery",
+      "layer": "Database",
+      "severity": "HIGH",
+      "algorithm": "RSA-2048",
+      "asset": "db-prod-02.internal:1433/hr_records",
+      "category": "DB_CONNECTION_TLS",
+      "quantum_risk": "VULNERABLE",
+      "evidence": "Connection: TLS TLS 1.2 \u2014 ?",
+      "source_file": "db-crypto-scan-20260506.json"
+    },
+    {
+      "tool": "db-crypto-discovery",
+      "layer": "Database",
+      "severity": "HIGH",
+      "algorithm": "RSA-4096 \u2014 stored in keyring_file",
+      "asset": "db-prod-03.internal:3306/inventory",
+      "category": "TDE_KEY_WRAPPING",
+      "quantum_risk": "VULNERABLE",
+      "evidence": "TDE: AES-256, key wrapping: RSA-4096 \u2014 stored in keyring_file, retention: 5yr, classification: Internal",
+      "source_file": "db-crypto-scan-20260506.json"
+    },
+    {
+      "tool": "db-crypto-discovery",
+      "layer": "Database",
+      "severity": "HIGH",
+      "algorithm": "ECDSA-P-256",
+      "asset": "db-prod-03.internal:3306/inventory",
+      "category": "DB_CONNECTION_TLS",
+      "quantum_risk": "VULNERABLE",
+      "evidence": "Connection: TLS TLS 1.3 \u2014 TLS_AES_256_GCM_SHA384",
+      "source_file": "db-crypto-scan-20260506.json"
+    },
+    {
+      "tool": "dnssec-crypto-scan",
+      "layer": "DNSSEC",
+      "severity": "CRITICAL",
+      "algorithm": "ECDSA P-256 (256-bit)",
+      "asset": "example.com \u2014 KSK",
+      "category": "DNSSEC_KEY",
+      "quantum_risk": "VULNERABLE",
+      "evidence": "Algorithm ID: 13",
+      "source_file": "dnssec-scan-20260506.json"
+    },
+    {
+      "tool": "dnssec-crypto-scan",
+      "layer": "DNSSEC",
+      "severity": "CRITICAL",
+      "algorithm": "ECDSA P-256 (256-bit)",
+      "asset": "example.com \u2014 ZSK",
+      "category": "DNSSEC_KEY",
+      "quantum_risk": "VULNERABLE",
+      "evidence": "Algorithm ID: 13",
+      "source_file": "dnssec-scan-20260506.json"
+    },
+    {
+      "tool": "dnssec-crypto-scan",
+      "layer": "DNSSEC",
+      "severity": "HIGH",
+      "algorithm": "RSA-SHA256 (2048-bit)",
+      "asset": "internal.example.com \u2014 KSK",
+      "category": "DNSSEC_KEY",
+      "quantum_risk": "VULNERABLE",
+      "evidence": "Algorithm ID: 8",
+      "source_file": "dnssec-scan-20260506.json"
+    },
+    {
+      "tool": "dnssec-crypto-scan",
+      "layer": "DNSSEC",
+      "severity": "CRITICAL",
+      "algorithm": "RSA-SHA256 (1024-bit)",
+      "asset": "internal.example.com \u2014 ZSK",
+      "category": "DNSSEC_KEY",
+      "quantum_risk": "VULNERABLE",
+      "evidence": "Algorithm ID: 8",
+      "source_file": "dnssec-scan-20260506.json"
+    },
+    {
+      "tool": "dnssec-crypto-scan",
+      "layer": "DNSSEC",
+      "severity": "MEDIUM",
+      "algorithm": "NONE",
+      "asset": "subsidiary.example.com",
+      "category": "DNSSEC_DISABLED",
+      "quantum_risk": "NONE",
+      "evidence": "DNSSEC not deployed \u2014 cannot assess quantum risk for this domain",
+      "source_file": "dnssec-scan-20260506.json"
+    },
+    {
+      "tool": "vault-audit",
+      "layer": "Secrets",
+      "severity": "CRITICAL",
+      "algorithm": "RSA-4096",
+      "asset": "vault:pki/",
+      "category": "VAULT_MOUNT",
+      "quantum_risk": "VULNERABLE",
+      "evidence": "Internal Root CA \u2014 issues leaf certs for internal services \u2014 pki backend",
+      "source_file": "vault-audit-20260506.json"
+    },
+    {
+      "tool": "vault-audit",
+      "layer": "Secrets",
+      "severity": "CRITICAL",
+      "algorithm": "RSA-2048",
+      "asset": "vault:pki-int/",
+      "category": "VAULT_MOUNT",
+      "quantum_risk": "VULNERABLE",
+      "evidence": "Intermediate CA \u2014 signed by pki/ \u2014 pki backend",
+      "source_file": "vault-audit-20260506.json"
+    },
+    {
+      "tool": "vault-audit",
+      "layer": "Secrets",
+      "severity": "HIGH",
+      "algorithm": "AES-256-GCM",
+      "asset": "vault:transit/",
+      "category": "VAULT_MOUNT",
+      "quantum_risk": "SAFE",
+      "evidence": "Encryption-as-a-service for application-layer crypto \u2014 transit backend",
+      "source_file": "vault-audit-20260506.json"
+    },
+    {
+      "tool": "vault-audit",
+      "layer": "Secrets",
+      "severity": "HIGH",
+      "algorithm": "RSA-2048",
+      "asset": "vault:ssh/",
+      "category": "VAULT_MOUNT",
+      "quantum_risk": "VULNERABLE",
+      "evidence": "SSH certificate authority \u2014 signs host and user keys \u2014 ssh backend",
+      "source_file": "vault-audit-20260506.json"
+    },
+    {
+      "tool": "vault-audit",
+      "layer": "Secrets",
+      "severity": "HIGH",
+      "algorithm": "RS256 (RSA-2048)",
+      "asset": "vault:jwt/",
+      "category": "VAULT_MOUNT",
+      "quantum_risk": "VULNERABLE",
+      "evidence": "JWT/OIDC identity provider backend \u2014 jwt backend",
+      "source_file": "vault-audit-20260506.json"
+    },
+    {
+      "tool": "vault-audit",
+      "layer": "Secrets",
+      "severity": "HIGH",
+      "algorithm": "RSA-2048 \u2014 auto-unseal via AWS KMS",
+      "asset": "vault:auto-unseal",
+      "category": "VAULT_UNSEAL",
+      "quantum_risk": "VULNERABLE",
+      "evidence": "Auto-unseal via RSA-2048",
+      "source_file": "vault-audit-20260506.json"
+    },
+    {
+      "tool": "pqcscan",
+      "layer": "TLS",
+      "severity": "SAFE",
+      "algorithm": "MLKEM1024 + X25519MLKEM768",
+      "asset": "google.com:443",
+      "category": "PQC_KEX",
+      "quantum_risk": "SAFE",
+      "evidence": "PQC KEX detected \u2014 MLKEM1024 and hybrid X25519MLKEM768",
+      "source_file": "pqcscan (live scan)"
+    },
+    {
+      "tool": "pqcscan",
+      "layer": "TLS",
+      "severity": "SAFE",
+      "algorithm": "X25519MLKEM768",
+      "asset": "cloudflare.com:443",
+      "category": "PQC_KEX",
+      "quantum_risk": "SAFE",
+      "evidence": "Hybrid PQC KEX detected",
+      "source_file": "pqcscan (live scan)"
+    },
+    {
+      "tool": "pqcscan",
+      "layer": "TLS",
+      "severity": "SAFE",
+      "algorithm": "X25519MLKEM768",
+      "asset": "apple.com:443",
+      "category": "PQC_KEX",
+      "quantum_risk": "SAFE",
+      "evidence": "Hybrid PQC KEX detected",
+      "source_file": "pqcscan (live scan)"
+    },
+    {
+      "tool": "pqcscan",
+      "layer": "TLS",
+      "severity": "SAFE",
+      "algorithm": "X25519MLKEM768",
+      "asset": "facebook.com:443",
+      "category": "PQC_KEX",
+      "quantum_risk": "SAFE",
+      "evidence": "Hybrid PQC KEX detected",
+      "source_file": "pqcscan (live scan)"
+    },
+    {
+      "tool": "pqcscan",
+      "layer": "TLS",
+      "severity": "HIGH",
+      "algorithm": "NONE",
+      "asset": "microsoft.com:443",
+      "category": "PQC_KEX",
+      "quantum_risk": "VULNERABLE",
+      "evidence": "No PQC algorithms detected in TLS handshake",
+      "source_file": "pqcscan (live scan)"
+    },
+    {
+      "tool": "pqcscan",
+      "layer": "TLS",
+      "severity": "HIGH",
+      "algorithm": "NONE",
+      "asset": "amazon.com:443",
+      "category": "PQC_KEX",
+      "quantum_risk": "VULNERABLE",
+      "evidence": "No PQC algorithms detected in TLS handshake",
+      "source_file": "pqcscan (live scan)"
+    },
+    {
+      "tool": "pqcscan",
+      "layer": "TLS",
+      "severity": "HIGH",
+      "algorithm": "NONE",
+      "asset": "netflix.com:443",
+      "category": "PQC_KEX",
+      "quantum_risk": "VULNERABLE",
+      "evidence": "No PQC algorithms detected in TLS handshake",
+      "source_file": "pqcscan (live scan)"
+    },
+    {
+      "tool": "pqcscan",
+      "layer": "TLS",
+      "severity": "HIGH",
+      "algorithm": "NONE",
+      "asset": "github.com:443",
+      "category": "PQC_KEX",
+      "quantum_risk": "VULNERABLE",
+      "evidence": "No PQC algorithms detected in TLS",
+      "source_file": "pqcscan (live scan)"
+    },
+    {
+      "tool": "pqcscan",
+      "layer": "SSH",
+      "severity": "SAFE",
+      "algorithm": "sntrup761x25519-sha512",
+      "asset": "github.com:22",
+      "category": "PQC_KEX",
+      "quantum_risk": "SAFE",
+      "evidence": "PQC SSH KEX detected",
+      "source_file": "pqcscan (live scan)"
+    }
+  ],
+  "benchmarks": [
+    {
+      "algorithm": "RSA-2048",
+      "category": "classical",
+      "connections_per_second": 1284.5,
+      "connections_per_second_session_reuse": 5412.3
+    },
+    {
+      "algorithm": "ECDSA-P-256",
+      "category": "classical",
+      "connections_per_second": 1456.2,
+      "connections_per_second_session_reuse": 5890.7
+    },
+    {
+      "algorithm": "ML-KEM-768",
+      "category": "pqc",
+      "connections_per_second": 1247.8,
+      "connections_per_second_session_reuse": 5234.1
+    },
+    {
+      "algorithm": "ML-KEM-1024",
+      "category": "pqc",
+      "connections_per_second": 1103.2,
+      "connections_per_second_session_reuse": 4891.6
+    },
+    {
+      "algorithm": "X25519MLKEM768",
+      "category": "hybrid",
+      "connections_per_second": 1198.7,
+      "connections_per_second_session_reuse": 5012.4
+    },
+    {
+      "algorithm": "SecP256r1MLKEM768",
+      "category": "hybrid",
+      "connections_per_second": 1210.3,
+      "connections_per_second_session_reuse": 5089.2
+    },
+    {
+      "algorithm": "ML-KEM-768 keygen",
+      "category": "pqc",
+      "connections_per_second": 95005,
+      "connections_per_second_session_reuse": 0,
+      "note": "285,015 ops in 3s"
+    },
+    {
+      "algorithm": "ML-KEM-768 encaps",
+      "category": "pqc",
+      "connections_per_second": 89524,
+      "connections_per_second_session_reuse": 0,
+      "note": "268,573 ops in 3s"
+    },
+    {
+      "algorithm": "ML-KEM-768 decaps",
+      "category": "pqc",
+      "connections_per_second": 73543,
+      "connections_per_second_session_reuse": 0,
+      "note": "220,631 ops in 3s"
+    },
+    {
+      "algorithm": "ML-DSA-65 sign",
+      "category": "pqc",
+      "connections_per_second": 9754,
+      "connections_per_second_session_reuse": 0,
+      "note": "29,263 ops in 3s"
+    },
+    {
+      "algorithm": "ML-DSA-65 verify",
+      "category": "pqc",
+      "connections_per_second": 27823,
+      "connections_per_second_session_reuse": 0,
+      "note": "83,470 ops in 3s"
+    }
+  ],
+  "pqc_adoption": [
+    {
+      "service": "Google",
+      "pqc_kex": true,
+      "pqc_cert": false,
+      "algorithm": "MLKEM1024 + X25519MLKEM768"
+    },
+    {
+      "service": "Cloudflare",
+      "pqc_kex": true,
+      "pqc_cert": false,
+      "algorithm": "X25519MLKEM768"
+    },
+    {
+      "service": "Apple",
+      "pqc_kex": true,
+      "pqc_cert": false,
+      "algorithm": "X25519MLKEM768"
+    },
+    {
+      "service": "Facebook",
+      "pqc_kex": true,
+      "pqc_cert": false,
+      "algorithm": "X25519MLKEM768"
+    },
+    {
+      "service": "Microsoft",
+      "pqc_kex": false,
+      "pqc_cert": false,
+      "algorithm": "None"
+    },
+    {
+      "service": "Amazon",
+      "pqc_kex": false,
+      "pqc_cert": false,
+      "algorithm": "None"
+    },
+    {
+      "service": "Netflix",
+      "pqc_kex": false,
+      "pqc_cert": false,
+      "algorithm": "None"
+    },
+    {
+      "service": "GitHub (TLS)",
+      "pqc_kex": false,
+      "pqc_cert": false,
+      "algorithm": "None"
+    }
+  ],
+  "remediation": {
+    "p0_act_now": [
+      {
+        "asset": "internal-ldap.example.com",
+        "issue": "offered (obsolete) \u2014 CVE: CVE-2014-3566",
+        "layer": "TLS"
+      },
+      {
+        "asset": "internal-ldap.example.com",
+        "issue": "offered (obsolete) \u2014 CVE: CVE-2016-0800",
+        "layer": "TLS"
+      },
+      {
+        "asset": "internal-ldap.example.com",
+        "issue": "vulnerable \u2014 SSLv3 with CBC ciphers \u2014 CVE: CVE-2014-3566",
+        "layer": "TLS"
+      },
+      {
+        "asset": "internal-ldap.example.com",
+        "issue": "vulnerable \u2014 SSLv2 with same RSA key \u2014 CVE: CVE-2016-0800",
+        "layer": "TLS"
+      },
+      {
+        "asset": "terraform/aws/kms.tf:23",
+        "issue": "customer_master_key_spec = \"RSA_2048\"",
+        "layer": "Secrets"
+      },
+      {
+        "asset": ".github/workflows/release.yml:42",
+        "issue": "cosign sign --key cosign.key \u2014 RSA-2048 signing key",
+        "layer": "Code"
+      },
+      {
+        "asset": "ansible/vault/encrypt.yml:5",
+        "issue": "ansible-vault encrypt_string with RSA-2048 key",
+        "layer": "Secrets"
+      },
+      {
+        "asset": "example.com \u2014 KSK",
+        "issue": "Algorithm ID: 13",
+        "layer": "DNSSEC"
+      },
+      {
+        "asset": "example.com \u2014 ZSK",
+        "issue": "Algorithm ID: 13",
+        "layer": "DNSSEC"
+      },
+      {
+        "asset": "internal.example.com \u2014 ZSK",
+        "issue": "Algorithm ID: 8",
+        "layer": "DNSSEC"
+      }
+    ],
+    "p1_18_months": [
+      {
+        "asset": "google.com:443",
+        "issue": "TLS TLS 1.3 \u2014 TLS_AES_128_GCM_SHA256 \u2014 Cert: ecdsa-sha256",
+        "layer": "TLS"
+      },
+      {
+        "asset": "cloudflare.com:443",
+        "issue": "TLS TLS 1.3 \u2014 TLS_AES_128_GCM_SHA256 \u2014 Cert: ecdsa-sha256",
+        "layer": "TLS"
+      },
+      {
+        "asset": "microsoft.com:443",
+        "issue": "TLS TLS 1.3 \u2014 TLS_AES_256_GCM_SHA384 \u2014 Cert: sha384-rsa",
+        "layer": "TLS"
+      },
+      {
+        "asset": "<Name(CN=*.google.com)>",
+        "issue": "Cert: ecdsa-with-SHA256, expires 2026-07-01",
+        "layer": "Certificates"
+      },
+      {
+        "asset": "<Name(CN=cloudflare.com)>",
+        "issue": "Cert: ecdsa-with-SHA256, expires 2026-06-10",
+        "layer": "Certificates"
+      },
+      {
+        "asset": "<Name(CN=microsoft.com,O=Microsoft Corporation,L=Redmond,ST=WA,C=US)>",
+        "issue": "Cert: sha384WithRSAEncryption, expires 2026-10-12",
+        "layer": "Certificates"
+      },
+      {
+        "asset": "<Name(CN=*.peg.a2z.com)>",
+        "issue": "Cert: sha256WithRSAEncryption, expires 2027-01-23",
+        "layer": "Certificates"
+      },
+      {
+        "asset": "internal-db.example.com",
+        "issue": "offered (deprecated) \u2014 CVE: ",
+        "layer": "TLS"
+      },
+      {
+        "asset": "internal-db.example.com",
+        "issue": "vulnerable \u2014 RSA key transport cipher suites offered \u2014 CVE: CVE-2017-6168",
+        "layer": "TLS"
+      },
+      {
+        "asset": "internal-ldap.example.com",
+        "issue": "vulnerable \u2014 512-bit DH EXPORT ciphers \u2014 CVE: CVE-2015-4000",
+        "layer": "TLS"
+      }
+    ],
+    "p2_4_years": [
+      {
+        "asset": "tools/cbom.json",
+        "issue": "DES/3DES \u2014 deprecated, 64-bit block size \u2014 replace with AES-256",
+        "layer": "Code"
+      },
+      {
+        "asset": "tools/pqaudit-results.json",
+        "issue": "DES/3DES \u2014 deprecated, 64-bit block size \u2014 replace with AES-256",
+        "layer": "Code"
+      },
+      {
+        "asset": "workspace/preview/variant-2/js/main.js",
+        "issue": "DES/3DES \u2014 deprecated, 64-bit block size \u2014 replace with AES-256",
+        "layer": "Code"
+      },
+      {
+        "asset": "workspace/preview/variant-3-interaction/js/main.js",
+        "issue": "DES/3DES \u2014 deprecated, 64-bit block size \u2014 replace with AES-256",
+        "layer": "Code"
+      },
+      {
+        "asset": "workspace/preview/variant-3-premium/js/main.js",
+        "issue": "DES/3DES \u2014 deprecated, 64-bit block size \u2014 replace with AES-256",
+        "layer": "Code"
+      },
+      {
+        "asset": "workspace/preview/variant-3-refined/js/main.js",
+        "issue": "DES/3DES \u2014 deprecated, 64-bit block size \u2014 replace with AES-256",
+        "layer": "Code"
+      },
+      {
+        "asset": "workspace/preview/variant-3/js/main.js",
+        "issue": "DES/3DES \u2014 deprecated, 64-bit block size \u2014 replace with AES-256",
+        "layer": "Code"
+      },
+      {
+        "asset": "/home/emo/workspace/git/quantum/web-swarm/website-swarm/tools/cbom.json",
+        "issue": "Category: Deprecated Algorithm, Migration status: VULNERABLE",
+        "layer": "Code"
+      },
+      {
+        "asset": "/home/emo/workspace/git/quantum/web-swarm/website-swarm/tools/cbom.json",
+        "issue": "Category: Deprecated Algorithm, Migration status: VULNERABLE",
+        "layer": "Code"
+      },
+      {
+        "asset": "/home/emo/workspace/git/quantum/web-swarm/website-swarm/tools/cbom.json",
+        "issue": "Category: Deprecated Algorithm, Migration status: VULNERABLE",
+        "layer": "Code"
+      }
+    ]
+  },
+  "provenance": {
+    "results_directory": "/home/emo/workspace/git/quantum/web-swarm/website-swarm/tools/results",
+    "files_processed": 9,
+    "files_skipped": 0,
+    "processing_script": "tools/process-results.py",
+    "output_sha256": "82c1990800a0c265a6ae92dedebb6082561458fd9e91a63ed07972f0aac6b89a"
+  }
+}

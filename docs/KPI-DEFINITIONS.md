@@ -1,3 +1,7 @@
+<style>
+  @import url('https://raw.githubusercontent.com/jasonm23/markdown-css-themes/refs/heads/gh-pages/markdown1.css');
+</style>
+
 # Q-Readiness KPI Definitions
 
 **Version:** 1.0 | **May 2026**

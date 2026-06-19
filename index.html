@@ -6,6 +6,21 @@
   <title>Q-Readiness | Quantum Readiness Assessment</title>
   <meta name="description" content="Premium quantum readiness assessment covering PQC, quantum networking, and optimization. NIST-aligned methodology with AI acceleration. Portal access included.">
   <link rel="stylesheet" href="css/styles.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Q-Readiness",
+    "url": "https://q-readiness.com",
+    "description": "Automated quantum readiness assessment powered by 12 open-source scanners and AI-driven analysis. NIST-aligned, CNSA 2.0 compliant.",
+    "foundingDate": "2026",
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "contactType": "sales",
+      "url": "https://q-readiness.com/#contact"
+    }
+  }
+  </script>
 </head>
 <body>
   <!-- Skip link for keyboard users -->
@@ -22,6 +37,10 @@
     <div class="nav__menu">
       <a href="dashboard.html" class="nav__link">Dashboard</a>
       <a href="quantum-status.html" class="nav__link">Timeline</a>
+      <a href="news.html" class="nav__link">News</a>
+      <a href="standards.html" class="nav__link">Standards</a>
+      <a href="faq.html" class="nav__link">FAQ</a>
+      <button class="btn btn--outline btn--small" disabled style="opacity:0.5;cursor:not-allowed;margin-right:8px;">Sign Up &mdash; Q3 2026</button>
       <a href="#contact" class="nav__link nav__cta btn btn--primary btn--small">Book a Call</a>
     </div>
     <button class="hamburger" aria-label="Open menu" aria-expanded="false">
@@ -36,6 +55,9 @@
     <nav class="overlay__nav">
       <a href="dashboard.html" class="overlay__link">Dashboard</a>
       <a href="quantum-status.html" class="overlay__link">Timeline</a>
+      <a href="news.html" class="overlay__link">News</a>
+      <a href="standards.html" class="overlay__link">Standards</a>
+      <a href="faq.html" class="overlay__link">FAQ</a>
       <a href="#contact" class="overlay__link overlay__cta btn btn--outline">Book a Call</a>
     </nav>
   </div>
@@ -48,11 +70,11 @@
       <div class="hero__content reveal">
         <div class="hero__badge">
           <span class="hero__badge-dot"></span>
-          AI-Accelerated Audit &middot; 2.5 Weeks
+12 Open-Source Scanners &middot; AI-Driven Analysis &middot; Customizable Scope
         </div>
         <h1>We Evaluate Your<br><span class="highlight">Quantum Readiness</span></h1>
         <p class="hero__sub">
-          The only assessment covering <strong>post-quantum cryptography</strong>, <strong>quantum networking protocols</strong>, and <strong>quantum optimization &amp; ML readiness</strong> &mdash; delivered in <strong>2.5 weeks, not 3 months</strong>. Portal access to your live dashboard.
+          Automated quantum readiness powered by <strong>12 open-source scanners</strong> and <strong>AI-driven analysis</strong>. Choose your delivery model &mdash; self-service to air-gapped appliance. Covers post-quantum cryptography, quantum networking, and optimization &amp; ML. <strong>2.5 weeks average</strong>. Portal access to your live dashboard.
         </p>
         <div class="hero__actions">
           <a href="#contact" class="btn btn--primary">Book a Scoping Call</a>
@@ -245,89 +267,95 @@
   </section>
 
   <!-- ============================================================
-       SECTION 4: METHODOLOGY — Premium Comparison
+       SECTION 4: HOW WE DELIVER — Five Service Tiers
        ============================================================ -->
   <section id="methodology" class="section section--deep">
     <div class="container">
-      <h2 class="section-title reveal">How It Works</h2>
-      <p class="section-subtitle reveal">AI-accelerated methodology that delivers in 2.5 weeks what traditionally takes 3 months. NIST-aligned, tool-backed, and built for technical scrutiny.</p>
-      <div class="methodology-grid">
-        <!-- Traditional -->
-        <div class="methodology-col methodology-col--traditional reveal">
-          <div class="methodology-col__header">
-            <h3 class="methodology-col__title">Traditional Assessment</h3>
-            <div class="methodology-col__time">~13 <span class="methodology-col__time-label">Weeks</span></div>
+      <h2 class="section-title reveal">How We Deliver</h2>
+      <div class="section-subtitle reveal" style="margin-bottom:48px;">
+        <p style="max-width:660px;margin:0 auto 16px;">Five delivery methods, one result: a complete quantum readiness assessment with live dashboard. Every tier uses the same 12 open-source, auditable scanners. Choose your level of automation and support. Scope is fully customizable — add or remove scans, and your dashboard adapts to show only what was assessed.</p>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:28px;max-width:720px;margin:32px auto 0;">
+          <div style="background:var(--color-surface);border:0.5px solid var(--color-border);padding:28px 32px;text-align:center;">
+            <div style="font-family:var(--font-body);font-size:0.62rem;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;color:var(--color-text-muted);margin-bottom:8px;">Traditional Consulting</div>
+            <div style="font-family:var(--font-display);font-size:2.5rem;font-weight:300;color:var(--color-text-muted);line-height:1;">~13 <span style="font-size:0.9rem;text-transform:uppercase;letter-spacing:0.04em;">Weeks</span></div>
+            <div style="font-size:0.75rem;color:var(--color-text-muted);line-height:1.6;font-weight:300;margin-top:8px;">Manual scoping · spreadsheet inventory · vendor interviews · report writing · multiple revision cycles</div>
           </div>
-          <div class="methodology-step">
-            <span class="methodology-step__num">1</span>
-            <div class="methodology-step__content">
-              <h4>Scope &amp; Access</h4>
-              <p>Weeks 1&ndash;2: Manual scoping, stakeholder meetings, environment access setup</p>
-            </div>
-          </div>
-          <div class="methodology-step">
-            <span class="methodology-step__num">2</span>
-            <div class="methodology-step__content">
-              <h4>Manual Inventory</h4>
-              <p>Weeks 3&ndash;5: Spreadsheet-based cryptographic inventory, manual certificate review</p>
-            </div>
-          </div>
-          <div class="methodology-step">
-            <span class="methodology-step__num">3</span>
-            <div class="methodology-step__content">
-              <h4>Assessment &amp; Analysis</h4>
-              <p>Weeks 6&ndash;9: Vulnerability scanning, vendor interviews, compliance gap analysis</p>
-            </div>
-          </div>
-          <div class="methodology-step">
-            <span class="methodology-step__num">4</span>
-            <div class="methodology-step__content">
-              <h4>Report &amp; Review</h4>
-              <p>Weeks 10&ndash;13: Manual report writing, executive review, multiple revision cycles</p>
-            </div>
-          </div>
-        </div>
-        <!-- Accelerated -->
-        <div class="methodology-col methodology-col--accelerated reveal">
-          <div class="methodology-col__header">
-            <h3 class="methodology-col__title">Q-Readiness Accelerated</h3>
-            <div class="methodology-col__time">~2.5 <span class="methodology-col__time-label">Weeks</span></div>
-          </div>
-          <div class="methodology-step">
-            <span class="methodology-step__num">1</span>
-            <div class="methodology-step__content">
-              <h4>AI Triage &amp; Scoping</h4>
-              <p>Days 1&ndash;3: AI-assisted intake, automated environment profiling, scope discovery</p>
-            </div>
-          </div>
-          <div class="methodology-step">
-            <span class="methodology-step__num">2</span>
-            <div class="methodology-step__content">
-              <h4>Automated Scanning</h4>
-              <p>Days 4&ndash;7: QRAMM cryptographic discovery, PKI-scanner certificate analysis, OpenQuantumSafe protocol probing</p>
-            </div>
-          </div>
-          <div class="methodology-step">
-            <span class="methodology-step__num">3</span>
-            <div class="methodology-step__content">
-              <h4>Simulation &amp; Analysis</h4>
-              <p>Days 8&ndash;12: NetSquid protocol simulation, SQOUT optimization screening, AI-assisted gap analysis</p>
-            </div>
-          </div>
-          <div class="methodology-step">
-            <span class="methodology-step__num">4</span>
-            <div class="methodology-step__content">
-              <h4>Deliverable &amp; Portal</h4>
-              <p>Days 13&ndash;18: Automated report generation, executive risk summary, portal dashboard activation</p>
-            </div>
+          <div style="background:var(--color-accent-subtle);border:0.5px solid var(--color-accent);padding:28px 32px;text-align:center;position:relative;">
+            <div style="position:absolute;top:-1px;right:16px;font-size:0.55rem;font-weight:500;letter-spacing:0.06em;text-transform:uppercase;padding:4px 10px;background:var(--color-accent);color:var(--color-base);">Q-Readiness</div>
+            <div style="font-family:var(--font-body);font-size:0.62rem;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;color:var(--color-accent);margin-bottom:8px;">Automated + AI</div>
+            <div style="font-family:var(--font-display);font-size:2.5rem;font-weight:300;color:var(--color-accent);line-height:1;"><span style="font-size:0.9rem;text-transform:uppercase;letter-spacing:0.04em;">Days to</span> 2.5 <span style="font-size:0.9rem;text-transform:uppercase;letter-spacing:0.04em;">Weeks</span></div>
+            <div style="font-size:0.75rem;color:var(--color-text-dim);line-height:1.6;font-weight:300;margin-top:8px;">AI-driven scoping · 12 automated scanners · instant dashboard · single review cycle · auditable toolchain</div>
           </div>
         </div>
       </div>
+
+      <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:16px;max-width:1100px;margin:0 auto 40px;">
+
+        <!-- Tier 0: Self-Service -->
+        <div class="reveal" style="background:var(--color-surface);border:0.5px solid var(--color-border);padding:28px 20px;display:flex;flex-direction:column;text-align:center;transition:all var(--transition-base);">
+          <div style="font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.08em;color:var(--color-text-muted);text-transform:uppercase;margin-bottom:8px;">Tier 0</div>
+          <h3 style="font-family:var(--font-display);font-size:1.1rem;font-weight:500;margin-bottom:8px;color:var(--color-text);">Self-Service</h3>
+          <div style="font-family:var(--font-display);font-size:1.6rem;font-weight:300;color:var(--color-accent);margin-bottom:12px;">$<span style="font-size:0.8rem;color:var(--color-text-muted);">/scan</span></div>
+          <p style="font-size:0.78rem;color:var(--color-text-dim);line-height:1.6;font-weight:300;flex:1;">Run all 12 tools independently — no AI assistance. Send results for backend processing and dashboard generation. More processing time required.</p>
+          <div style="margin-top:12px;font-size:0.68rem;color:var(--color-text-muted);letter-spacing:0.04em;text-transform:uppercase;">3-6 weeks execution</div>
+        </div>
+
+        <!-- Tier 1: AI-Guided -->
+        <div class="reveal" style="background:var(--color-surface);border:0.5px solid var(--color-accent);padding:28px 20px;display:flex;flex-direction:column;text-align:center;transition:all var(--transition-base);position:relative;">
+          <div style="position:absolute;top:-1px;right:16px;font-size:0.55rem;font-weight:500;letter-spacing:0.06em;text-transform:uppercase;padding:4px 10px;background:var(--color-accent);color:var(--color-base);">Recommended</div>
+          <div style="font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.08em;color:var(--color-text-muted);text-transform:uppercase;margin-bottom:8px;">Tier 1</div>
+          <h3 style="font-family:var(--font-display);font-size:1.1rem;font-weight:500;margin-bottom:8px;color:var(--color-text);">AI-Guided</h3>
+          <div style="font-family:var(--font-display);font-size:1.6rem;font-weight:300;color:var(--color-accent);margin-bottom:12px;">$$</div>
+          <p style="font-size:0.78rem;color:var(--color-text-dim);line-height:1.6;font-weight:300;flex:1;">Claude Code guides your team through every step. Tools are open-source and auditable. Repeatable, fast, and transparent. No black boxes.</p>
+          <div style="margin-top:12px;font-size:0.68rem;color:var(--color-green);letter-spacing:0.04em;text-transform:uppercase;">2-3 weeks</div>
+        </div>
+
+        <!-- Tier 2: Secure AI -->
+        <div class="reveal" style="background:var(--color-surface);border:0.5px solid var(--color-border);padding:28px 20px;display:flex;flex-direction:column;text-align:center;transition:all var(--transition-base);">
+          <div style="font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.08em;color:var(--color-text-muted);text-transform:uppercase;margin-bottom:8px;">Tier 2</div>
+          <h3 style="font-family:var(--font-display);font-size:1.1rem;font-weight:500;margin-bottom:8px;color:var(--color-text);">Secure AI</h3>
+          <div style="font-family:var(--font-display);font-size:1.6rem;font-weight:300;color:var(--color-accent);margin-bottom:12px;">$$$</div>
+          <p style="font-size:0.78rem;color:var(--color-text-dim);line-height:1.6;font-weight:300;flex:1;">For environments where AI access is restricted. We provide secure, isolated AI compute — same automation, your perimeter.</p>
+          <div style="margin-top:12px;font-size:0.68rem;color:var(--color-text-muted);letter-spacing:0.04em;text-transform:uppercase;">2-4 weeks</div>
+        </div>
+
+        <!-- Tier 3: Expert On-Site -->
+        <div class="reveal" style="background:var(--color-surface);border:0.5px solid var(--color-border);padding:28px 20px;display:flex;flex-direction:column;text-align:center;transition:all var(--transition-base);">
+          <div style="font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.08em;color:var(--color-text-muted);text-transform:uppercase;margin-bottom:8px;">Tier 3</div>
+          <h3 style="font-family:var(--font-display);font-size:1.1rem;font-weight:500;margin-bottom:8px;color:var(--color-text);">Expert On-Site</h3>
+          <div style="font-family:var(--font-display);font-size:1.6rem;font-weight:300;color:var(--color-accent);margin-bottom:12px;">$$$$</div>
+          <p style="font-size:0.78rem;color:var(--color-text-dim);line-height:1.6;font-weight:300;flex:1;">We come to you. An expert deploys on your infrastructure, runs all scans, and trains your team. Travel and time included.</p>
+          <div style="margin-top:12px;font-size:0.68rem;color:var(--color-text-muted);letter-spacing:0.04em;text-transform:uppercase;">1-2 weeks on-site</div>
+        </div>
+
+        <!-- Tier 4: Q-Appliance -->
+        <div class="reveal" style="background:var(--color-surface);border:0.5px solid var(--color-border);padding:28px 20px;display:flex;flex-direction:column;text-align:center;transition:all var(--transition-base);">
+          <div style="font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.08em;color:var(--color-text-muted);text-transform:uppercase;margin-bottom:8px;">Tier 4</div>
+          <h3 style="font-family:var(--font-display);font-size:1.1rem;font-weight:500;margin-bottom:8px;color:var(--color-text);">Q-Appliance</h3>
+          <div style="font-family:var(--font-display);font-size:1.6rem;font-weight:300;color:var(--color-accent);margin-bottom:12px;">$$$$$</div>
+          <p style="font-size:0.78rem;color:var(--color-text-dim);line-height:1.6;font-weight:300;flex:1;">Air-gapped AI assessment device. No network interface — physically verified. Runs all scans locally. You keep the hardware.</p>
+          <div style="margin-top:12px;font-size:0.68rem;color:var(--color-text-muted);letter-spacing:0.04em;text-transform:uppercase;">3-5 days on-site</div>
+        </div>
+      </div>
+
       <div class="methodology-note reveal">
-        <strong>NIST-aligned methodology.</strong> All assessments follow NIST PQC standardization and CNSA 2.0 timelines. Per NSA/NCSC guidance, PQC is evaluated as the primary cryptographic migration path. Quantum networking assessments include the full NCSC classification framework.
+        <strong>All tiers include the same deliverables:</strong> cryptographic exposure map, prioritized remediation backlog, executive risk memo, 90-day implementation plan, and access to your live Q-Readiness dashboard. <strong>Scope is always customizable:</strong> add scans for deeper coverage, remove scans to fit your environment — your dashboard reflects exactly what was assessed. <strong>NIST-aligned, CNSA 2.0 compliant.</strong> Every tool is open-source and auditable on GitHub.
       </div>
     </div>
   </section>
+
+  <style>
+    @media (max-width:768px) {
+      #methodology .container > div[style*="grid-template-columns:repeat(5"] {
+        grid-template-columns: repeat(2,1fr) !important;
+      }
+    }
+    @media (max-width:480px) {
+      #methodology .container > div[style*="grid-template-columns:repeat(5"] {
+        grid-template-columns: 1fr !important;
+      }
+    }
+  </style>
 
   <!-- ============================================================
        SECTION 5: QUANTUM TIMELINE — Premium Countdown Clocks
