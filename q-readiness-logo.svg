@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 36" width="36" height="36">
+  <rect width="36" height="36" fill="#D4A043" />
+  <text 
+    x="18" 
+    y="50%" 
+    dominant-baseline="central" 
+    text-anchor="middle" 
+    font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" 
+    font-weight="700" 
+    font-size="17.6" 
+    fill="#0A0E17"
+  >Q</text>
+</svg>
