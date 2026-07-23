@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Q-Readiness | Dashboard</title>
   <link rel="stylesheet" href="css/styles.css">
+  <script src="js/i18n.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
   <style>
@@ -112,10 +113,12 @@
   <div class="nav__menu">
     <a href="dashboard.html" class="nav__link nav__link--active">Dashboard</a>
     <a href="quantum-status.html" class="nav__link">Timeline</a>
+      <a href="pricing.html" class="nav__link">Pricing</a>
     <a href="news.html" class="nav__link">News</a>
     <a href="standards.html" class="nav__link">Standards</a>
     <a href="faq.html" class="nav__link">FAQ</a>
-    <button class="btn btn--outline btn--small" disabled style="opacity:0.5;cursor:not-allowed;margin-right:8px;">Sign Up &mdash; Q3 2026</button>
+    <button class="btn btn--outline btn--small" disabled style="opacity:0.5;cursor:not-allowed;margin-right:8px;">Sign Up — Q3 2026</button>
+    <select id="langSelect" class="nav__link" aria-label="Select language" style="background:transparent;border:0.5px solid var(--color-border);color:var(--color-text);font-family:var(--font-body);font-size:0.72rem;padding:4px 8px;cursor:pointer;margin-right:8px;" onchange="I18n.switchTo(this.value)"><option value="en">English</option><option value="ja" lang="ja">日本語</option></select>
     <a href="index.html#contact" class="nav__link nav__cta btn btn--primary btn--small">Book a Call</a>
   </div>
   <button class="hamburger" aria-label="Open menu" aria-expanded="false">

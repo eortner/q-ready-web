@@ -1,0 +1,199 @@
+{
+  "version": "2.0.0",
+  "sections": {
+    "network": [
+      "surveyor",
+      "pqcscan",
+      "pqc-network-scanner",
+      "testssl",
+      "cryptolyzer"
+    ],
+    "code": [
+      "pqaudit",
+      "cryptoscan",
+      "kybercheck",
+      "acdi-code"
+    ],
+    "infra": [
+      "acdi-infra",
+      "vault-audit"
+    ],
+    "data": [
+      "db-crypto-scan"
+    ],
+    "pki": [
+      "dnssec-scan",
+      "cert-analyzer"
+    ]
+  },
+  "tools": {
+    "surveyor": {
+      "category": "network",
+      "required": true,
+      "install": "cargo install surveyor",
+      "uninstall": "cargo uninstall surveyor",
+      "verify": "which surveyor",
+      "run": "surveyor scan tls -t {targets} --format json --output ./scan_results/network/surveyor-scan.json",
+      "expected_output": "surveyor-scan.json",
+      "description": "TLS infrastructure inventory. Classifies endpoints by protocol support and certificate identity.",
+      "source_url": "https://github.com/steadytao/surveyor",
+      "license": "MIT"
+    },
+    "pqcscan": {
+      "category": "network",
+      "required": true,
+      "install": "pip install pqcscan",
+      "uninstall": "pip uninstall pqcscan -y",
+      "verify": "which pqcscan",
+      "run": "pqcscan {targets}:443 --json --output ./scan_results/network/pqcscan-results.json",
+      "expected_output": "pqcscan-results.json",
+      "description": "PQC algorithm detection in TLS/SSH handshakes. Identifies ML-KEM, ML-DSA, and hybrid schemes.",
+      "source_url": "https://pypi.org/project/pqcscan",
+      "license": "BSD-2"
+    },
+    "pqc-network-scanner": {
+      "category": "network",
+      "required": true,
+      "install": "pip install pqc-network-scanner",
+      "uninstall": "pip uninstall pqc-network-scanner -y",
+      "verify": "which pqc-network-scanner",
+      "run": "pqc-network-scanner {targets} --output ./scan_results/network/pqc-network-scan.json",
+      "expected_output": "pqc-network-scan.json",
+      "description": "Full X.509 certificate chain analysis with PQC OID detection and quantum risk classification.",
+      "source_url": "https://pypi.org/project/pqc-network-scanner",
+      "license": "Custom"
+    },
+    "testssl": {
+      "category": "network",
+      "required": false,
+      "install": "git clone https://github.com/drwetter/testssl.sh.git",
+      "uninstall": "rm -rf testssl.sh",
+      "verify": "which testssl.sh",
+      "run": "./testssl.sh --jsonfile-pretty {targets} > ./scan_results/network/testssl-scan.json 2>&1",
+      "expected_output": "testssl-scan.json",
+      "description": "Comprehensive TLS/SSL testing: 15+ CVE checks, cipher enumeration, protocol matrix.",
+      "source_url": "https://github.com/drwetter/testssl.sh",
+      "license": "GPL-2.0"
+    },
+    "cryptolyzer": {
+      "category": "network",
+      "required": false,
+      "install": "pip install CryptoLyzer",
+      "uninstall": "pip uninstall CryptoLyzer -y",
+      "verify": "which cryptolyzer",
+      "run": "cryptolyzer tls all {targets} --json --output ./scan_results/network/cryptolyzer-scan.json",
+      "expected_output": "cryptolyzer-scan.json",
+      "description": "Deep cryptographic protocol analysis across TLS, SSH, IPsec, and more.",
+      "source_url": "https://pypi.org/project/CryptoLyzer",
+      "license": "MIT"
+    },
+    "pqaudit": {
+      "category": "code",
+      "required": true,
+      "install": "npm install -g pqaudit@0.5.0",
+      "uninstall": "npm uninstall -g pqaudit",
+      "verify": "which pqaudit",
+      "run": "pqaudit scan {target_dir} --format json --output ./scan_results/code/pqaudit-results.json",
+      "expected_output": "pqaudit-results.json",
+      "description": "Code + network PQC pattern matching across 10+ languages with CBOM generation.",
+      "source_url": "https://npmjs.com/package/pqaudit",
+      "license": "MIT"
+    },
+    "cryptoscan": {
+      "category": "code",
+      "required": true,
+      "install": "npm install -g cryptoscan",
+      "uninstall": "npm uninstall -g cryptoscan",
+      "verify": "which cryptoscan",
+      "run": "cryptoscan scan {target_dir} --format json --output ./scan_results/code/cryptoscan-results.json",
+      "expected_output": "cryptoscan-results.json",
+      "description": "90+ detection patterns, 20+ languages, library detection, IaC scanning.",
+      "source_url": "https://npmjs.com/package/cryptoscan",
+      "license": "Apache-2.0"
+    },
+    "kybercheck": {
+      "category": "code",
+      "required": false,
+      "install": "cargo install kybercheck",
+      "uninstall": "cargo uninstall kybercheck",
+      "verify": "which kybercheck",
+      "run": "kybercheck {target_dir} --output ./scan_results/code/kybercheck-results.json",
+      "expected_output": "kybercheck-results.json",
+      "description": "Code scanner with database schema impact analysis. Traces vulnerable crypto through data layers.",
+      "source_url": "https://crates.io/crates/kybercheck",
+      "license": "MIT"
+    },
+    "acdi-code": {
+      "category": "code",
+      "required": false,
+      "install": "cargo install acdi",
+      "uninstall": "cargo uninstall acdi",
+      "verify": "which acdi",
+      "run": "acdi scan {target_dir} --mode code --output ./scan_results/code/acdi-code.json",
+      "expected_output": "acdi-code.json",
+      "description": "IaC and code crypto discovery: JWT configs, package manifests, certificate scanning.",
+      "source_url": "https://github.com/vral-parmar/acdi",
+      "license": "Apache-2.0"
+    },
+    "acdi-infra": {
+      "category": "infra",
+      "required": true,
+      "install": "cargo install acdi",
+      "uninstall": "cargo uninstall acdi",
+      "verify": "which acdi",
+      "run": "acdi scan {target_dir} --mode infra --output ./scan_results/infra/acdi-cbom.json",
+      "expected_output": "acdi-cbom.json",
+      "description": "IaC scanning: Terraform KMS configs, Kubernetes cert-manager, CI/CD pipelines.",
+      "source_url": "https://github.com/vral-parmar/acdi",
+      "license": "Apache-2.0"
+    },
+    "vault-audit": {
+      "category": "infra",
+      "required": false,
+      "install": "cp scripts/vault-audit.sh /usr/local/bin/",
+      "uninstall": "rm /usr/local/bin/vault-audit.sh",
+      "verify": "which vault-audit.sh",
+      "run": "vault-audit.sh --addr {vault_addr} --output ./scan_results/infra/vault-audit.json",
+      "expected_output": "vault-audit.json",
+      "description": "HashiCorp Vault mount point inventory, key algorithms, auto-unseal KMS configuration.",
+      "source_url": "https://github.com/q-readiness/scanner-skeleton",
+      "license": "MIT"
+    },
+    "db-crypto-scan": {
+      "category": "data",
+      "required": true,
+      "install": "cp scripts/db-crypto-scan.sh /usr/local/bin/",
+      "uninstall": "rm /usr/local/bin/db-crypto-scan.sh",
+      "verify": "which db-crypto-scan.sh",
+      "run": "db-crypto-scan.sh --engine {engine} --host {host} --output ./scan_results/data/db-crypto-scan.json",
+      "expected_output": "db-crypto-scan.json",
+      "description": "Database encryption discovery: TDE status, column encryption, connection TLS per engine.",
+      "source_url": "https://github.com/q-readiness/scanner-skeleton",
+      "license": "MIT"
+    },
+    "dnssec-scan": {
+      "category": "pki",
+      "required": false,
+      "install": "cp scripts/dnssec-scan.sh /usr/local/bin/",
+      "uninstall": "rm /usr/local/bin/dnssec-scan.sh",
+      "verify": "which dnssec-scan.sh",
+      "run": "dnssec-scan.sh {domains} --output ./scan_results/pki/dnssec-scan.json",
+      "expected_output": "dnssec-scan.json",
+      "description": "DNSSEC KSK/ZSK algorithm enumeration and quantum risk classification.",
+      "source_url": "https://github.com/q-readiness/scanner-skeleton",
+      "license": "MIT"
+    },
+    "cert-analyzer": {
+      "category": "pki",
+      "required": false,
+      "install": "pip install cert-analyzer",
+      "uninstall": "pip uninstall cert-analyzer -y",
+      "verify": "which cert-analyzer",
+      "run": "cert-analyzer {cert_path} --output ./scan_results/pki/cert-inventory.json",
+      "expected_output": "cert-inventory.json",
+      "description": "Certificate chain analysis: key algorithms, expiry, PQC OIDs, issuer trust chain.",
+      "source_url": "https://pypi.org/project/cert-analyzer",
+      "license": "MIT"
+    }
+  }
+}

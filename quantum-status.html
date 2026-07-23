@@ -6,6 +6,7 @@
   <title>Q-Readiness | Quantum Timeline</title>
   <meta name="description" content="Quantum status timeline with live countdown clocks to PQC migration deadlines. Enterprise, defense, CNSA 2.0, and NIST standards timelines.">
   <link rel="stylesheet" href="css/styles.css">
+  <script src="js/i18n.js"></script>
   <style>.nav__link { color: var(--color-text); }</style>
 </head>
 <body>
@@ -21,10 +22,12 @@
     <div class="nav__menu">
       <a href="dashboard.html" class="nav__link">Dashboard</a>
       <a href="quantum-status.html" class="nav__link nav__link--active">Timeline</a>
+      <a href="pricing.html" class="nav__link">Pricing</a>
       <a href="news.html" class="nav__link">News</a>
       <a href="standards.html" class="nav__link">Standards</a>
       <a href="faq.html" class="nav__link">FAQ</a>
       <button class="btn btn--outline btn--small" disabled style="opacity:0.5;cursor:not-allowed;margin-right:8px;">Sign Up &mdash; Q3 2026</button>
+      <select id="langSelect" class="nav__link" aria-label="Select language" style="background:transparent;border:0.5px solid var(--color-border);color:var(--color-text);font-family:var(--font-body);font-size:0.72rem;padding:4px 8px;cursor:pointer;margin-right:8px;" onchange="I18n.switchTo(this.value)"><option value="en">English</option><option value="ja" lang="ja">日本語</option></select>
       <a href="index.html#contact" class="nav__link nav__cta btn btn--primary btn--small">Book a Call</a>
     </div>
     <button class="hamburger" aria-label="Open menu" aria-expanded="false">

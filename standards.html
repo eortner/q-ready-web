@@ -6,6 +6,7 @@
   <title>Q-Readiness | Quantum Standards</title>
   <meta name="description" content="Quantum readiness standards we follow: NIST FIPS 203/204/205, CNSA 2.0, EU CFQT, ETSI QSC, China GB/T 47177. NIST-aligned methodology">
   <link rel="stylesheet" href="css/styles.css">
+  <script src="js/i18n.js"></script>
   <style>.nav__link { color: var(--color-text); }</style>
   <script type="application/ld+json">
   {
@@ -26,10 +27,12 @@
     <div class="nav__menu">
       <a href="dashboard.html" class="nav__link">Dashboard</a>
       <a href="quantum-status.html" class="nav__link">Timeline</a>
+      <a href="pricing.html" class="nav__link">Pricing</a>
       <a href="news.html" class="nav__link">News</a>
       <a href="standards.html" class="nav__link nav__link--active">Standards</a>
       <a href="faq.html" class="nav__link">FAQ</a>
       <button class="btn btn--outline btn--small" disabled style="opacity:0.5;cursor:not-allowed;margin-right:8px;">Sign Up &mdash; Q3 2026</button>
+      <select id="langSelect" class="nav__link" aria-label="Select language" style="background:transparent;border:0.5px solid var(--color-border);color:var(--color-text);font-family:var(--font-body);font-size:0.72rem;padding:4px 8px;cursor:pointer;margin-right:8px;" onchange="I18n.switchTo(this.value)"><option value="en">English</option><option value="ja" lang="ja">日本語</option></select>
       <a href="index.html#contact" class="nav__link nav__cta btn btn--primary btn--small">Book a Call</a>
     </div>
     <button class="hamburger" aria-label="Open menu" aria-expanded="false">
@@ -144,17 +147,36 @@
           </div>
         </div>
 
+        <!-- Japan -->
+        <div class="reveal" style="padding:32px 0;border-bottom:0.5px solid var(--color-border);">
+          <div style="display:flex;align-items:flex-start;gap:16px;margin-bottom:16px;">
+            <span style="font-size:1.6rem;flex-shrink:0;">🇯🇵</span>
+            <h2 style="font-family:var(--font-display);font-size:1.6rem;font-weight:500;color:var(--color-text);margin:0;">Japan — CRYPTREC</h2>
+          </div>
+          <p style="font-size:0.92rem;color:var(--color-text-dim);line-height:1.8;font-weight:300;margin-bottom:24px;">Japan follows a NIST-aligned approach through CRYPTREC (Cryptography Research and Evaluation Committees), which evaluates cryptographic algorithms for government use. The National Cyber Command Office (NCO) set a 2035 deadline for full government PQC transition.</p>
+          <div class="reveal" style="display:grid;grid-template-columns:repeat(2,1fr);gap:20px;">
+            <div style="background:var(--color-surface);border:0.5px solid var(--color-border);padding:24px;">
+              <h4 style="font-family:var(--font-body);font-size:0.8rem;font-weight:500;color:var(--color-accent);letter-spacing:0.04em;text-transform:uppercase;margin-bottom:8px;">NCO Interim Report (Nov 2025)</h4>
+              <p style="font-size:0.78rem;color:var(--color-text-dim);line-height:1.7;font-weight:300;">Government agencies must fully transition to PQC by 2035. Recommends cryptographic agility, hybrid PQ/traditional schemes, and urgent action against HNDL attacks.</p>
+            </div>
+            <div style="background:var(--color-surface);border:0.5px solid var(--color-border);padding:24px;">
+              <h4 style="font-family:var(--font-body);font-size:0.8rem;font-weight:500;color:var(--color-accent);letter-spacing:0.04em;text-transform:uppercase;margin-bottom:8px;">CRYPTREC Evaluation</h4>
+              <p style="font-size:0.78rem;color:var(--color-text-dim);line-height:1.7;font-weight:300;">Ongoing evaluation of legacy cipher decommissioning and PQC adoption, following NIST standardization progress. Implementation roadmap planned for FY26.</p>
+            </div>
+          </div>
+        </div>
+
         <!-- Comparison table -->
         <div class="reveal" style="padding:40px 0;">
           <h2 style="font-family:var(--font-display);font-size:1.6rem;font-weight:500;color:var(--color-text);margin-bottom:20px;">Comparison Summary</h2>
           <div style="overflow-x:auto;">
             <table style="width:100%;border-collapse:collapse;font-size:0.82rem;">
-              <thead><tr><th style="font-size:0.65rem;font-weight:500;letter-spacing:0.06em;text-transform:uppercase;color:var(--color-text-muted);text-align:left;padding:12px 16px;border-bottom:1px solid var(--color-border);">Feature</th><th style="font-size:0.65rem;font-weight:500;letter-spacing:0.06em;text-transform:uppercase;color:var(--color-text-muted);text-align:left;padding:12px 16px;border-bottom:1px solid var(--color-border);">US (NIST)</th><th style="font-size:0.65rem;font-weight:500;letter-spacing:0.06em;text-transform:uppercase;color:var(--color-text-muted);text-align:left;padding:12px 16px;border-bottom:1px solid var(--color-border);">EU</th><th style="font-size:0.65rem;font-weight:500;letter-spacing:0.06em;text-transform:uppercase;color:var(--color-text-muted);text-align:left;padding:12px 16px;border-bottom:1px solid var(--color-border);">China</th></tr></thead>
+              <thead><tr><th style="font-size:0.65rem;font-weight:500;letter-spacing:0.06em;text-transform:uppercase;color:var(--color-text-muted);text-align:left;padding:12px 16px;border-bottom:1px solid var(--color-border);">Feature</th><th style="font-size:0.65rem;font-weight:500;letter-spacing:0.06em;text-transform:uppercase;color:var(--color-text-muted);text-align:left;padding:12px 16px;border-bottom:1px solid var(--color-border);">US (NIST)</th><th style="font-size:0.65rem;font-weight:500;letter-spacing:0.06em;text-transform:uppercase;color:var(--color-text-muted);text-align:left;padding:12px 16px;border-bottom:1px solid var(--color-border);">EU</th><th style="font-size:0.65rem;font-weight:500;letter-spacing:0.06em;text-transform:uppercase;color:var(--color-text-muted);text-align:left;padding:12px 16px;border-bottom:1px solid var(--color-border);">China</th><th style="font-size:0.65rem;font-weight:500;letter-spacing:0.06em;text-transform:uppercase;color:var(--color-text-muted);text-align:left;padding:12px 16px;border-bottom:1px solid var(--color-border);">Japan</th></tr></thead>
               <tbody>
-                <tr><td style="padding:12px 16px;border-bottom:0.5px solid var(--color-border-light);color:var(--color-text-dim);">Primary Standards</td><td style="padding:12px 16px;border-bottom:0.5px solid var(--color-border-light);color:var(--color-text-dim);">FIPS 203, 204, 205</td><td style="padding:12px 16px;border-bottom:0.5px solid var(--color-border-light);color:var(--color-text-dim);">CFQT 3.0 + EU Roadmap + ETSI</td><td style="padding:12px 16px;border-bottom:0.5px solid var(--color-border-light);color:var(--color-text-dim);">GB/T 47177.1 + National PQC (dev)</td></tr>
-                <tr><td style="padding:12px 16px;border-bottom:0.5px solid var(--color-border-light);color:var(--color-text-dim);">Status</td><td style="padding:12px 16px;border-bottom:0.5px solid var(--color-border-light);color:var(--color-green);">Finalized (Aug 2024)</td><td style="padding:12px 16px;border-bottom:0.5px solid var(--color-border-light);color:var(--color-accent);">Active (2025)</td><td style="padding:12px 16px;border-bottom:0.5px solid var(--color-border-light);color:var(--color-accent);">Partial (2026) / Dev (PQC)</td></tr>
-                <tr><td style="padding:12px 16px;border-bottom:0.5px solid var(--color-border-light);color:var(--color-text-dim);">Focus</td><td style="padding:12px 16px;border-bottom:0.5px solid var(--color-border-light);color:var(--color-text-dim);">Cryptographic algorithms</td><td style="padding:12px 16px;border-bottom:0.5px solid var(--color-border-light);color:var(--color-text-dim);">Workforce + coordinated migration</td><td style="padding:12px 16px;border-bottom:0.5px solid var(--color-border-light);color:var(--color-text-dim);">Infrastructure + independent algorithms</td></tr>
-                <tr><td style="padding:12px 16px;border-bottom:0.5px solid var(--color-border-light);color:var(--color-text-dim);">Global Alignment</td><td style="padding:12px 16px;border-bottom:0.5px solid var(--color-border-light);color:var(--color-green);">Global benchmark</td><td style="padding:12px 16px;border-bottom:0.5px solid var(--color-border-light);color:var(--color-accent);">Aligning with NIST, building own ecosystem</td><td style="padding:12px 16px;border-bottom:0.5px solid var(--color-border-light);color:#FF5F57;">Independent path</td></tr>
+                <tr><td style="padding:12px 16px;border-bottom:0.5px solid var(--color-border-light);color:var(--color-text-dim);">Primary Standards</td><td style="padding:12px 16px;border-bottom:0.5px solid var(--color-border-light);color:var(--color-text-dim);">FIPS 203, 204, 205</td><td style="padding:12px 16px;border-bottom:0.5px solid var(--color-border-light);color:var(--color-text-dim);">CFQT 3.0 + EU Roadmap + ETSI</td><td style="padding:12px 16px;border-bottom:0.5px solid var(--color-border-light);color:var(--color-text-dim);">GB/T 47177.1 + National PQC (dev)</td><td style="padding:12px 16px;border-bottom:0.5px solid var(--color-border-light);color:var(--color-text-dim);">NIST-aligned — CRYPTREC evaluating</td></tr>
+                <tr><td style="padding:12px 16px;border-bottom:0.5px solid var(--color-border-light);color:var(--color-text-dim);">Status</td><td style="padding:12px 16px;border-bottom:0.5px solid var(--color-border-light);color:var(--color-green);">Finalized (Aug 2024)</td><td style="padding:12px 16px;border-bottom:0.5px solid var(--color-border-light);color:var(--color-accent);">Active (2025)</td><td style="padding:12px 16px;border-bottom:0.5px solid var(--color-border-light);color:var(--color-accent);">Partial (2026) / Dev (PQC)</td><td style="padding:12px 16px;border-bottom:0.5px solid var(--color-border-light);color:var(--color-accent);">Active — FY26 roadmap</td></tr>
+                <tr><td style="padding:12px 16px;border-bottom:0.5px solid var(--color-border-light);color:var(--color-text-dim);">Focus</td><td style="padding:12px 16px;border-bottom:0.5px solid var(--color-border-light);color:var(--color-text-dim);">Cryptographic algorithms</td><td style="padding:12px 16px;border-bottom:0.5px solid var(--color-border-light);color:var(--color-text-dim);">Workforce + coordinated migration</td><td style="padding:12px 16px;border-bottom:0.5px solid var(--color-border-light);color:var(--color-text-dim);">Infrastructure + independent algorithms</td><td style="padding:12px 16px;border-bottom:0.5px solid var(--color-border-light);color:var(--color-text-dim);">Crypto agility + hybrid transition</td></tr>
+                <tr><td style="padding:12px 16px;border-bottom:0.5px solid var(--color-border-light);color:var(--color-text-dim);">Global Alignment</td><td style="padding:12px 16px;border-bottom:0.5px solid var(--color-border-light);color:var(--color-green);">Global benchmark</td><td style="padding:12px 16px;border-bottom:0.5px solid var(--color-border-light);color:var(--color-accent);">Aligning with NIST, building own ecosystem</td><td style="padding:12px 16px;border-bottom:0.5px solid var(--color-border-light);color:#FF5F57;">Independent path</td><td style="padding:12px 16px;border-bottom:0.5px solid var(--color-border-light);color:var(--color-accent);">NIST-aligned</td></tr>
               </tbody>
             </table>
           </div>
@@ -166,7 +188,7 @@
     <section class="section section--deep" style="padding:80px 0;">
       <div class="container">
         <div style="text-align:center;">
-          <p style="font-size:0.92rem;color:var(--color-text-dim);max-width:560px;margin:0 auto 36px;font-weight:300;line-height:1.8;">Every Q-Readiness assessment is NIST-aligned and CNSA 2.0 compliant. We track all three regulatory ecosystems to ensure global coverage.</p>
+          <p style="font-size:0.92rem;color:var(--color-text-dim);max-width:560px;margin:0 auto 36px;font-weight:300;line-height:1.8;">Every Q-Readiness assessment is NIST-aligned and CNSA 2.0 compliant. We track all four regulatory ecosystems to ensure global coverage.</p>
           <a href="index.html#contact" class="btn btn--primary">Book a Scoping Call</a>
         </div>
         <div style="margin-top:80px;padding-top:36px;border-top:0.5px solid var(--color-border);">

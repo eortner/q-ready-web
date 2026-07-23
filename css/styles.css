@@ -257,7 +257,8 @@ h4 {
 /* Varied section padding */
 #evaluate.section { padding: 110px 0; }
 #dashboard.section { padding: 100px 0; }
-#methodology.section { padding: 130px 0; }
+#howitworks.section { padding: 100px 0; }
+#pricing.section { padding: 100px 0; }
 #quantum-timeline.section { padding: 100px 0; }
 #intelligence.section { padding: 110px 0; }
 #contact.section { padding: 110px 0; }

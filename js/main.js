@@ -468,12 +468,15 @@
     document.body.appendChild(rail);
 
     var sectionDefs = [
-      { id: 'evaluate',    num: '01', label: 'Evaluate',     desc: 'What We Assess' },
-      { id: 'dashboard',   num: '02', label: 'Dashboard',    desc: 'Score Preview' },
-      { id: 'methodology', num: '03', label: 'Methodology',  desc: 'How It Works' },
-      { id: 'quantum-timeline', num: '04', label: 'Timeline', desc: 'Quantum Status' },
-      { id: 'intelligence', num: '05', label: 'Intel',       desc: 'News & Analysis' },
-      { id: 'contact',     num: '06', label: 'Contact',      desc: 'Book a Call' }
+      { id: 'why-us',           num: '01', label: 'Why Us',       desc: 'Why Q-Readiness' },
+      { id: 'evaluate',         num: '02', label: 'BOM',          desc: 'What We Scan' },
+      { id: 'dashboard',        num: '03', label: 'Dashboard',    desc: 'Score Preview' },
+      { id: 'howitworks',       num: '04', label: 'How It Works', desc: '3 Steps' },
+      { id: 'pricing',          num: '05', label: 'Pricing',      desc: 'Plans & Tiers' },
+      { id: 'quantum-timeline', num: '06', label: 'Timeline',     desc: 'Quantum Deadlines' },
+      { id: 'intelligence',     num: '07', label: 'Intel',        desc: 'News & Analysis' },
+      { id: 'who-we-are',       num: '08', label: 'Who We Are',   desc: 'Our Team' },
+      { id: 'contact',          num: '09', label: 'Contact',      desc: 'Book a Call' }
     ];
 
     var cards = [];

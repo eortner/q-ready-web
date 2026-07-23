@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Q-Readiness | Pricing</title>
+  <meta name="description" content="Q-Readiness pricing — start free, pay as you scale. All plans include the same powerful dashboard and in-app deadline alerts.">
+  <link rel="stylesheet" href="css/styles.css">
+  <script src="js/i18n.js"></script>
+  <style>.nav__link { color: var(--color-text); }</style>
+</head>
+<body>
+  <a href="#pricing-main" class="skip-link">Skip to content</a>
+  <nav class="nav nav--visible nav--solid" role="navigation">
+    <a href="index.html" class="nav__brand"><span class="nav__brand-mark">Q</span><span>Q-Readiness</span></a>
+    <div class="nav__menu">
+      <a href="dashboard.html" class="nav__link">Dashboard</a>
+      <a href="quantum-status.html" class="nav__link">Timeline</a>
+      <a href="pricing.html" class="nav__link nav__link--active">Pricing</a>
+      <a href="news.html" class="nav__link">News</a>
+      <a href="standards.html" class="nav__link">Standards</a>
+      <a href="faq.html" class="nav__link">FAQ</a>
+      <button class="btn btn--outline btn--small" disabled style="opacity:0.5;cursor:not-allowed;margin-right:8px;">Sign Up — Q3 2026</button>
+      <select id="langSelect" class="nav__link" aria-label="Select language" style="background:transparent;border:0.5px solid var(--color-border);color:var(--color-text);font-family:var(--font-body);font-size:0.72rem;padding:4px 8px;cursor:pointer;margin-right:8px;" onchange="I18n.switchTo(this.value)"><option value="en">English</option><option value="ja" lang="ja">日本語</option></select>
+      <a href="index.html#contact" class="nav__link nav__cta btn btn--primary btn--small">Book a Call</a>
+    </div>
+    <button class="hamburger" aria-label="Open menu" aria-expanded="false">
+      <span class="hamburger__line"></span><span class="hamburger__line"></span><span class="hamburger__line"></span>
+    </button>
+  </nav>
+  <div class="overlay" role="dialog" aria-modal="true">
+    <nav class="overlay__nav">
+      <a href="dashboard.html" class="overlay__link">Dashboard</a>
+      <a href="quantum-status.html" class="overlay__link">Timeline</a>
+      <a href="pricing.html" class="overlay__link">Pricing</a>
+      <a href="news.html" class="overlay__link">News</a>
+      <a href="standards.html" class="overlay__link">Standards</a>
+      <a href="faq.html" class="overlay__link">FAQ</a>
+      <a href="index.html#contact" class="overlay__link overlay__cta btn btn--outline">Book a Call</a>
+    </nav>
+  </div>
+
+  <main id="pricing-main">
+    <section class="section section--dark section--grid" style="padding-top:120px;padding-bottom:60px;">
+      <div class="container">
+        <h1 class="quantum-page-title">Pricing</h1>
+        <p class="quantum-page-subtitle">Pay as you scale. All plans include the same powerful dashboard and in-app deadline alerts.</p>
+      </div>
+    </section>
+
+    <section class="section section--darker" style="padding-top:0;">
+      <div class="container">
+        <div class="reveal">
+          <table style="width:100%;border-collapse:collapse;font-size:0.82rem;text-align:center;">
+            <thead>
+              <tr>
+                <th style="font-size:0.65rem;font-weight:500;letter-spacing:0.06em;text-transform:uppercase;color:var(--color-text-muted);text-align:left;padding:14px 16px;border-bottom:1px solid var(--color-border);">Tier</th>
+                <th style="font-size:0.65rem;font-weight:500;letter-spacing:0.06em;text-transform:uppercase;color:var(--color-text-muted);padding:14px 16px;border-bottom:1px solid var(--color-border);">Price</th>
+                <th style="font-size:0.65rem;font-weight:500;letter-spacing:0.06em;text-transform:uppercase;color:var(--color-text-muted);padding:14px 16px;border-bottom:1px solid var(--color-border);">Network</th>
+                <th style="font-size:0.65rem;font-weight:500;letter-spacing:0.06em;text-transform:uppercase;color:var(--color-text-muted);padding:14px 16px;border-bottom:1px solid var(--color-border);">Code</th>
+                <th style="font-size:0.65rem;font-weight:500;letter-spacing:0.06em;text-transform:uppercase;color:var(--color-text-muted);padding:14px 16px;border-bottom:1px solid var(--color-border);">Infra</th>
+                <th style="font-size:0.65rem;font-weight:500;letter-spacing:0.06em;text-transform:uppercase;color:var(--color-text-muted);padding:14px 16px;border-bottom:1px solid var(--color-border);">Data</th>
+                <th style="font-size:0.65rem;font-weight:500;letter-spacing:0.06em;text-transform:uppercase;color:var(--color-text-muted);padding:14px 16px;border-bottom:1px solid var(--color-border);">PKI</th>
+                <th style="font-size:0.65rem;font-weight:500;letter-spacing:0.06em;text-transform:uppercase;color:var(--color-text-muted);padding:14px 16px;border-bottom:1px solid var(--color-border);">Alerts</th>
+                <th style="font-size:0.65rem;font-weight:500;letter-spacing:0.06em;text-transform:uppercase;color:var(--color-text-muted);padding:14px 16px;border-bottom:1px solid var(--color-border);">Email</th>
+                <th style="font-size:0.65rem;font-weight:500;letter-spacing:0.06em;text-transform:uppercase;color:var(--color-text-muted);padding:14px 16px;border-bottom:1px solid var(--color-border);">News</th>
+                <th style="font-size:0.65rem;font-weight:500;letter-spacing:0.06em;text-transform:uppercase;color:var(--color-text-muted);padding:14px 16px;border-bottom:1px solid var(--color-border);">Air-Gapped</th>
+                <th style="font-size:0.65rem;font-weight:500;letter-spacing:0.06em;text-transform:uppercase;color:var(--color-text-muted);padding:14px 16px;border-bottom:1px solid var(--color-border);"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="padding:14px 16px;border-bottom:0.5px solid var(--color-border-light);color:var(--color-text);font-weight:500;text-align:left;">Free</td>
+                <td style="padding:14px 16px;border-bottom:0.5px solid var(--color-border-light);color:var(--color-accent);font-weight:500;">$0</td>
+                <td style="padding:14px 16px;border-bottom:0.5px solid var(--color-border-light);color:var(--color-text-dim);">1</td><td style="padding:14px 16px;border-bottom:0.5px solid var(--color-border-light);color:var(--color-text-dim);">1</td><td style="padding:14px 16px;border-bottom:0.5px solid var(--color-border-light);color:var(--color-text-dim);">1</td><td style="padding:14px 16px;border-bottom:0.5px solid var(--color-border-light);color:var(--color-text-dim);">1</td><td style="padding:14px 16px;border-bottom:0.5px solid var(--color-border-light);color:var(--color-text-dim);">1</td>
+                <td style="padding:14px 16px;border-bottom:0.5px solid var(--color-border-light);color:var(--color-green);">✅</td>
+                <td style="padding:14px 16px;border-bottom:0.5px solid var(--color-border-light);color:var(--color-text-muted);">—</td>
+                <td style="padding:14px 16px;border-bottom:0.5px solid var(--color-border-light);color:var(--color-text-muted);">—</td>
+                <td style="padding:14px 16px;border-bottom:0.5px solid var(--color-border-light);color:var(--color-text-muted);">—</td>
+                <td style="padding:14px 16px;border-bottom:0.5px solid var(--color-border-light);"><a href="#" class="btn btn--outline btn--small">Start Free</a></td>
+              </tr>
+              <tr style="background:rgba(212,160,67,0.04);">
+                <td style="padding:14px 16px;border-bottom:0.5px solid var(--color-border-light);color:var(--color-text);font-weight:500;text-align:left;">Starter</td>
+                <td style="padding:14px 16px;border-bottom:0.5px solid var(--color-border-light);color:var(--color-accent);font-weight:500;">$9.99<span style="font-size:0.7rem;color:var(--color-text-muted);">/mo</span></td>
+                <td style="padding:14px 16px;border-bottom:0.5px solid var(--color-border-light);color:var(--color-text-dim);">3</td><td style="padding:14px 16px;border-bottom:0.5px solid var(--color-border-light);color:var(--color-text-dim);">10</td><td style="padding:14px 16px;border-bottom:0.5px solid var(--color-border-light);color:var(--color-text-dim);">3</td><td style="padding:14px 16px;border-bottom:0.5px solid var(--color-border-light);color:var(--color-text-dim);">10</td><td style="padding:14px 16px;border-bottom:0.5px solid var(--color-border-light);color:var(--color-text-dim);">3</td>
+                <td style="padding:14px 16px;border-bottom:0.5px solid var(--color-border-light);color:var(--color-green);">✅</td>
+                <td style="padding:14px 16px;border-bottom:0.5px solid var(--color-border-light);color:var(--color-text-muted);">—</td>
+                <td style="padding:14px 16px;border-bottom:0.5px solid var(--color-border-light);color:var(--color-text-muted);">—</td>
+                <td style="padding:14px 16px;border-bottom:0.5px solid var(--color-border-light);color:var(--color-text-muted);">—</td>
+                <td style="padding:14px 16px;border-bottom:0.5px solid var(--color-border-light);"><a href="#" class="btn btn--outline btn--small">Get Started</a></td>
+              </tr>
+              <tr>
+                <td style="padding:14px 16px;border-bottom:0.5px solid var(--color-border-light);color:var(--color-text);font-weight:500;text-align:left;">Pro</td>
+                <td style="padding:14px 16px;border-bottom:0.5px solid var(--color-border-light);color:var(--color-accent);font-weight:500;">$29.99<span style="font-size:0.7rem;color:var(--color-text-muted);">/mo</span></td>
+                <td style="padding:14px 16px;border-bottom:0.5px solid var(--color-border-light);color:var(--color-text-dim);">10</td><td style="padding:14px 16px;border-bottom:0.5px solid var(--color-border-light);color:var(--color-text-dim);">50</td><td style="padding:14px 16px;border-bottom:0.5px solid var(--color-border-light);color:var(--color-text-dim);">10</td><td style="padding:14px 16px;border-bottom:0.5px solid var(--color-border-light);color:var(--color-text-dim);">50</td><td style="padding:14px 16px;border-bottom:0.5px solid var(--color-border-light);color:var(--color-text-dim);">10</td>
+                <td style="padding:14px 16px;border-bottom:0.5px solid var(--color-border-light);color:var(--color-green);">✅</td>
+                <td style="padding:14px 16px;border-bottom:0.5px solid var(--color-border-light);color:var(--color-green);">✅</td>
+                <td style="padding:14px 16px;border-bottom:0.5px solid var(--color-border-light);color:var(--color-green);">✅</td>
+                <td style="padding:14px 16px;border-bottom:0.5px solid var(--color-border-light);color:var(--color-text-muted);">—</td>
+                <td style="padding:14px 16px;border-bottom:0.5px solid var(--color-border-light);"><a href="#" class="btn btn--primary btn--small">Get Started</a></td>
+              </tr>
+              <tr style="background:rgba(212,160,67,0.04);">
+                <td style="padding:14px 16px;border-bottom:0.5px solid var(--color-border-light);color:var(--color-text);font-weight:500;text-align:left;">Enterprise</td>
+                <td style="padding:14px 16px;border-bottom:0.5px solid var(--color-border-light);color:var(--color-accent);font-weight:500;">$249.99<span style="font-size:0.7rem;color:var(--color-text-muted);">/mo</span></td>
+                <td style="padding:14px 16px;border-bottom:0.5px solid var(--color-border-light);color:var(--color-text-dim);">100</td><td style="padding:14px 16px;border-bottom:0.5px solid var(--color-border-light);color:var(--color-text-dim);">500</td><td style="padding:14px 16px;border-bottom:0.5px solid var(--color-border-light);color:var(--color-text-dim);">100</td><td style="padding:14px 16px;border-bottom:0.5px solid var(--color-border-light);color:var(--color-text-dim);">500</td><td style="padding:14px 16px;border-bottom:0.5px solid var(--color-border-light);color:var(--color-text-dim);">100</td>
+                <td style="padding:14px 16px;border-bottom:0.5px solid var(--color-border-light);color:var(--color-green);">✅</td>
+                <td style="padding:14px 16px;border-bottom:0.5px solid var(--color-border-light);color:var(--color-green);">✅</td>
+                <td style="padding:14px 16px;border-bottom:0.5px solid var(--color-border-light);color:var(--color-green);">✅</td>
+                <td style="padding:14px 16px;border-bottom:0.5px solid var(--color-border-light);color:var(--color-text-muted);">—</td>
+                <td style="padding:14px 16px;border-bottom:0.5px solid var(--color-border-light);"><a href="#" class="btn btn--outline btn--small">Get Started</a></td>
+              </tr>
+              <tr>
+                <td style="padding:14px 16px;color:var(--color-text);font-weight:500;text-align:left;">Custom</td>
+                <td style="padding:14px 16px;color:var(--color-accent);font-weight:500;">Contact Us</td>
+                <td style="padding:14px 16px;color:var(--color-text-dim);">∞</td><td style="padding:14px 16px;color:var(--color-text-dim);">∞</td><td style="padding:14px 16px;color:var(--color-text-dim);">∞</td><td style="padding:14px 16px;color:var(--color-text-dim);">∞</td><td style="padding:14px 16px;color:var(--color-text-dim);">∞</td>
+                <td style="padding:14px 16px;color:var(--color-green);">✅</td>
+                <td style="padding:14px 16px;color:var(--color-green);">✅</td>
+                <td style="padding:14px 16px;color:var(--color-green);">✅</td>
+                <td style="padding:14px 16px;color:var(--color-green);">✅</td>
+                <td style="padding:14px 16px;"><a href="index.html#contact" class="btn btn--outline btn--small">Talk to Sales</a></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="reveal" style="max-width:600px;margin:32px auto 0;text-align:center;font-size:0.82rem;color:var(--color-text-dim);line-height:1.8;font-weight:300;">
+          <p>Pro, Enterprise, and Custom include email deadline alerts + tailored quantum newsletter.</p>
+          <p>Custom includes onsite air-gapped deployment with a Q-Readiness engineer. <a href="index.html#contact" style="color:var(--color-accent);">Contact us</a> to scope.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section--deep" style="padding:80px 0;">
+      <div class="container">
+        <div style="text-align:center;">
+          <a href="index.html#contact" class="btn btn--primary">Book a Scoping Call</a>
+        </div>
+        <div style="margin-top:80px;padding-top:36px;border-top:0.5px solid var(--color-border);">
+          <footer class="footer">
+            <div>
+              <span>&copy; 2026 Q-Readiness</span>
+              <span style="display:block;font-size:0.7rem;color:var(--color-text-muted);margin-top:4px;">Proudly built by Universidad de Buenos Aires and 🦎 Larry the Plastic Lizard (Chief Morale Officer).</span>
+            </div>
+            <div class="footer__links">
+              <a href="index.html">Home</a>
+              <a href="pricing.html">Pricing</a>
+              <a href="dashboard.html">Dashboard</a>
+              <a href="index.html#contact">Contact</a>
+            </div>
+          </footer>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <button class="scroll-top-btn" id="scrollTopBtn" aria-label="Scroll to top">&uarr;</button>
+  <script src="js/main.js"></script>
+</body>
+</html>

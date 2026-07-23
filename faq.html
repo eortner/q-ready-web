@@ -6,124 +6,27 @@
   <title>Q-Readiness | Frequently Asked Questions</title>
   <meta name="description" content="Frequently asked questions about quantum readiness assessments, post-quantum cryptography, CNSA 2.0 compliance, and Q-Readiness methodology.">
   <link rel="stylesheet" href="css/styles.css">
+  <script src="js/i18n.js"></script>
   <style>.nav__link { color: var(--color-text); }</style>
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "FAQPage",
     "mainEntity": [
-      {
-        "@type": "Question",
-        "name": "What is a quantum readiness assessment?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "A quantum readiness assessment is a comprehensive audit of your organization's cryptographic infrastructure across 14 layers. It identifies every quantum-vulnerable algorithm, classifies risk by data retention and HNDL exposure, and produces a prioritized remediation roadmap aligned with NIST standards and CNSA 2.0 timelines."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "How long does a quantum readiness assessment take?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Q-Readiness delivers assessments in days to 2.5 weeks — depending on your chosen delivery tier — compared to 13 weeks for traditional consulting audits. AI-driven scoping, 12 automated open-source scanners, and instant dashboard generation eliminate the manual steps that slow down traditional approaches."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "What is PQC and why does it matter?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Post-Quantum Cryptography (PQC) refers to cryptographic algorithms designed to resist attacks from future quantum computers. NIST has standardized three PQC algorithms: ML-KEM (FIPS 203) for key encapsulation, ML-DSA (FIPS 204) and SLH-DSA (FIPS 205) for digital signatures. Organizations must migrate because RSA and ECDSA — which protect most of today's encrypted data — are broken by Shor's algorithm on a cryptographically relevant quantum computer. NIST will deprecate classical algorithms by 2030 and remove them by 2035."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "What is Harvest Now, Decrypt Later?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Harvest Now, Decrypt Later (HNDL) is the primary quantum threat: adversaries are actively collecting encrypted data today — TLS sessions, VPN tunnels, database backups, email archives — and storing it until a cryptographically relevant quantum computer can decrypt it. The harvesting window opened around 2015 and closes when PQC is universally deployed, estimated around 2035. Every month of delay means more data captured. Data with long retention periods (healthcare 30 years, financial 7 years, trade secrets indefinitely) is at highest risk."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "Which industries need quantum readiness assessments?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Any organization with encrypted data that must remain confidential beyond 2030. Highest priority: healthcare (genomic data, PHI with 30-year retention), financial services (transaction records, regulatory retention), defense contractors (CNSA 2.0 mandates starting 2027), critical infrastructure (control systems with 15-20 year lifecycles), and technology companies (source code, trade secrets, code signing keys)."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "How does Q-Readiness compare to traditional audits?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Traditional quantum readiness audits take approximately 13 weeks, rely on manual inventory (spreadsheets, manual certificate review), and produce static reports. Q-Readiness uses 12 open-source automated scanners plus AI-driven analysis to deliver a complete assessment with live dashboard in days to 2.5 weeks — an 80% reduction in time. All tools are open-source and auditable on GitHub."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "What tools do you use for the assessment?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "We deploy 12 open-source scanners: pqaudit (code-level PQC scanning), CryptoScan (cryptographic discovery), Surveyor (TLS infrastructure inventory), pqcscan (PQC algorithm detection in TLS/SSH), PQC Network Scanner (certificate chain analysis), liboqs (NIST PQC benchmarks), PQC-LEO (TLS handshake benchmarks), acdi (IaC and KMS scanning), testssl.sh (TLS vulnerability assessment), plus database encryption discovery, Vault audit, and DNSSEC scanning. Every tool is open-source and auditable."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "What deliverables do I receive?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Every assessment includes: a cryptographic exposure map showing quantum-vulnerable assets across all layers, a prioritized remediation backlog ranked by HNDL urgency and regulatory deadlines, an executive risk memo for board-level communication, a 90-day implementation plan, and access to your live Q-Readiness dashboard with real-time scores, drill-down evidence, and PDF export."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "How do the five service tiers work?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "We offer five delivery tiers: Tier 0 (Self-Service) — you run the tools and send results for processing. Tier 1 (AI-Guided) — Claude Code guides your team through every step. Tier 2 (Secure AI) — we provide isolated AI compute for restricted environments. Tier 3 (Expert On-Site) — an expert deploys on your infrastructure and trains your team. Tier 4 (Q-Appliance) — an air-gapped AI device with no network interface, physically verified. All tiers produce the same deliverables. Scope is customizable for every tier."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "What is CNSA 2.0 and when do I need to comply?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "The Commercial National Security Algorithm Suite 2.0 (CNSA 2.0) is the NSA's mandatory PQC requirements for US national security systems. Phase 1 begins January 2027 and requires software and firmware signing to transition to PQC. Defense contractors and government suppliers must comply. Non-national-security organizations should follow the NIST timeline: deprecation of classical algorithms by 2030, removal by 2035."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "Do you support air-gapped environments?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Yes. Our Tier 4 Q-Appliance is a custom-built portable AI assessment device with no network interface — the WiFi M.2 slot is empty and the Ethernet TX trace is physically cut, which you can verify yourself. It runs all 12 scanners and AI models locally. For environments where AI cannot be used, Tier 0 (Self-Service) and Tier 3 (Expert On-Site) also support air-gapped deployment."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "How is my data protected during the assessment?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Data stays in your environment by default. All scanners run locally — nothing leaves your network without written approval. Our open-source toolchain means every line of code is auditable. The Q-Appliance has no network capability. For remote assessments, read-only access is provisioned and results are encrypted end-to-end."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "How much does a quantum readiness assessment cost?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Pricing depends on your chosen tier, organization size, and scope. Tier 0 (Self-Service) starts at the lowest price point. Tier 1 (AI-Guided) and Tier 2 (Secure AI) are mid-range. Tier 3 (Expert On-Site) includes travel and time. Tier 4 (Q-Appliance) includes hardware. Contact us for a scoping call and fixed-price proposal — no pitch, no deck."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "When does Q-Readiness launch?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Q-Readiness is launching in Q3 2026. Early access and pilot assessments are available now for select partners. Book a scoping call to discuss early access."
-        }
-      }
+      {"@type":"Question","name":"What is a cryptographic BOM?","acceptedAnswer":{"@type":"Answer","text":"A Bill of Materials that inventories every cryptographic asset—ciphers, keys, certificates, libraries—across your 5 infrastructure layers (Network, Code, Infrastructure, Data, PKI), mapped to quantum-safe readiness against 4 global frameworks."}},
+      {"@type":"Question","name":"How long does a scan take?","acceptedAnswer":{"@type":"Answer","text":"Most scans complete in under 10 minutes. Results appear in your dashboard immediately."}},
+      {"@type":"Question","name":"Is it really free?","acceptedAnswer":{"@type":"Answer","text":"Yes. Scan 1 asset per section (Network, Code, Infrastructure, Data, PKI) at no cost. No credit card required. Upgrade when you need more scope."}},
+      {"@type":"Question","name":"What are the 5 BOM sections?","acceptedAnswer":{"@type":"Answer","text":"Network (TLS/SSH/VPN), Code (dependencies/libraries), Infrastructure (IAM/KMS/HSMs), Data (databases/backups), and PKI (certificates/CAs)."}},
+      {"@type":"Question","name":"What standards do you track?","acceptedAnswer":{"@type":"Answer","text":"We map your BOM against 4 global frameworks: NIST (USA), EU Cybersecurity Act (Europe), GB/T (China), and CRYPTREC (Japan). Full compliance dashboards available."}},
+      {"@type":"Question","name":"What are the Dashboard Deadline Alerts?","acceptedAnswer":{"@type":"Answer","text":"Every month, we display upcoming quantum compliance deadlines directly in your dashboard—covering CNSA 2.0, NIST FIPS 203/204/205, EU CS mandates, and other global frameworks. This keeps your team informed at a glance, regardless of your plan."}},
+      {"@type":"Question","name":"What does Email Deadline Alerts include?","acceptedAnswer":{"@type":"Answer","text":"Pro, Enterprise, and Custom subscribers receive the same deadline alerts proactively via email. We'll notify you 90, 60, and 30 days out from critical migration windows—so you never miss a deadline."}},
+      {"@type":"Question","name":"What is the tailored newsletter?","acceptedAnswer":{"@type":"Answer","text":"Pro, Enterprise, and Custom subscribers receive a curated quantum newsletter. We filter 100+ global updates (standards changes, protocol vulnerabilities, regulatory shifts) and deliver only the ones relevant to your specific industry and geographic region."}},
+      {"@type":"Question","name":"What does the Air-Gapped / Onsite Custom tier include?","acceptedAnswer":{"@type":"Answer","text":"For organizations with the highest security requirements (e.g., defense, critical infrastructure), we deploy a physical Q-Readiness appliance inside your air-gapped network. This includes sending a Q-Readiness engineer onsite to install, configure, and validate the deployment. Contact us for a tailored quote."}},
+      {"@type":"Question","name":"Do I have to talk to sales to start?","acceptedAnswer":{"@type":"Answer","text":"Absolutely not. The Free tier requires no sales call—just sign up and scan. Upgrade to any paid tier instantly via your dashboard. Only the Custom tier (air-gapped/onsite) requires a conversation."}},
+      {"@type":"Question","name":"How does Q-Readiness compare to traditional audits?","acceptedAnswer":{"@type":"Answer","text":"Traditional: ~13 weeks, manual spreadsheets. Q-Readiness: AI orchestrates 14 open-source scanners, generates your BOM in minutes, and maps results to 4 global frameworks."}},
+      {"@type":"Question","name":"What tools do you use?","acceptedAnswer":{"@type":"Answer","text":"We orchestrate 14 open-source scanning tools. All are auditable and open-source—check our GitHub."}},
+      {"@type":"Question","name":"What deliverables do I receive?","acceptedAnswer":{"@type":"Answer","text":"An interactive BOM dashboard with: 5-section breakdown (Network/Code/Infra/Data/PKI), gap analysis against 4 global standards, prioritized remediation recommendations, and ongoing regulatory alerts."}},
+      {"@type":"Question","name":"Do you support air-gapped environments?","acceptedAnswer":{"@type":"Answer","text":"Yes. Our Custom tier includes air-gapped deployment with an onsite engineer. Contact us to scope."}}
     ]
   }
   </script>
@@ -135,6 +38,7 @@
     <div class="nav__menu">
       <a href="dashboard.html" class="nav__link">Dashboard</a>
       <a href="quantum-status.html" class="nav__link">Timeline</a>
+      <a href="pricing.html" class="nav__link">Pricing</a>
       <a href="news.html" class="nav__link">News</a>
       <a href="standards.html" class="nav__link">Standards</a>
       <a href="faq.html" class="nav__link nav__link--active">FAQ</a>
@@ -160,82 +64,40 @@
     <section class="section section--dark section--grid" style="padding-top:120px;padding-bottom:60px;">
       <div class="container">
         <h1 class="quantum-page-title">Frequently Asked Questions</h1>
-        <p class="quantum-page-subtitle">Everything you need to know about quantum readiness, our assessment methodology, and what to expect. Launching Q3 2026.</p>
+        <p class="quantum-page-subtitle">Everything you need to know about cryptographic BOMs, our AI-driven platform, and what to expect.</p>
       </div>
     </section>
 
     <section class="section section--darker" style="padding-top:0;">
       <div class="container" style="max-width:760px;">
 
-        <div class="reveal" style="padding:32px 0;border-bottom:0.5px solid var(--color-border);">
-          <h3 style="font-family:var(--font-display);font-size:1.3rem;font-weight:500;margin-bottom:12px;color:var(--color-text);">What is a quantum readiness assessment?</h3>
-          <p style="font-size:0.92rem;color:var(--color-text-dim);line-height:1.8;font-weight:300;">A comprehensive audit of your cryptographic infrastructure across 14 layers. Identifies every quantum-vulnerable algorithm, classifies risk by data retention and HNDL exposure, and produces a prioritized remediation roadmap aligned with NIST standards and CNSA 2.0 timelines.</p>
-        </div>
+        <div class="reveal" style="padding:32px 0;border-bottom:0.5px solid var(--color-border);"><h3 style="font-family:var(--font-display);font-size:1.3rem;font-weight:500;margin-bottom:12px;color:var(--color-text);">What is a cryptographic BOM?</h3><p style="font-size:0.92rem;color:var(--color-text-dim);line-height:1.8;font-weight:300;">A Bill of Materials that inventories every cryptographic asset — ciphers, keys, certificates, libraries — across your 5 infrastructure layers (Network, Code, Infrastructure, Data, PKI), mapped to quantum-safe readiness against 4 global frameworks.</p></div>
 
-        <div class="reveal" style="padding:32px 0;border-bottom:0.5px solid var(--color-border);">
-          <h3 style="font-family:var(--font-display);font-size:1.3rem;font-weight:500;margin-bottom:12px;color:var(--color-text);">How long does an assessment take?</h3>
-          <p style="font-size:0.92rem;color:var(--color-text-dim);line-height:1.8;font-weight:300;">Days to 2.5 weeks — depending on your chosen delivery tier — compared to ~13 weeks for traditional consulting audits. AI-driven scoping, 12 automated open-source scanners, and instant dashboard generation eliminate the manual steps that slow down traditional approaches.</p>
-        </div>
+        <div class="reveal" style="padding:32px 0;border-bottom:0.5px solid var(--color-border);"><h3 style="font-family:var(--font-display);font-size:1.3rem;font-weight:500;margin-bottom:12px;color:var(--color-text);">How long does a scan take?</h3><p style="font-size:0.92rem;color:var(--color-text-dim);line-height:1.8;font-weight:300;">Most scans complete in under 10 minutes. Results appear in your dashboard immediately.</p></div>
 
-        <div class="reveal" style="padding:32px 0;border-bottom:0.5px solid var(--color-border);">
-          <h3 style="font-family:var(--font-display);font-size:1.3rem;font-weight:500;margin-bottom:12px;color:var(--color-text);">What is PQC and why does it matter?</h3>
-          <p style="font-size:0.92rem;color:var(--color-text-dim);line-height:1.8;font-weight:300;">Post-Quantum Cryptography — algorithms designed to resist quantum computer attacks. NIST has standardized ML-KEM (FIPS 203), ML-DSA (FIPS 204), and SLH-DSA (FIPS 205). Organizations must migrate because RSA and ECDSA — which protect most encrypted data today — are broken by Shor's algorithm on a quantum computer. NIST deprecates classical algorithms by 2030, removes them by 2035.</p>
-        </div>
+        <div class="reveal" style="padding:32px 0;border-bottom:0.5px solid var(--color-border);"><h3 style="font-family:var(--font-display);font-size:1.3rem;font-weight:500;margin-bottom:12px;color:var(--color-text);">Is it really free?</h3><p style="font-size:0.92rem;color:var(--color-text-dim);line-height:1.8;font-weight:300;">Yes. Scan 1 asset per section (Network, Code, Infrastructure, Data, PKI) at no cost. No credit card required. Upgrade when you need more scope.</p></div>
 
-        <div class="reveal" style="padding:32px 0;border-bottom:0.5px solid var(--color-border);">
-          <h3 style="font-family:var(--font-display);font-size:1.3rem;font-weight:500;margin-bottom:12px;color:var(--color-text);">What is Harvest Now, Decrypt Later?</h3>
-          <p style="font-size:0.92rem;color:var(--color-text-dim);line-height:1.8;font-weight:300;">Adversaries collect encrypted data today and store it until a quantum computer can decrypt it. The harvesting window opened ~2015 and closes when PQC is universal (~2035). Every month of delay = more captured data. Data with long retention (healthcare 30y, financial 7y, trade secrets) is at highest risk.</p>
-        </div>
+        <div class="reveal" style="padding:32px 0;border-bottom:0.5px solid var(--color-border);"><h3 style="font-family:var(--font-display);font-size:1.3rem;font-weight:500;margin-bottom:12px;color:var(--color-text);">What are the 5 BOM sections?</h3><p style="font-size:0.92rem;color:var(--color-text-dim);line-height:1.8;font-weight:300;">Network (TLS/SSH/VPN), Code (dependencies/libraries), Infrastructure (IAM/KMS/HSMs), Data (databases/backups), and PKI (certificates/CAs).</p></div>
 
-        <div class="reveal" style="padding:32px 0;border-bottom:0.5px solid var(--color-border);">
-          <h3 style="font-family:var(--font-display);font-size:1.3rem;font-weight:500;margin-bottom:12px;color:var(--color-text);">Which industries need this?</h3>
-          <p style="font-size:0.92rem;color:var(--color-text-dim);line-height:1.8;font-weight:300;">Healthcare (genomic data, PHI 30yr retention), financial services (transaction records, PCI DSS), defense contractors (CNSA 2.0 mandates from 2027), critical infrastructure (15-20yr device lifecycles), and technology companies (source code, trade secrets, code signing keys).</p>
-        </div>
+        <div class="reveal" style="padding:32px 0;border-bottom:0.5px solid var(--color-border);"><h3 style="font-family:var(--font-display);font-size:1.3rem;font-weight:500;margin-bottom:12px;color:var(--color-text);">What standards do you track?</h3><p style="font-size:0.92rem;color:var(--color-text-dim);line-height:1.8;font-weight:300;">We map your BOM against 4 global frameworks: NIST (USA), EU Cybersecurity Act (Europe), GB/T (China), and CRYPTREC (Japan). Full compliance dashboards available.</p></div>
 
-        <div class="reveal" style="padding:32px 0;border-bottom:0.5px solid var(--color-border);">
-          <h3 style="font-family:var(--font-display);font-size:1.3rem;font-weight:500;margin-bottom:12px;color:var(--color-text);">How does Q-Readiness compare to traditional audits?</h3>
-          <p style="font-size:0.92rem;color:var(--color-text-dim);line-height:1.8;font-weight:300;">Traditional: ~13 weeks, manual spreadsheets, static reports. Q-Readiness: 12 automated open-source scanners + AI analysis, live dashboard, days to 2.5 weeks — 80% faster. Every tool is open-source and auditable on GitHub.</p>
-        </div>
+        <div class="reveal" style="padding:32px 0;border-bottom:0.5px solid var(--color-border);"><h3 style="font-family:var(--font-display);font-size:1.3rem;font-weight:500;margin-bottom:12px;color:var(--color-text);">What are the Dashboard Deadline Alerts?</h3><p style="font-size:0.92rem;color:var(--color-text-dim);line-height:1.8;font-weight:300;">Every month, we display upcoming quantum compliance deadlines directly in your dashboard — covering CNSA 2.0, NIST FIPS 203/204/205, EU CS mandates, and other global frameworks. This keeps your team informed at a glance, regardless of your plan.</p></div>
 
-        <div class="reveal" style="padding:32px 0;border-bottom:0.5px solid var(--color-border);">
-          <h3 style="font-family:var(--font-display);font-size:1.3rem;font-weight:500;margin-bottom:12px;color:var(--color-text);">What tools do you use?</h3>
-          <p style="font-size:0.92rem;color:var(--color-text-dim);line-height:1.8;font-weight:300;">12 open-source scanners: pqaudit, CryptoScan, Surveyor, pqcscan, PQC Network Scanner, liboqs, PQC-LEO, acdi, testssl.sh, database encryption discovery, Vault audit, and DNSSEC scanning. All auditable on GitHub.</p>
-        </div>
+        <div class="reveal" style="padding:32px 0;border-bottom:0.5px solid var(--color-border);"><h3 style="font-family:var(--font-display);font-size:1.3rem;font-weight:500;margin-bottom:12px;color:var(--color-text);">What does Email Deadline Alerts include?</h3><p style="font-size:0.92rem;color:var(--color-text-dim);line-height:1.8;font-weight:300;">Pro, Enterprise, and Custom subscribers receive the same deadline alerts proactively via email. We'll notify you 90, 60, and 30 days out from critical migration windows — so you never miss a deadline.</p></div>
 
-        <div class="reveal" style="padding:32px 0;border-bottom:0.5px solid var(--color-border);">
-          <h3 style="font-family:var(--font-display);font-size:1.3rem;font-weight:500;margin-bottom:12px;color:var(--color-text);">What deliverables do I receive?</h3>
-          <p style="font-size:0.92rem;color:var(--color-text-dim);line-height:1.8;font-weight:300;">Cryptographic exposure map, prioritized remediation backlog (P0-P3 by HNDL urgency), executive risk memo, 90-day implementation plan, and live dashboard with drill-down evidence and PDF export.</p>
-        </div>
+        <div class="reveal" style="padding:32px 0;border-bottom:0.5px solid var(--color-border);"><h3 style="font-family:var(--font-display);font-size:1.3rem;font-weight:500;margin-bottom:12px;color:var(--color-text);">What is the tailored newsletter?</h3><p style="font-size:0.92rem;color:var(--color-text-dim);line-height:1.8;font-weight:300;">Pro, Enterprise, and Custom subscribers receive a curated quantum newsletter. We filter 100+ global updates (standards changes, protocol vulnerabilities, regulatory shifts) and deliver only the ones relevant to your specific industry and geographic region.</p></div>
 
-        <div class="reveal" style="padding:32px 0;border-bottom:0.5px solid var(--color-border);">
-          <h3 style="font-family:var(--font-display);font-size:1.3rem;font-weight:500;margin-bottom:12px;color:var(--color-text);">How do the five service tiers work?</h3>
-          <p style="font-size:0.92rem;color:var(--color-text-dim);line-height:1.8;font-weight:300;">Tier 0 (Self-Service): run tools independently. Tier 1 (AI-Guided): Claude Code automation. Tier 2 (Secure AI): isolated AI compute. Tier 3 (Expert On-Site): expert deploys on your infrastructure. Tier 4 (Q-Appliance): air-gapped device, no network. All produce identical deliverables. Customizable scope.</p>
-        </div>
+        <div class="reveal" style="padding:32px 0;border-bottom:0.5px solid var(--color-border);"><h3 style="font-family:var(--font-display);font-size:1.3rem;font-weight:500;margin-bottom:12px;color:var(--color-text);">What does the Air-Gapped / Onsite Custom tier include?</h3><p style="font-size:0.92rem;color:var(--color-text-dim);line-height:1.8;font-weight:300;">For organizations with the highest security requirements (e.g., defense, critical infrastructure), we deploy a physical Q-Readiness appliance inside your air-gapped network. This includes sending a Q-Readiness engineer onsite to install, configure, and validate the deployment. Contact us for a tailored quote.</p></div>
 
-        <div class="reveal" style="padding:32px 0;border-bottom:0.5px solid var(--color-border);">
-          <h3 style="font-family:var(--font-display);font-size:1.3rem;font-weight:500;margin-bottom:12px;color:var(--color-text);">What is CNSA 2.0 and when must I comply?</h3>
-          <p style="font-size:0.92rem;color:var(--color-text-dim);line-height:1.8;font-weight:300;">NSA's mandatory PQC requirements for national security systems. Phase 1: January 2027 — software/firmware signing must transition. Defense contractors must comply. Other organizations follow NIST: deprecation by 2030, removal by 2035.</p>
-        </div>
+        <div class="reveal" style="padding:32px 0;border-bottom:0.5px solid var(--color-border);"><h3 style="font-family:var(--font-display);font-size:1.3rem;font-weight:500;margin-bottom:12px;color:var(--color-text);">Do I have to talk to sales to start?</h3><p style="font-size:0.92rem;color:var(--color-text-dim);line-height:1.8;font-weight:300;">Absolutely not. The Free tier requires no sales call — just sign up and scan. Upgrade to any paid tier instantly via your dashboard. Only the Custom tier (air-gapped/onsite) requires a conversation.</p></div>
 
-        <div class="reveal" style="padding:32px 0;border-bottom:0.5px solid var(--color-border);">
-          <h3 style="font-family:var(--font-display);font-size:1.3rem;font-weight:500;margin-bottom:12px;color:var(--color-text);">Do you support air-gapped environments?</h3>
-          <p style="font-size:0.92rem;color:var(--color-text-dim);line-height:1.8;font-weight:300;">Yes. Q-Appliance (Tier 4) has no network interface — WiFi slot empty, Ethernet TX trace cut, verifiable by you. Tier 0 (Self-Service) and Tier 3 (Expert On-Site) also support air-gapped deployment.</p>
-        </div>
+        <div class="reveal" style="padding:32px 0;border-bottom:0.5px solid var(--color-border);"><h3 style="font-family:var(--font-display);font-size:1.3rem;font-weight:500;margin-bottom:12px;color:var(--color-text);">How does Q-Readiness compare to traditional audits?</h3><p style="font-size:0.92rem;color:var(--color-text-dim);line-height:1.8;font-weight:300;">Traditional: ~13 weeks, manual spreadsheets. Q-Readiness: AI orchestrates 14 open-source scanners, generates your BOM in minutes, and maps results to 4 global frameworks.</p></div>
 
-        <div class="reveal" style="padding:32px 0;border-bottom:0.5px solid var(--color-border);">
-          <h3 style="font-family:var(--font-display);font-size:1.3rem;font-weight:500;margin-bottom:12px;color:var(--color-text);">How is my data protected?</h3>
-          <p style="font-size:0.92rem;color:var(--color-text-dim);line-height:1.8;font-weight:300;">Data stays in your environment. All scanners run locally — nothing leaves without written approval. Open-source toolchain means every line is auditable. Q-Appliance has no network capability. Remote assessments use read-only access with end-to-end encryption.</p>
-        </div>
+        <div class="reveal" style="padding:32px 0;border-bottom:0.5px solid var(--color-border);"><h3 style="font-family:var(--font-display);font-size:1.3rem;font-weight:500;margin-bottom:12px;color:var(--color-text);">What tools do you use?</h3><p style="font-size:0.92rem;color:var(--color-text-dim);line-height:1.8;font-weight:300;">We orchestrate 14 open-source scanning tools. All are auditable and open-source — check our GitHub.</p></div>
 
-        <div class="reveal" style="padding:32px 0;border-bottom:0.5px solid var(--color-border);">
-          <h3 style="font-family:var(--font-display);font-size:1.3rem;font-weight:500;margin-bottom:12px;color:var(--color-text);">How much does it cost?</h3>
-          <p style="font-size:0.92rem;color:var(--color-text-dim);line-height:1.8;font-weight:300;">Depends on tier, organization size, and scope. Tier 0 starts lowest. Tier 1 and 2 are mid-range. Tier 3 includes travel. Tier 4 includes hardware. Contact us for a scoping call and fixed-price proposal.</p>
-        </div>
+        <div class="reveal" style="padding:32px 0;border-bottom:0.5px solid var(--color-border);"><h3 style="font-family:var(--font-display);font-size:1.3rem;font-weight:500;margin-bottom:12px;color:var(--color-text);">What deliverables do I receive?</h3><p style="font-size:0.92rem;color:var(--color-text-dim);line-height:1.8;font-weight:300;">An interactive BOM dashboard with: 5-section breakdown (Network/Code/Infra/Data/PKI), gap analysis against 4 global standards, prioritized remediation recommendations, and ongoing regulatory alerts.</p></div>
 
-        <div class="reveal" style="padding:32px 0;">
-          <h3 style="font-family:var(--font-display);font-size:1.3rem;font-weight:500;margin-bottom:12px;color:var(--color-text);">When does Q-Readiness launch?</h3>
-          <p style="font-size:0.92rem;color:var(--color-text-dim);line-height:1.8;font-weight:300;">Launching <strong style="color:var(--color-accent);">Q3 2026</strong>. Early access and pilot assessments available now for select partners. <a href="index.html#contact" style="color:var(--color-accent);">Book a scoping call</a> to discuss early access.</p>
-        </div>
+        <div class="reveal" style="padding:32px 0;"><h3 style="font-family:var(--font-display);font-size:1.3rem;font-weight:500;margin-bottom:12px;color:var(--color-text);">Do you support air-gapped environments?</h3><p style="font-size:0.92rem;color:var(--color-text-dim);line-height:1.8;font-weight:300;">Yes. Our Custom tier includes air-gapped deployment with an onsite engineer. Contact us to scope.</p></div>
 
       </div>
     </section>
@@ -248,9 +110,13 @@
         </div>
         <div style="margin-top:80px;padding-top:36px;border-top:0.5px solid var(--color-border);">
           <footer class="footer">
-            <span>&copy; 2026 Q-Readiness &mdash; Launching Q3 2026</span>
+            <div>
+              <span>&copy; 2026 Q-Readiness</span>
+              <span style="display:block;font-size:0.7rem;color:var(--color-text-muted);margin-top:4px;">Proudly built by Universidad de Buenos Aires and 🦎 Larry the Plastic Lizard (Chief Morale Officer).</span>
+            </div>
             <div class="footer__links">
               <a href="index.html">Home</a>
+              <a href="pricing.html">Pricing</a>
               <a href="dashboard.html">Dashboard</a>
               <a href="index.html#contact">Contact</a>
             </div>
