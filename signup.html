@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Q-Readiness | Sign Up</title>
+  <meta name="description" content="Create your free Q-Readiness account.">
+  <link rel="stylesheet" href="css/styles.css">
+  <script src="js/i18n.js"></script>
+  <style>.nav__link { color: var(--color-text); }</style>
+</head>
+<body>
+  <nav class="nav nav--visible nav--solid" role="navigation">
+    <a href="index.html" class="nav__brand"><span class="nav__brand-mark">Q</span><span>Q-Readiness</span></a>
+    <div class="nav__menu">
+      <a href="dashboard.html" class="nav__link">Dashboard</a>
+      <a href="quantum-status.html" class="nav__link">Timeline</a>
+      <a href="pricing.html" class="nav__link">Pricing</a>
+      <a href="news.html" class="nav__link">News</a>
+      <a href="standards.html" class="nav__link">Standards</a>
+      <a href="faq.html" class="nav__link">FAQ</a>
+      <select id="langSelect" class="nav__link" aria-label="Select language" style="background:transparent;border:0.5px solid var(--color-border);color:var(--color-text);font-family:var(--font-body);font-size:0.72rem;padding:4px 8px;cursor:pointer;margin-right:8px;" onchange="I18n.switchTo(this.value)"><option value="en">English</option><option value="ja" lang="ja">日本語</option></select>
+      <a href="login.html" class="nav__link nav__cta btn btn--primary btn--small">Login</a>
+    </div>
+  </nav>
+
+  <main>
+    <section class="section section--dark section--grid" style="padding-top:120px;padding-bottom:60px;">
+      <div class="container" style="max-width:520px;margin:0 auto;">
+        <h1 class="quantum-page-title" style="text-align:center;">Sign Up — Free</h1>
+        <p style="text-align:center;font-size:0.92rem;color:var(--color-text-dim);margin-bottom:32px;">One free scan per section. No credit card required.</p>
+
+        <div id="error" style="background:rgba(255,95,87,0.08);border:0.5px solid rgba(255,95,87,0.2);color:#FF5F57;padding:12px 16px;font-size:0.82rem;border-radius:var(--radius-sm);margin-bottom:16px;display:none;"></div>
+        <div id="success" style="background:rgba(92,184,122,0.08);border:0.5px solid rgba(92,184,122,0.2);color:var(--color-green);padding:12px 16px;font-size:0.82rem;border-radius:var(--radius-sm);margin-bottom:16px;display:none;"></div>
+
+        <form id="signupForm" style="display:flex;flex-direction:column;gap:16px;">
+          <div style="display:flex;flex-direction:column;gap:6px;">
+            <label for="name" style="font-size:0.75rem;font-weight:400;color:var(--color-text-dim);letter-spacing:0.04em;text-transform:uppercase;">Full Name</label>
+            <input id="name" type="text" required autocomplete="name" style="background:var(--color-base-alt);border:0.5px solid var(--color-border);padding:14px;font-family:var(--font-body);font-size:0.92rem;color:var(--color-text);outline:none;">
+          </div>
+          <div style="display:flex;flex-direction:column;gap:6px;">
+            <label for="email" style="font-size:0.75rem;font-weight:400;color:var(--color-text-dim);letter-spacing:0.04em;text-transform:uppercase;">Work Email</label>
+            <input id="email" type="email" required autocomplete="email" style="background:var(--color-base-alt);border:0.5px solid var(--color-border);padding:14px;font-family:var(--font-body);font-size:0.92rem;color:var(--color-text);outline:none;">
+          </div>
+          <div style="display:flex;flex-direction:column;gap:6px;">
+            <label for="industry" style="font-size:0.75rem;font-weight:400;color:var(--color-text-dim);letter-spacing:0.04em;text-transform:uppercase;">Industry</label>
+            <select id="industry" style="background:var(--color-base-alt);border:0.5px solid var(--color-border);padding:14px;font-family:var(--font-body);font-size:0.92rem;color:var(--color-text);outline:none;">
+              <option value="">Select your industry</option>
+              <option value="finance">Financial Services</option>
+              <option value="defense">Defense & Government</option>
+              <option value="healthcare">Healthcare & Life Sciences</option>
+              <option value="technology">Technology & SaaS</option>
+              <option value="telecom">Telecommunications</option>
+              <option value="energy">Energy & Critical Infrastructure</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:6px;">
+            <label for="password" style="font-size:0.75rem;font-weight:400;color:var(--color-text-dim);letter-spacing:0.04em;text-transform:uppercase;">Password</label>
+            <input id="password" type="password" required minlength="8" autocomplete="new-password" style="background:var(--color-base-alt);border:0.5px solid var(--color-border);padding:14px;font-family:var(--font-body);font-size:0.92rem;color:var(--color-text);outline:none;">
+          </div>
+          <button type="submit" class="btn btn--primary" style="width:100%;">Create Free Account</button>
+        </form>
+        <p style="text-align:center;font-size:0.82rem;color:var(--color-text-dim);margin-top:16px;">
+          Already have an account? <a href="login.html" style="color:var(--color-accent);">Log in</a>
+        </p>
+      </div>
+    </section>
+
+    <section class="section section--deep" style="padding:40px 0;">
+      <div class="container">
+        <footer class="footer">
+          <span>&copy; 2026 Q-Readiness</span>
+          <div class="footer__links">
+            <a href="index.html">Home</a>
+            <a href="pricing.html">Pricing</a>
+            <a href="index.html#contact">Contact</a>
+          </div>
+        </footer>
+      </div>
+    </section>
+  </main>
+
+  <script src="js/firebase.js"></script>
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-app.js";
+    import { getAuth, createUserWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-auth.js";
+    import { getFirestore, doc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-firestore.js";
+
+    const app = initializeApp(FIREBASE_CONFIG);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    onAuthStateChanged(auth, (user) => {
+      if (user) { window.location.href = "dashboard.html"; }
+    });
+
+    const errorDiv = document.getElementById("error");
+    const successDiv = document.getElementById("success");
+    const showError = (msg) => { errorDiv.textContent = msg; errorDiv.style.display = "block"; successDiv.style.display = "none"; };
+    const showSuccess = (msg) => { successDiv.textContent = msg; successDiv.style.display = "block"; errorDiv.style.display = "none"; };
+
+    document.getElementById("signupForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      errorDiv.style.display = "none";
+
+      const name = document.getElementById("name").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const industry = document.getElementById("industry").value;
+      const password = document.getElementById("password").value;
+
+      if (!name || !email || !password) {
+        showError("Please fill in all required fields.");
+        return;
+      }
+      if (password.length < 8) {
+        showError("Password must be at least 8 characters.");
+        return;
+      }
+      if (!industry) {
+        showError("Please select your industry.");
+        return;
+      }
+
+      const btn = document.querySelector("#signupForm button");
+      btn.textContent = "Creating account...";
+      btn.disabled = true;
+      btn.style.opacity = "0.7";
+
+      try {
+        const cred = await createUserWithEmailAndPassword(auth, email, password);
+        const uid = cred.user.uid;
+
+        await setDoc(doc(db, "users", uid), {
+          name: name,
+          email: email,
+          industry: industry,
+          tier: "free",
+          created_at: serverTimestamp(),
+          questionnaire_completed: false
+        });
+
+        showSuccess("Account created! Redirecting to your dashboard...");
+        setTimeout(() => { window.location.href = "dashboard.html"; }, 1500);
+      } catch (err) {
+        btn.textContent = "Create Free Account";
+        btn.disabled = false;
+        btn.style.opacity = "1";
+        if (err.code === "auth/email-already-in-use") showError("This email is already registered. <a href='login.html' style='color:var(--color-accent);'>Log in</a>");
+        else if (err.code === "auth/weak-password") showError("Password is too weak. Use at least 8 characters.");
+        else showError(err.message);
+      }
+    });
+  </script>
+</body>
+</html>
