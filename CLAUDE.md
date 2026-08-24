@@ -60,9 +60,12 @@ Tool catalog: `../web-swarm/website-swarm/TOOLS-MISSING.md`
 
 - `ui-ux-pro-max` — UI/UX design intelligence. 67 styles, 96 palettes, 57 font pairings, 25 chart types. Use `python3 .claude/skills/ui-ux-pro-max/scripts/search.py "<query>" --domain <domain>` for chart, UX, color, typography guidance. Do NOT change fonts or colors from styles.css — use skill for layout, spacing, accessibility, chart best practices only.
 
-## Scanner-skeleton
+## Tooling
 
-`../scanner-skeleton/` — Client-side orchestration for distributing 12 scanners. NOT pushed to GitHub yet. Contains: PROMPT.md (deterministic Claude Code instructions), tools.json (12 tool definitions), EULA.md, README.md, verify script. Backend endpoints not yet built (references `api.q-readiness.com` placeholder).
+`../tools/` — Scanner automation platform. Contains:
+- `tools/scanner-skeleton/` — Public GitHub repo (PROMPT.md, tools.json, EULA, README)
+- `tools/scanner-test/` — Skill sandbox (.claude/skills/qreadiness/SKILL.md, test data)
+- `tools/CLAUDE.md` — Full tooling context for parallel sessions
 
 ## Reference files
 

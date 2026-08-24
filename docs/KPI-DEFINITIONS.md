@@ -78,5 +78,5 @@ Every KPI value in the Q-Readiness dashboard traces to a specific tool output fi
 | acdi | 0.5.0 | `acdi-cbom-*.json` | IaC, secrets, PKI, code signing |
 | testssl.sh | 3.3 | `testssl-*.json` | TLS vulnerability assessment |
 | Vault Audit | 1.0 | `vault-audit-*.json` | Secrets management |
-| DB Crypto Scan | 1.0 | `db-crypto-scan-*.json` | Database encryption |
+| DB Crypto Scan | — | _no scanner shipped_ | Database encryption — custom script removed; awaiting a real open-source tool (see `quantum/CLAUDE.md` HARD RULE) |
 | DNSSEC Scanner | 1.0 | `dnssec-scan-*.json` | DNSSEC algorithm audit |

@@ -1,6 +1,6 @@
 # Q-Readiness — Current State & Next Steps
 
-**Updated: 2026-06-11**
+**Updated: 2026-08-05**
 
 ## What's deployed (front-end)
 
@@ -19,142 +19,115 @@
 
 **Known issues:** Styling errors from rapid changes, overlay navs missing Pricing link, responsive breakpoints untested.
 
-## What's NOT built (infrastructure)
+## What's done (infrastructure)
+
+| Component | Status |
+|-----------|--------|
+| Firebase Auth (email/password) | Live — signup, login, email verification |
+| Firestore | Live — test mode, security rules written (not deployed) |
+| Frontend: login.html, signup.html | Live |
+| Cloud Run: FastAPI backend scaffold | Built — 13 processors, 2 upload paths |
+| Data schema | Defined — docs/DASHBOARD-SCHEMA.md |
+| Scanner skill (qreadiness) | Built in tools/scanner-test/ |
+
+## What's NOT built
 
 | Priority | Component | Status |
 |----------|-----------|--------|
-| P0 | Firebase Auth + Firestore setup | Not started |
-| P0 | Frontend: login/signup pages | Not started |
-| P0 | Cloud Run: FastAPI ingestion backend | Not started |
-| P0 | Scanner skill integration with token | SKILL.md built, needs Firestore ID token |
-| P1 | Two-path upload (structured + raw) | Not started |
-| P1 | Auto-detection processors (14 tools) | Schemas documented, code not written |
-| P1 | Dashboard API (Firestore → dashboard) | Partially built — needs API integration |
-| P1 | MCP server for AI integration | Not started |
-| P2 | Docker image (all 14 tools) | Future |
-| P2 | Payment integration (Stripe/Paddle) | Skipped for beta |
-| P2 | Email alert system | Skipped for beta |
-| P2 | Newsletter engine | Skipped for beta |
-| P2 | ONNX fine-tuned model (V2) | Future |
+| P0 | Dashboard → API integration (replace mock data) | Schema defined, not wired |
+| P0 | Firestore security rules deployed | Written, not deployed |
+| P0 | Email verification — password policy in Firebase Console | Not configured |
+| P1 | Backend: processor → Firestore write path | Not built |
+| P1 | Backend: dashboard API reads from Firestore | Route exists, reads nothing |
+| P1 | Scanner end-to-end test | Not tested |
+| P1 | Onboarding questionnaire | Not built |
+| P2 | Payment (Stripe) | Skipped for beta |
+| P2 | Email alerts + newsletter | Skipped for beta |
 
-## Backend architecture (Firebase + Cloud Run)
+## Data architecture (current — 2026-08-05)
 
-### Why this stack
+### Schema contract
 
-- **Firebase Auth** — SOC 2 / ISO 27001 certified. No custom auth to audit.
-- **Firestore** — Serverless, free tier, same certified infra.
-- **Cloud Run** — FastAPI container, free tier, scales to zero.
-- **All free tier.** One bill: $0 until meaningful scale.
+Documented at `docs/DASHBOARD-SCHEMA.md`. 13 tools → 5 sections → 1 dashboard API response.
 
-### Stack
+### Firestore structure (per user, per scan)
 
 ```
-┌─────────────┐     ┌──────────────┐     ┌─────────────────┐
-│  Frontend    │────▶│  Firebase    │◀────│  Cloud Run      │
-│  (static)    │     │  Auth +      │     │  (FastAPI)      │
-│              │     │  Firestore   │     │                 │
-│  login/      │     │              │     │  POST /ingest   │
-│  signup/     │     │  users/      │     │  GET /dashboard │
-│  dashboard   │     │  scans/      │     │                 │
-│              │     │  results/    │     │  processors/    │
-└─────────────┘     └──────────────┘     └─────────────────┘
-       │                                         │
-       │              ┌─────────────┐             │
-       └──────────────│  Skill +    │◀────────────┘
-                      │  MCP server │   POST /scan/upload
-                      │  (GitHub)   │   POST /scan/upload-raw
-                      └─────────────┘
+users/{uid}/
+├── profile: { email, name, industry, tier, region, created_at }
+└── scans/{scanId}/                    ← immutable per scan
+    ├── meta: { date, status, tier }
+    ├── kpis: { endpoints_scanned, pqc_ready, findings_critical... }
+    ├── sections/
+    │   ├── network:  { status, hosts[], findings[], kpis }
+    │   ├── code:     { status, findings[], kpis }
+    │   ├── infra:    { status, findings[], kpis }
+    │   ├── data:     { status, databases[], kpis }
+    │   └── pki:      { status, certificates[], findings[], kpis }
+    └── backlog: [...]
 ```
 
-### Directory
+### Regional split (multi-cloud)
 
-```
-quantum/
-├── web/                  # Frontend (already built)
-├── backend/              # Cloud Run FastAPI service
-│   ├── app.py            # Entry point
-│   ├── routes/
-│   │   ├── ingest.py     # POST /scan/upload (structured) + /scan/upload-raw (unstructured)
-│   │   └── dashboard.py  # GET /api/dashboard → Firestore results
-│   ├── processors/       # Auto-detect + normalize tool output
-│   │   ├── __init__.py   # Dispatch: try all processors, find match
-│   │   ├── surveyor.py
-│   │   ├── pqcscan.py
-│   │   ├── testssl.py
-│   │   ├── cryptoscan.py
-│   │   └── ...           # One per tool (14 total)
-│   ├── firebase_config.py
-│   ├── Dockerfile
-│   └── requirements.txt
-├── qreadiness-skill/     # Users download this (public)
-│   ├── SKILL.md
-│   └── tools.json
-├── scanner-skeleton/     # Public GitHub repo (built)
-└── docker/               # Future: all tools in one image
-```
+- `europe-west1` — EU customers
+- `us-central1` — Americas customers
+- User `profile.region` set at signup
+- Backend routes to correct regional Firestore
+- No cross-region queries. No data mixing.
 
-### API endpoints
+### Section states
 
-| Method | Path | Description |
-|--------|------|-------------|
-| POST | `/scan/upload` | AI-guided — validated JSON, instant processing |
-| POST | `/scan/upload-raw` | Manual/Docker — any format, auto-detection |
-| GET | `/api/dashboard` | Dashboard data from Firestore |
-| GET | `/api/dashboard/{section}` | Per-section results |
+| State | Dashboard shows |
+|-------|----------------|
+| `locked` | Blurred card, "Run free scan" CTA |
+| `scanned` | Active section with findings + KPIs |
+| `limit_reached` | "Upgrade to scan more" |
 
-Auth: Firebase ID token in `Authorization: Bearer <token>` header. Cloud Run validates it against Firebase Auth.
+---
 
-### Two-path ingestion
+## Current sprint — Dashboard + Backend integration
 
-```
-PATH A (AI-guided)                 PATH B (Manual/Docker)
-Structured JSON                    ZIP of mixed tool outputs
-→ Schema validated                 → Auto-detection engine
-→ Instant store                    → Each file: try all processors
-→ Firestore                        → First match wins → normalize
-                                   → No match → manual review queue
-                                   → Firestore
-```
+### Phase 1: Backend write path (processor → Firestore)
 
-### Auto-detection engine
+- [x] 1.1 Write Firebase Admin SDK init in backend (service account, region routing)
+- [x] 1.2 Per-section Firestore write: processor output → `users/{uid}/scans/{scanId}/sections/{section}`
+- [x] 1.3 KPI aggregation: compute cross-section KPIs after all sections processed
+- [x] 1.4 Backlog derivation: generate P0-P3 backlog from findings
+- [ ] 1.5 Raw file backup to Cloud Storage (for audit/replay)
+- [ ] 1.6 Test: upload real tool output → verify Firestore document
 
-Each file tested against every processor's `try_match()`:
-- surveyor → matches `schema_version: "1.0"` + `report_kind: "tls_scan"`
-- pqcscan → matches TLS/SSH PQC algorithm fields
-- testssl → matches `scanResult` array with `id`/`severity`/`cve`
-- pqaudit → matches `findings` with `algorithm`/`confidence`/`snippet`
-- cryptoscan → matches CryptoScan CBOM format
-- ... (14 processors)
+### Phase 2: Dashboard API (Firestore → frontend)
 
-First match wins. All processors fail → file goes to manual review queue. Same normalized output schema regardless of source.
+- [x] 2.1 `GET /api/dashboard` — reads latest scan, returns full schema
+- [x] 2.2 `GET /api/dashboard/{section}` — returns single section
+- [x] 2.3 Firebase ID token validation in backend (replace placeholder)
+- [x] 2.4 Empty state: user has no scans → all sections return `{status: "locked"}`
+- [ ] 2.5 Test: curl with real token → verify JSON matches schema
 
-### Data model (Firestore)
+### Phase 3: Dashboard frontend (API → UI)
 
-```
-users/{uid}:
-  email, name, industry, questionnaire{...}, tier, created_at
+- [x] 3.1 Remove all mock/inline data from dashboard.html
+- [x] 3.2 Section cards: locked → blurred with CTA. Scanned → active with data.
+- [x] 3.3 KPI row: computed from API response (not hardcoded)
+- [x] 3.4 Charts: severity donut + layer bar from real data
+- [x] 3.5 Findings tables: populated from section findings array
+- [x] 3.6 Backlog table: populated from API backlog array
+- [x] 3.7 Error state: backend unreachable → "Data not available"
+- [ ] 3.8 Test: sign up → (no scans) → dashboard shows all locked sections
 
-users/{uid}/tokens/{token_id}:
-  token, created_at, expires_at, active
+### Phase 4: Security hardening
 
-users/{uid}/scans/{scan_id}:
-  status, uploaded_at, source (ai/manual), file_url
+- [ ] 4.1 Deploy firestore.rules via Firebase CLI
+- [ ] 4.2 Configure password policy in Firebase Console
+- [ ] 4.3 Test: try reading another user's data → denied
+- [x] 4.4 Remove all console.log from auth pages
 
-users/{uid}/scans/{scan_id}/sections/{section}:
-  section (network/code/infra/data/pki),
-  target, findings: [...], raw_output
-```
+### Phase 5: End-to-end
 
-### Beta flow
-
-```
-User visits site → logs in via Firebase Auth →
-gets dashboard with "Run your first scan" CTA →
-downloads qreadiness skill from GitHub →
-runs scan (AI or manual) → uploads to Cloud Run →
-auto-detection processes → results in Firestore →
-dashboard refreshes with real data
-```
+- [ ] 5.1 Sign up → verify email → see locked dashboard
+- [ ] 5.2 Run scanner → upload → dashboard updates with real data
+- [ ] 5.3 Second user signup → data isolated from first user
+- [ ] 5.4 Backend down → dashboard shows error state, no mock data
 
 ## Scanner platform
 

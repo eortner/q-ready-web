@@ -1,0 +1,41 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Helper: current user is authenticated
+    function isAuth() {
+      return request.auth != null;
+    }
+
+    // Helper: user owns this document
+    function isOwner(userId) {
+      return isAuth() && request.auth.uid == userId;
+    }
+
+    // Users — only read/write your own profile
+    match /users/{userId} {
+      allow read, write: if isOwner(userId);
+
+      // Scans — only access your own scans
+      match /scans/{scanId} {
+        allow read, write: if isOwner(userId);
+
+        // Sections — only access your own scan sections
+        match /sections/{section} {
+          allow read, write: if isOwner(userId);
+        }
+      }
+
+      // Tokens — only access your own tokens
+      match /tokens/{tokenId} {
+        allow read, write: if isOwner(userId);
+      }
+    }
+
+    // Deny everything else
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

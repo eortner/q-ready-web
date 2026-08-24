@@ -16,7 +16,7 @@ Build a Cryptographic Bill of Materials across your organization. All tools are 
 | Code & Repos | "scan code" | pqaudit, cryptoscan, kybercheck, acdi (code) | 1 repository |
 | Infra & Configs | "scan infra" | acdi (IaC), Vault audit | 1 Terraform file or 1 Vault mount |
 | Data & Storage | "scan data" | DB crypto scan (PG/MySQL/MSSQL/Oracle) | 1 database server |
-| PKI & Identity | "scan pki" | DNSSEC scan, cert chain analysis, JWT/Kerberos probes | 1 domain or 1 certificate |
+| PKI & Identity | "scan pki" | DNSSEC scan, cert chain analysis, JWT signing-algorithm audit (jwt_tool) | 1 domain or 1 certificate |
 
 ## User Intent Mapping
 

@@ -13,14 +13,15 @@
   <nav class="nav nav--visible nav--solid" role="navigation">
     <a href="index.html" class="nav__brand"><span class="nav__brand-mark">Q</span><span>Q-Readiness</span></a>
     <div class="nav__menu">
-      <a href="dashboard.html" class="nav__link">Dashboard</a>
+      <a href="dashboard.html" class="nav__link">Demo</a>
       <a href="quantum-status.html" class="nav__link">Timeline</a>
       <a href="pricing.html" class="nav__link">Pricing</a>
       <a href="news.html" class="nav__link">News</a>
       <a href="standards.html" class="nav__link">Standards</a>
       <a href="faq.html" class="nav__link">FAQ</a>
+      <a href="signup.html" class="nav__link nav__cta btn btn--primary btn--small" style="margin-right:8px;">Sign Up</a>
+      <a href="login.html" class="nav__link" style="font-size:0.72rem;">Login</a>
       <select id="langSelect" class="nav__link" aria-label="Select language" style="background:transparent;border:0.5px solid var(--color-border);color:var(--color-text);font-family:var(--font-body);font-size:0.72rem;padding:4px 8px;cursor:pointer;margin-right:8px;" onchange="I18n.switchTo(this.value)"><option value="en">English</option><option value="ja" lang="ja">日本語</option></select>
-      <a href="login.html" class="nav__link nav__cta btn btn--primary btn--small">Login</a>
     </div>
   </nav>
 
@@ -67,11 +68,11 @@
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-app.js";
     import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-auth.js";
 
-    const app = initializeApp(FIREBASE_CONFIG);
+    const app = initializeApp(window.FIREBASE_CONFIG);
     const auth = getAuth(app);
 
     onAuthStateChanged(auth, (user) => {
-      if (user) { window.location.href = "dashboard.html"; }
+      if (user) { window.location.href = "portal.html"; }
     });
 
     const errorDiv = document.getElementById("error");

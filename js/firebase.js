@@ -1,6 +1,6 @@
 /* Q-Readiness — Firebase init, shared across all pages. */
 
-const FIREBASE_CONFIG = {
+window.FIREBASE_CONFIG = {
   apiKey: "AIzaSyAHapHlstRbnVIBCiGNXYPvehf3igcXNkk",
   authDomain: "q-ready-auth.firebaseapp.com",
   projectId: "q-ready-auth",

@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Q-Readiness | Client Portal</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <script src="js/i18n.js"></script>
+  <script src="js/firebase.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <style>
+    .nav__menu .portal-tab.active { color: var(--color-accent); border-bottom: 1px solid var(--color-accent); padding-bottom: 2px; }
+    .top-bar { position: fixed; top: var(--nav-height); left: 224px; right: 0; z-index: 500; background: rgba(10,14,23,0.92); backdrop-filter: blur(12px); border-bottom: 0.5px solid var(--color-border); padding: 10px 32px; display: flex; justify-content: space-between; align-items: center; }
+    .top-bar__meta { font-size: 0.72rem; color: var(--color-text-muted); }
+    .top-bar__meta span { color: var(--color-text-dim); }
+    .main-area { margin-left: 224px; padding: 20px 32px 80px; margin-top: calc(var(--nav-height) + 52px); }
+    .side-rail { position: fixed; left: 0; top: var(--nav-height); bottom: 0; width: 224px; z-index: 400; background: rgba(7,10,18,0.95); border-right: 0.5px solid var(--color-border); padding: 20px 0; overflow-y: auto; backdrop-filter: blur(12px); }
+    .side-group { padding: 0; }
+    .side-group__title { font-family: var(--font-body); font-size: 0.62rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-text-muted); padding: 12px 24px 6px; }
+    .side-item { display: flex; align-items: center; gap: 10px; padding: 10px 24px; cursor: pointer; color: var(--color-text-dim); font-size: 0.75rem; font-weight: 400; border-left: 2px solid transparent; transition: all var(--transition-base); }
+    .side-item:hover { background: rgba(212,160,67,0.05); color: var(--color-accent); }
+    .side-item.active { border-left-color: var(--color-accent); background: rgba(212,160,67,0.08); color: var(--color-accent); }
+    .side-item--locked { opacity: 0.35; pointer-events: none; }
+    .side-item--sub { padding-left: 40px; font-size: 0.7rem; }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+    .kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 32px; }
+    .kpi-card { background: var(--color-surface); border: 0.5px solid var(--color-border); padding: 20px; text-align: center; }
+    .kpi-card__value { font-family: var(--font-display); font-size: 1.8rem; font-weight: 300; color: var(--color-accent); }
+    .kpi-card__value--critical { color: #FF5F57; }
+    .kpi-card__label { font-size: 0.65rem; color: var(--color-text-muted); letter-spacing: 0.05em; text-transform: uppercase; margin-top: 4px; }
+    .section-summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px,1fr)); gap: 16px; margin-bottom: 32px; }
+    .section-card { background: var(--color-surface); border: 0.5px solid var(--color-border); padding: 24px; }
+    .section-card--locked { position: relative; }
+    .section-card--locked .section-card__body { opacity: 0.3; filter: blur(3px); pointer-events: none; }
+    .section-card__overlay { position: absolute; top: 0; left: 0; right: 0; bottom: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; z-index: 1; }
+    .section-card__overlay p { font-size: 0.85rem; color: var(--color-text-dim); margin-bottom: 12px; }
+    .section-card__title { font-family: var(--font-display); font-size: 1.1rem; font-weight: 500; color: var(--color-text); margin-bottom: 8px; }
+    .section-card__stat { font-size: 0.78rem; color: var(--color-text-dim); }
+    .data-table { width: 100%; border-collapse: collapse; font-size: 0.8rem; }
+    .data-table th { font-size: 0.65rem; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: var(--color-text-muted); text-align: left; padding: 10px 14px; border-bottom: 1px solid var(--color-border); }
+    .data-table td { padding: 10px 14px; border-bottom: 0.5px solid var(--color-border-light); color: var(--color-text-dim); }
+    .badge { display: inline-block; font-size: 0.62rem; padding: 2px 8px; font-weight: 500; letter-spacing: 0.04em; text-transform: uppercase; }
+    .badge--critical { background: rgba(255,95,87,0.1); color: #FF5F57; }
+    .badge--high { background: rgba(255,189,46,0.1); color: #FFBD2E; }
+    .badge--medium { background: rgba(212,160,67,0.08); color: var(--color-accent); }
+    .badge--p0 { border-left: 2px solid #FF5F57; }
+    .badge--p1 { border-left: 2px solid #FFBD2E; }
+    .badge--p2 { border-left: 2px solid var(--color-green); }
+    @media (max-width:768px) { .side-rail{display:none;} .main-area{margin-left:0;} .top-bar{left:0;} .kpi-row{grid-template-columns:repeat(2,1fr);} }
+  </style>
+</head>
+<body>
+
+  <!-- TOP NAV (logged-in menu) -->
+  <nav class="nav nav--visible nav--solid" role="navigation">
+    <a href="index.html" class="nav__brand"><span class="nav__brand-mark">Q</span><span>Q-Readiness</span></a>
+    <div class="nav__menu">
+      <a href="#" class="nav__link portal-tab active" data-view="dashboard">Dashboard</a>
+      <a href="#" class="nav__link portal-tab" data-view="news">News</a>
+      <a href="#" class="nav__link portal-tab" data-view="tools">Tools</a>
+    </div>
+    <button id="logoutMain" class="btn btn--outline btn--small">Logout</button>
+  </nav>
+
+  <!-- TOP BAR -->
+  <div class="top-bar">
+    <div class="top-bar__meta" id="topBarMeta">Loading...</div>
+    <span style="font-size:0.68rem;color:var(--color-text-muted);" id="topBarStatus"></span>
+  </div>
+
+  <!-- SIDE NAV -->
+  <nav class="side-rail" id="sideNav">
+    <div class="side-group">
+      <div class="side-group__title">Overview</div>
+      <div class="side-item active" data-content="overview">Overview</div>
+    </div>
+    <div class="side-group">
+      <div class="side-group__title">KPI</div>
+      <div class="side-item side-item--sub side-item--locked" data-content="kpi-network" title="Scan a TLS endpoint to unlock">Network — Scan to unlock</div>
+      <div class="side-item side-item--sub side-item--locked" data-content="kpi-code" title="Scan a repository to unlock">Code — Scan to unlock</div>
+      <div class="side-item side-item--sub side-item--locked" data-content="kpi-infra" title="Scan infrastructure config to unlock">Infra — Scan to unlock</div>
+      <div class="side-item side-item--sub side-item--locked" data-content="kpi-data" title="Scan a database to unlock">Data — Scan to unlock</div>
+      <div class="side-item side-item--sub side-item--locked" data-content="kpi-pki" title="Scan a certificate to unlock">PKI — Scan to unlock</div>
+    </div>
+    <div class="side-group">
+      <div class="side-group__title">Actions</div>
+      <div class="side-item side-item--sub side-item--locked" data-content="act-network">Network</div>
+      <div class="side-item side-item--sub side-item--locked" data-content="act-code">Code</div>
+      <div class="side-item side-item--sub side-item--locked" data-content="act-infra">Infra</div>
+      <div class="side-item side-item--sub side-item--locked" data-content="act-data">Data</div>
+      <div class="side-item side-item--sub side-item--locked" data-content="act-pki">PKI</div>
+    </div>
+  </nav>
+
+  <!-- MAIN CONTENT -->
+  <div class="main-area">
+
+    <!-- KPI ROW (always visible) -->
+    <div class="kpi-row">
+      <div class="kpi-card"><div class="kpi-card__value kpi-card__value--critical" id="kpi-critical">—</div><div class="kpi-card__label">Critical</div></div>
+      <div class="kpi-card"><div class="kpi-card__value" id="kpi-endpoints">—</div><div class="kpi-card__label">Endpoints Scanned</div></div>
+      <div class="kpi-card"><div class="kpi-card__value kpi-card__value--high" id="kpi-high">—</div><div class="kpi-card__label">High</div></div>
+      <div class="kpi-card"><div class="kpi-card__value" id="kpi-total">—</div><div class="kpi-card__label">Total Findings</div></div>
+    </div>
+
+    <!-- TAB CONTENT -->
+    <div class="tab-content active" id="tab-dashboard">
+      <!-- Overview content -->
+      <div id="content-overview">
+        <div id="overviewUrgent"></div>
+        <div id="overviewSections"></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:24px;">
+          <div><canvas id="chartSeverity"></canvas></div>
+          <div><canvas id="chartLayer"></canvas></div>
+        </div>
+      </div>
+      <!-- KPI sub-views (hidden, shown when side item clicked) -->
+      <div id="content-kpi-network" class="sub-content" style="display:none;"><h2 class="dash-heading">Network KPIs</h2><div id="kpi-network-detail">No data yet.</div></div>
+      <div id="content-kpi-code" class="sub-content" style="display:none;"><h2 class="dash-heading">Code KPIs</h2><div id="kpi-code-detail">No data yet.</div></div>
+      <div id="content-kpi-infra" class="sub-content" style="display:none;"><h2 class="dash-heading">Infrastructure KPIs</h2><div id="kpi-infra-detail">No data yet.</div></div>
+      <div id="content-kpi-data" class="sub-content" style="display:none;"><h2 class="dash-heading">Data KPIs</h2><div id="kpi-data-detail">No data yet.</div></div>
+      <div id="content-kpi-pki" class="sub-content" style="display:none;"><h2 class="dash-heading">PKI KPIs</h2><div id="kpi-pki-detail">No data yet.</div></div>
+      <!-- Action sub-views -->
+      <div id="content-act-network" class="sub-content" style="display:none;"><h2 class="dash-heading">Network Actions</h2><div id="act-network-detail">No data yet.</div></div>
+      <div id="content-act-code" class="sub-content" style="display:none;"><h2 class="dash-heading">Code Actions</h2><div id="act-code-detail">No data yet.</div></div>
+      <div id="content-act-infra" class="sub-content" style="display:none;"><h2 class="dash-heading">Infrastructure Actions</h2><div id="act-infra-detail">No data yet.</div></div>
+      <div id="content-act-data" class="sub-content" style="display:none;"><h2 class="dash-heading">Data Actions</h2><div id="act-data-detail">No data yet.</div></div>
+      <div id="content-act-pki" class="sub-content" style="display:none;"><h2 class="dash-heading">PKI Actions</h2><div id="act-pki-detail">No data yet.</div></div>
+    </div>
+
+    <!-- NEWS TAB -->
+    <div class="tab-content" id="tab-news">
+      <div id="newsBlur" style="opacity:0.3;filter:blur(4px);">
+        <h2 style="font-family:var(--font-display);font-size:1.6rem;margin-bottom:16px;">Tailored Intelligence</h2>
+        <p style="color:var(--color-text-dim);">Your industry-specific alerts and standards updates appear here.</p>
+      </div>
+      <div style="text-align:center;margin-top:20px;" id="newsLockMsg">
+        <p style="color:var(--color-text-dim);">Complete the questionnaire to unlock tailored alerts and news.</p>
+        <button id="openQuestionnaire" class="btn btn--primary btn--small" style="margin-top:8px;">Answer Questions</button>
+      </div>
+    </div>
+
+    <!-- TOOLS TAB -->
+    <div class="tab-content" id="tab-tools">
+      <h2 style="font-family:var(--font-display);font-size:1.6rem;margin-bottom:24px;">Scanner Tools</h2>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px;">
+        <div class="section-card">
+          <div class="section-card__title">Claude Code Skill</div>
+          <p class="section-card__stat" style="margin-bottom:12px;">AI-guided scanner for Claude Code. Orchestrates all 14 tools with progress tracking and auto-upload.</p>
+          <a href="#" class="btn btn--outline btn--small">Download Skill</a>
+        </div>
+        <div class="section-card">
+          <div class="section-card__title">Docker Image</div>
+          <p class="section-card__stat" style="margin-bottom:12px;">All 14 tools pre-installed. Air-gap ready. No AI required.</p>
+          <code style="display:block;background:var(--color-base-deep);padding:10px;font-size:0.75rem;color:var(--color-accent);margin-bottom:12px;">docker pull qreadiness/scanner:latest</code>
+          <p class="section-card__stat" style="font-size:0.7rem;color:var(--color-text-muted);">Coming soon</p>
+        </div>
+        <div class="section-card">
+          <div class="section-card__title">API Token</div>
+          <p class="section-card__stat" style="margin-bottom:12px;">Use this token to authenticate uploads from the scanner.</p>
+          <code id="apiTokenDisplay" style="display:block;background:var(--color-base-deep);padding:10px;font-size:0.75rem;color:var(--color-accent);margin-bottom:12px;word-break:break-all;">Loading...</code>
+          <button id="regenerateToken" class="btn btn--outline btn--small">Regenerate</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Questionnaire overlay (hidden by default) -->
+  <div id="qOverlay" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(10,14,23,0.97);z-index:2000;align-items:center;justify-content:center;">
+    <div style="background:var(--color-surface);border:0.5px solid var(--color-border);padding:48px;max-width:560px;width:90%;max-height:85vh;overflow-y:auto;">
+      <h2 style="font-family:var(--font-display);font-size:1.5rem;margin-bottom:8px;">Tailor Your Experience</h2>
+      <p style="font-size:0.85rem;color:var(--color-text-dim);margin-bottom:24px;">Your answers personalize alerts, news, and compliance tracking. Takes 2 minutes.</p>
+      <form id="qForm" style="display:flex;flex-direction:column;gap:14px;">
+        <div><label style="font-size:0.72rem;color:var(--color-text-dim);text-transform:uppercase;">Industry</label>
+          <select id="qIndustry" style="width:100%;background:var(--color-base-alt);border:0.5px solid var(--color-border);padding:10px;color:var(--color-text);font-family:var(--font-body);font-size:0.88rem;">
+            <option value="">Select...</option><option value="finance">Financial Services</option><option value="defense">Defense & Government</option><option value="healthcare">Healthcare</option><option value="tech">Technology & SaaS</option><option value="telecom">Telecommunications</option><option value="energy">Energy & Infrastructure</option><option value="other">Other</option></select></div>
+        <div><label style="font-size:0.72rem;color:var(--color-text-dim);text-transform:uppercase;">Region</label>
+          <select id="qRegion" style="width:100%;background:var(--color-base-alt);border:0.5px solid var(--color-border);padding:10px;color:var(--color-text);font-family:var(--font-body);font-size:0.88rem;">
+            <option value="">Select...</option><option value="us">United States</option><option value="eu">Europe</option><option value="apac">Asia-Pacific</option><option value="latam">Latin America</option><option value="global">Global</option></select></div>
+        <div><label style="font-size:0.72rem;color:var(--color-text-dim);text-transform:uppercase;">Infrastructure</label>
+          <select id="qInfra" style="width:100%;background:var(--color-base-alt);border:0.5px solid var(--color-border);padding:10px;color:var(--color-text);font-family:var(--font-body);font-size:0.88rem;">
+            <option value="">Select...</option><option value="cloud">Cloud-native</option><option value="hybrid">Hybrid</option><option value="onprem">On-premise</option><option value="airgapped">Air-gapped</option></select></div>
+        <div style="display:flex;gap:10px;margin-top:4px;">
+          <button type="submit" class="btn btn--primary" style="flex:1;">Save</button>
+          <button type="button" id="qSkip" class="btn btn--outline" style="flex:1;">Skip</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-auth.js";
+    import { getFirestore, doc, getDoc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-firestore.js";
+
+    const app = initializeApp(window.FIREBASE_CONFIG);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    let currentUser = null;
+    let dashboardData = null;
+
+    // ---- SIDE NAV ----
+    document.getElementById("sideNav").addEventListener("click", function(e) {
+      var item = e.target.closest(".side-item");
+      if (!item || item.classList.contains("side-item--locked")) return;
+      this.querySelectorAll(".side-item").forEach(function(i) { i.classList.remove("active"); });
+      item.classList.add("active");
+      var contentId = item.getAttribute("data-content");
+      showContent(contentId);
+    });
+
+    function showContent(id) {
+      document.querySelectorAll(".sub-content").forEach(function(el) { el.style.display = "none"; });
+      document.getElementById("content-overview").style.display = "none";
+      if (id === "overview") {
+        document.getElementById("content-overview").style.display = "block";
+      } else {
+        var el = document.getElementById("content-" + id);
+        if (el) el.style.display = "block";
+      }
+    }
+
+    // ---- PORTAL TABS ----
+    document.querySelector(".nav__menu").addEventListener("click", function(e) {
+      var tab = e.target.closest(".portal-tab");
+      if (!tab) return;
+      e.preventDefault();
+      this.querySelectorAll(".portal-tab").forEach(function(t) { t.classList.remove("active"); });
+      tab.classList.add("active");
+      var view = tab.getAttribute("data-view");
+      document.querySelectorAll(".tab-content").forEach(function(t) { t.classList.remove("active"); });
+      var tabEl = document.getElementById("tab-" + view);
+      if (tabEl) tabEl.classList.add("active");
+      if (view === "dashboard") {
+        document.getElementById("sideNav").style.display = "";
+        document.getElementById("content-overview").style.display = "block";
+      } else {
+        document.getElementById("sideNav").style.display = "none";
+      }
+    });
+
+    // ---- AUTH ----
+    onAuthStateChanged(auth, async (user) => {
+      if (!user) { window.location.href = "login.html"; return; }
+      if (!user.emailVerified) { document.getElementById("topBarMeta").textContent = "Please verify your email first."; return; }
+      currentUser = user;
+      document.getElementById("topBarMeta").innerHTML = user.email + ' <span style="color:var(--color-text-muted);">| Free tier</span>';
+      document.getElementById("apiTokenDisplay").textContent = (await user.getIdToken()).substring(0, 40) + "...";
+
+      var profileDoc = await getDoc(doc(db, "users", user.uid));
+      var profile = profileDoc.exists ? profileDoc.data() : {};
+
+      if (!profile.questionnaire_completed) {
+        document.getElementById("qOverlay").style.display = "flex";
+      } else {
+        unlockNews();
+      }
+
+      try {
+        var token = await user.getIdToken();
+        var apiBase = window.location.hostname === "localhost" ? "http://localhost:8000" : "";
+        var res = await fetch(apiBase + "/api/dashboard", { headers: { Authorization: "Bearer " + token } });
+        if (res.ok) {
+          dashboardData = await res.json();
+          unlockSections(dashboardData);
+          renderOverview(dashboardData);
+          updateKPIs(dashboardData);
+        }
+      } catch (e) { console.warn("API unavailable:", e.message); }
+
+      renderOverview(dashboardData);
+    });
+
+    function unlockSections(data) {
+      if (!data || !data.sections) return;
+      var sections = ["network","code","infra","data","pki"];
+      sections.forEach(function(s) {
+        var sec = data.sections[s];
+        if (sec && sec.status === "scanned") {
+          var kpiItem = document.querySelector('[data-content="kpi-' + s + '"]');
+          var actItem = document.querySelector('[data-content="act-' + s + '"]');
+          if (kpiItem) kpiItem.classList.remove("side-item--locked");
+          if (actItem) actItem.classList.remove("side-item--locked");
+        }
+      });
+    }
+
+    function updateKPIs(data) {
+      if (!data || !data.kpis) return;
+      var kpis = data.kpis;
+      var net = (data.sections && data.sections.network && data.sections.network.kpis) || {};
+      document.getElementById("kpi-critical").textContent = kpis.critical || 0;
+      document.getElementById("kpi-endpoints").textContent = net.endpoints_scanned || 0;
+      document.getElementById("kpi-high").textContent = kpis.high || 0;
+      document.getElementById("kpi-total").textContent = kpis.findings_total || 0;
+    }
+
+    function renderOverview(data) {
+      if (!data || !data.sections) {
+        document.getElementById("overviewSections").innerHTML = "<p style='color:var(--color-text-dim);'>No scan data yet. Run your first scan to see results here.</p>";
+        document.getElementById("overviewUrgent").innerHTML = "";
+        return;
+      }
+      var sections = data.sections;
+      var names = ["network","code","infra","data","pki"];
+      var labels = {"network":"Network & TLS","code":"Code & Repos","infra":"Infra & Configs","data":"Data & Storage","pki":"PKI & Identity"};
+
+      // Section cards
+      var unlockMsg = {"network":"Scan a TLS endpoint to unlock","code":"Scan a repository to unlock","infra":"Scan a Terraform file or Vault mount","data":"Scan a database server to unlock","pki":"Scan a certificate or domain to unlock"};
+      var html = '<div class="section-summary">';
+      names.forEach(function(s) {
+        var sec = sections[s] || {};
+        var scanned = sec.status === "scanned";
+        var lockedClass = scanned ? "" : " section-card--locked";
+        var findings = sec.findings ? sec.findings.length : 0;
+        html += '<div class="section-card' + lockedClass + '">';
+        html += '<div class="section-card__title">' + (labels[s] || s) + '</div>';
+        if (scanned) {
+          html += '<div class="section-card__body"><div class="section-card__stat">Findings: ' + findings + '</div>';
+          html += '<div class="section-card__stat" style="color:var(--color-text-muted);">Scanned: ' + ((sec.tools || []).join(", ") || "—") + '</div></div>';
+        } else {
+          html += '<div class="section-card__body"><div class="section-card__stat" style="color:var(--color-text-muted);">No data</div></div>';
+          html += '<div class="section-card__overlay"><p>' + (unlockMsg[s] || "Run a free scan to unlock") + '</p><a href="#" class="btn btn--outline btn--small">Start Free Scan</a></div>';
+        }
+        html += '</div>';
+      });
+      html += '</div>';
+      document.getElementById("overviewSections").innerHTML = html;
+
+      // Urgent items from backlog
+      var backlog = data.backlog || [];
+      var urgent = backlog.filter(function(b) { return b.priority === "P0" || b.priority === "P1"; }).slice(0, 5);
+      if (urgent.length) {
+        var uHtml = '<h2 class="dash-heading" style="margin-top:24px;">Urgent — P0 & P1</h2><table class="data-table">';
+        uHtml += '<thead><tr><th>Pri</th><th>Section</th><th>Finding</th><th>Action</th><th>Deadline</th></tr></thead><tbody>';
+        urgent.forEach(function(b) {
+          var cls = b.priority === "P0" ? "badge--critical" : "badge--high";
+          uHtml += '<tr><td><span class="badge ' + cls + '">' + b.priority + '</span></td>';
+          uHtml += '<td>' + (b.section||"") + '</td><td>' + (b.finding||"") + '</td>';
+          uHtml += '<td>' + (b.action||"") + '</td><td>' + (b.deadline||"") + '</td></tr>';
+        });
+        uHtml += '</tbody></table>';
+        document.getElementById("overviewUrgent").innerHTML = uHtml;
+      }
+    }
+
+    // ---- QUESTIONNAIRE ----
+    document.getElementById("qSkip").addEventListener("click", function() {
+      document.getElementById("qOverlay").style.display = "none";
+    });
+    document.getElementById("openQuestionnaire").addEventListener("click", function() {
+      document.getElementById("qOverlay").style.display = "flex";
+    });
+    document.getElementById("qForm").addEventListener("submit", async function(e) {
+      e.preventDefault();
+      await setDoc(doc(db, "users", currentUser.uid), {
+        questionnaire_completed: true,
+        questionnaire_answers: {
+          industry: document.getElementById("qIndustry").value,
+          region: document.getElementById("qRegion").value,
+          infrastructure: document.getElementById("qInfra").value,
+          completed_at: serverTimestamp()
+        }
+      }, { merge: true });
+      document.getElementById("qOverlay").style.display = "none";
+      unlockNews();
+    });
+
+    function unlockNews() {
+      document.getElementById("newsBlur").style.opacity = "1";
+      document.getElementById("newsBlur").style.filter = "none";
+      document.getElementById("newsLockMsg").style.display = "none";
+    }
+
+    // ---- LOGOUT ----
+    document.getElementById("logoutMain").addEventListener("click", function() {
+      signOut(auth).then(function() { window.location.href = "index.html"; });
+    });
+
+    // ---- API TOKEN REGENERATE ----
+    document.getElementById("regenerateToken").addEventListener("click", async function() {
+      if (currentUser) {
+        document.getElementById("apiTokenDisplay").textContent = (await currentUser.getIdToken(true)).substring(0, 40) + "...";
+      }
+    });
+  </script>
+</body>
+</html>
