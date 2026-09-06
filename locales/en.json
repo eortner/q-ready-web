@@ -12,9 +12,11 @@
     "badge": "14 Open-Source Scanners · AI-Driven Analysis · Customizable Scope",
     "headline_line1": "We Evaluate Your",
     "headline_line2": "Quantum Readiness",
-    "subtitle": "Generate your free cryptographic <span class=\"bom-trigger\" tabindex=\"0\" role=\"button\" aria-describedby=\"bom-popup\">BOM</span> in minutes. Our AI analyzes your infrastructure against 4 global frameworks — NIST (USA), EU CS, China GB/T, Japan CRYPTREC — delivering tailored updates, deadline alerts, and remediation roadmaps for your business.",
+    "tagline": "How you <em>think</em> about <em>quantum</em><br>decides how <em>ready</em> you are.",
+    "subtitle": "Proactive alignment with post-quantum standards — before the deadlines force a rushed migration.",
     "cta_primary": "Start Free",
     "cta_secondary": "How It Works",
+    "scroll": "Scroll to know your risks",
     "stat_sections": "5 Sections",
     "stat_sections_label": "Network · Code · Infra · Data · PKI",
     "stat_tools": "14 Open-Source Tools",
@@ -58,10 +60,32 @@
     "col3_title": "AI That Shows Its Work",
     "col3_desc": "Claude Code cross-references findings across all 14 tools, flags confirmations and contradictions, and explains every conclusion. Board-ready, auditor-ready analysis — not a black-box score."
   },
+  "stakes": {
+    "heading": "The deadlines are already moving.",
+    "subtitle": "Three dates decide how fast you have to move. Wait, and a rushed migration will decide for you.",
+    "hndl_label": "HARVEST NOW, DECRYPT LATER — THE CLOCK IS TICKING",
+    "hndl_body": "Adversaries are collecting your encrypted data <strong style=\"color:var(--color-text);font-weight:500;\">right now</strong>, storing it until quantum computers can break today's encryption. The migration window closes around 2035 — every month of delay is more data permanently exposed.",
+    "urgency_note": "Self-assessment, on your schedule",
+    "urgency_cta": "Start your free assessment today.",
+    "now": "Now",
+    "scroll": "Scroll to learn what to do",
+    "clock1_label": "CNSA 2.0",
+    "clock1_desc": "Software and firmware signing must move to PQC. The first hard date.",
+    "clock2_label": "NIST Deprecation",
+    "clock2_desc": "RSA and ECDSA are no longer approved. Internal PKI and code signing must migrate.",
+    "clock3_label": "NIST Removal",
+    "clock3_desc": "Classical algorithms are disallowed entirely. Harvested data becomes readable."
+  },
   "bom": {
-    "heading": "Generate Your Cryptographic BOM",
-    "subtitle": "Five infrastructure layers. Fourteen open-source tools. One free scan per section. Your dashboard unlocks as you scan.",
+    "heading": "Create your cryptographic inventory.",
+    "subtitle": "The first step is to know where you are standing.",
     "free_badge": "Free: 1 scan",
+    "opensource": "Every scanner is open-source — nothing hidden. Trust through transparency.",
+    "run_airgap_title": "Free air-gapped Docker",
+    "run_airgap_body": "One prebuilt image with all 14 open-source tools. Runs fully offline — no network, nothing phones home.",
+    "run_ai_title": "Docker + AI",
+    "run_ai_body": "The same tools, orchestrated by AI. It reads every result, validates them, and explains the fix.",
+    "scroll": "Now what do we do?",
     "network_title": "Network & TLS",
     "network_desc": "Scans TLS ciphers, SSH host keys, VPN tunnels, and network handshakes for quantum-vulnerable encryption.",
     "code_title": "Code & Repositories",
@@ -72,6 +96,17 @@
     "data_desc": "Scans databases, object storage, and backup archives for data-at-rest encryption standards.",
     "pki_title": "PKI & Identity",
     "pki_desc": "Scans certificate authorities, intermediate certs, OCSP responders, and key rotation policies."
+  },
+  "questionnaire": {
+    "heading": "Readiness has two sides.",
+    "subtitle": "A BOM alone is data. Only both halves together make it a plan.",
+    "tech_label": "The technical side",
+    "tech_title": "Your cryptographic inventory",
+    "tech_body": "Every key, certificate, and algorithm — and whether a quantum computer can break it. This is what the scanners produce.",
+    "info_label": "The informational side",
+    "info_title": "Governance, risk, training, external",
+    "info_body": "Who's accountable, what your exposure is, who's trained, which vendors you rely on. This is what the questionnaire captures.",
+    "note": "Stage-1 onboarding is short and skippable — you can still scan and get a score. The full questionnaire unlocks personalized alerts."
   },
   "howitworks": {
     "heading": "From Assessment to Action in 3 Steps",
@@ -110,6 +145,27 @@
     "recommended": "Recommended",
     "note": "All tiers include the same deliverables: cryptographic exposure map, prioritized remediation backlog, executive risk memo, 90-day implementation plan, and access to your live Q-Readiness dashboard. Scope is always customizable: add scans for deeper coverage, remove scans to fit your environment. NIST-aligned, CNSA 2.0 compliant. Every tool is open-source and auditable on GitHub."
   },
+  "dashboard": {
+    "heading": "A raw inventory protects nothing.",
+    "subtitle": "We turn it into a score, a fix-it plan, and your deadlines."
+  },
+  "news": {
+    "heading": "Stay ready, not ready-once.",
+    "subtitle": "News and alerts, filtered to your industry and your standards.",
+    "gated": "Personalized alerts unlock when you complete the full questionnaire."
+  },
+  "how": {
+    "heading": "How we think the problem should be handled.",
+    "subtitle": "Assessment, score, and staying current — the whole method, one view.",
+    "demo_button": "Open the demo dashboard",
+    "monthly_title": "Monthly Reports",
+    "monthly_body": "A monthly readiness report — your score, what changed, and what's next.",
+    "newsletter_title": "Tailored Newsletters",
+    "newsletter_body": "News and alerts, filtered to your industry and your standards.",
+    "talk_scroll": "Talk to us",
+    "reports_title": "Newsletters & Reports",
+    "reports_body": "A monthly readiness report, plus news and alerts tailored to your industry and standards."
+  },
   "standards": {
     "heading": "Global Standards Tracker",
     "subtitle": "We monitor all four frameworks, so you don't have to.",
@@ -131,8 +187,13 @@
     "subtitle": "Based on your questionnaire responses, we filter 100+ global quantum updates and deliver only the news, protocol changes, and regulatory shifts that impact your specific industry and region."
   },
   "contact": {
-    "heading": "Start Your Assessment",
-    "subtitle": "Every assessment includes portal access to your live readiness dashboard with real-time scores, downloadable reports, and ongoing monitoring. Your data, your dashboard — not email newsletters.",
+    "heading": "Start free, or get white-glove.",
+    "subtitle": "Self-serve for most teams. A scoping call when you want us beside you.",
+    "path_self_title": "Start free",
+    "path_self_body": "Create your free BOM now. No credit card. Run the scan yourself, in your environment.",
+    "path_white_title": "White-glove",
+    "path_white_body": "Tell us about your organization. We assess, you decide — no pitch, no deck.",
+    "path_white_cta": "Book a scoping call",
     "name": "Name",
     "email": "Work Email",
     "org": "Organization",
@@ -144,7 +205,10 @@
     "interest_all": "All Domains",
     "message": "Context (optional)",
     "message_placeholder": "Tell us about your infrastructure, timeline, and any specific concerns…",
-    "submit": "Submit Inquiry"
+    "submit": "Submit Inquiry",
+    "auth_prompt": "Already have an account?",
+    "auth_login": "Log in",
+    "auth_signup": "Sign up"
   },
   "footer": {
     "copyright": "© 2026 Q-Readiness — Launching Q3 2026",

@@ -3,6 +3,12 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
+    // Site gate — public read of the hashed access token + expiry (no writes)
+    match /gate/{doc} {
+      allow read: if true;
+      allow write: if false;
+    }
+
     // Helper: current user is authenticated
     function isAuth() {
       return request.auth != null;

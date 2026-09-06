@@ -3,9 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Q-Readiness | Quantum Readiness Assessment</title>
-  <meta name="description" content="Premium quantum readiness assessment covering PQC, quantum networking, and optimization. NIST-aligned methodology with AI acceleration. Portal access included.">
+  <title>Q-Readiness | How you think about quantum decides how ready you are</title>
+  <meta name="description" content="Proactive post-quantum standards alignment. Open-source scanners produce your cryptographic inventory; our methodology turns it into a score, a plan, and your deadlines.">
   <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/home.css">
   <script src="js/i18n.js"></script>
   <script type="application/ld+json">
   {
@@ -13,7 +14,7 @@
     "@type": "Organization",
     "name": "Q-Readiness",
     "url": "https://q-readiness.com",
-    "description": "Automated quantum readiness assessment powered by 12 open-source scanners and AI-driven analysis. NIST-aligned, CNSA 2.0 compliant.",
+    "description": "Automated quantum readiness assessment powered by open-source scanners and AI-driven analysis. NIST-aligned, CNSA 2.0 compliant.",
     "foundingDate": "2026",
     "contactPoint": {
       "@type": "ContactPoint",
@@ -24,15 +25,30 @@
   </script>
 </head>
 <body>
+  <!-- LOGIN GATE -->
+  <div id="lock">
+    <canvas id="lock-qbg" aria-hidden="true"></canvas>
+    <div class="lock__panel">
+      <div class="lock__brand">Q-Readiness</div>
+      <div id="lock-error" class="lock__error" hidden></div>
+      <form id="lockForm" class="lock__form" autocomplete="off">
+        <input id="lock-token" type="password" placeholder="Access code" autocomplete="one-time-code" required>
+        <button type="submit" class="btn btn--primary">Enter</button>
+      </form>
+    </div>
+  </div>
+
   <!-- Skip link for keyboard users -->
-  <a href="#evaluate" class="skip-link">Skip to content</a>
+  <a href="#stakes" class="skip-link" data-i18n="common.skip">Skip to content</a>
 
   <!-- ============================================================
-       NAVIGATION — scroll-triggered, premium styling
+       NAVIGATION
        ============================================================ -->
   <nav class="nav nav--visible" role="navigation" aria-label="Primary navigation">
     <a href="index.html" class="nav__brand" aria-label="Q-Readiness home">
-      <span class="nav__brand-mark">Q</span>
+      <span class="nav__brand-mark" aria-hidden="true">
+        <canvas id="logo-q"></canvas>
+      </span>
       <span>Q-Readiness</span>
     </a>
     <div class="nav__menu">
@@ -66,612 +82,367 @@
   </div>
 
   <!-- ============================================================
-       SECTION 1: HERO — Premium
+       FIXED CROSS-FADE STAGE
        ============================================================ -->
-  <section id="hero" class="section section--dark section--grid hero">
-    <!-- Quantum network visualization -->
-    <div class="hero-quantum-viz" aria-hidden="true">
-      <svg viewBox="0 0 800 600" preserveAspectRatio="xMidYMid slice" style="position:absolute;top:0;left:0;width:100%;height:100%;opacity:0.12;">
-        <defs>
-          <radialGradient id="node-glow"><stop offset="0%" stop-color="#D4A043" stop-opacity="0.6"/><stop offset="100%" stop-color="#D4A043" stop-opacity="0"/></radialGradient>
-        </defs>
-        <!-- Connections -->
-        <line x1="120" y1="80" x2="280" y2="180" stroke="#D4A043" stroke-width="0.4"/>
-        <line x1="280" y1="180" x2="200" y2="340" stroke="#D4A043" stroke-width="0.4"/>
-        <line x1="200" y1="340" x2="400" y2="420" stroke="#D4A043" stroke-width="0.4"/>
-        <line x1="400" y1="420" x2="620" y2="350" stroke="#D4A043" stroke-width="0.4"/>
-        <line x1="620" y1="350" x2="700" y2="180" stroke="#D4A043" stroke-width="0.4"/>
-        <line x1="700" y1="180" x2="580" y2="60" stroke="#D4A043" stroke-width="0.4"/>
-        <line x1="580" y1="60" x2="120" y2="80" stroke="#D4A043" stroke-width="0.4"/>
-        <line x1="280" y1="180" x2="620" y2="350" stroke="#D4A043" stroke-width="0.3"/>
-        <line x1="400" y1="420" x2="200" y2="500" stroke="#D4A043" stroke-width="0.3"/>
-        <line x1="580" y1="60" x2="400" y2="200" stroke="#D4A043" stroke-width="0.3"/>
-        <!-- Nodes -->
-        <circle cx="120" cy="80" r="3" fill="#D4A043"><animate attributeName="opacity" values="0.3;1;0.3" dur="4s" repeatCount="indefinite"/></circle>
-        <circle cx="280" cy="180" r="2.5" fill="#D4A043"><animate attributeName="opacity" values="0.5;1;0.5" dur="3.5s" repeatCount="indefinite" begin="0.8s"/></circle>
-        <circle cx="200" cy="340" r="3.5" fill="#D4A043"><animate attributeName="opacity" values="0.4;1;0.4" dur="5s" repeatCount="indefinite" begin="0.3s"/></circle>
-        <circle cx="400" cy="420" r="2" fill="#D4A043"><animate attributeName="opacity" values="0.6;1;0.6" dur="3s" repeatCount="indefinite" begin="1.5s"/></circle>
-        <circle cx="620" cy="350" r="3" fill="#D4A043"><animate attributeName="opacity" values="0.3;1;0.3" dur="4.2s" repeatCount="indefinite" begin="0.5s"/></circle>
-        <circle cx="700" cy="180" r="2.5" fill="#D4A043"><animate attributeName="opacity" values="0.5;1;0.5" dur="3.8s" repeatCount="indefinite" begin="2s"/></circle>
-        <circle cx="580" cy="60" r="2" fill="#D4A043"><animate attributeName="opacity" values="0.4;1;0.4" dur="4.5s" repeatCount="indefinite" begin="1s"/></circle>
-        <circle cx="200" cy="500" r="2.5" fill="#D4A043"><animate attributeName="opacity" values="0.5;1;0.5" dur="3.2s" repeatCount="indefinite" begin="2.5s"/></circle>
-        <!-- Glow rings on key nodes -->
-        <circle cx="280" cy="180" r="30" fill="url(#node-glow)" opacity="0.3"><animate attributeName="r" values="30;40;30" dur="6s" repeatCount="indefinite"/></circle>
-        <circle cx="620" cy="350" r="25" fill="url(#node-glow)" opacity="0.25"><animate attributeName="r" values="25;35;25" dur="5s" repeatCount="indefinite" begin="1s"/></circle>
-        <circle cx="400" cy="420" r="20" fill="url(#node-glow)" opacity="0.2"><animate attributeName="r" values="20;28;20" dur="7s" repeatCount="indefinite" begin="3s"/></circle>
-      </svg>
-    </div>
-    <div class="container">
-      <div class="hero__content reveal">
-        <div class="hero__badge" data-i18n="hero.badge">
-          <span class="hero__badge-dot"></span>
-14 Open-Source Scanners · AI-Driven Analysis · Customizable Scope
-        </div>
-        <h1><span data-i18n="hero.headline_line1">We Evaluate Your</span><br><span class="highlight" data-i18n="hero.headline_line2">Quantum Readiness</span></h1>
-        <p class="hero__sub" data-i18n="hero.subtitle">
-          Generate your free cryptographic BOM in minutes. Our AI analyzes your infrastructure against 4 global frameworks — NIST (USA), EU CS, China GB/T, Japan CRYPTREC — delivering tailored updates, deadline alerts, and remediation roadmaps for your business.
-        </p>
-        <div class="hero__actions">
-          <a href="signup.html" class="btn btn--primary" data-i18n="hero.cta_primary">Start Free</a>
-          <a href="#howitworks" class="btn btn--outline" data-i18n="hero.cta_secondary">How It Works</a>
-        </div>
+  <div class="stage">
+    <canvas id="qbg" aria-hidden="true"></canvas>
 
-        <!-- HNDL urgency callout — always visible -->
-        <div class="reveal" style="max-width:680px;margin-top:24px;padding:20px 24px;background:rgba(255,95,87,0.06);border:0.5px solid rgba(255,95,87,0.2);text-align:left;">
-          <p style="font-family:var(--font-display);font-size:0.9rem;font-weight:500;color:#FF5F57;margin-bottom:8px;letter-spacing:0.03em;" data-i18n="hero.hndl_label">HARVEST NOW, DECRYPT LATER — THE CLOCK IS TICKING</p>
-          <p style="font-size:0.84rem;color:var(--color-text-dim);line-height:1.7;font-weight:300;margin:0;" data-i18n="hero.hndl_visible">
-            Adversaries are collecting your encrypted data <strong style="color:var(--color-text);font-weight:500;">right now</strong>, storing it until quantum computers can break today's encryption. Every TLS session, VPN tunnel, and database backup crossing a public network is being harvested. The migration window closes around 2035 — but the first regulatory deadlines hit <strong style="color:#FFBD2E;font-weight:500;">January 2027</strong>. Every month of delay is more data permanently exposed.
-          </p>
-        </div>
-
-      </div>
-      <div class="hero__line" aria-hidden="true"></div>
-    </div>
-    <div class="scroll-hint" aria-hidden="true">
-      <span class="scroll-hint__arrow"></span>
-    </div>
-  </section>
-
-  <style>
-    .nav__link { color: var(--color-text); }
-    .scroll-hint { position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%); z-index: 2; }
-    .scroll-hint__arrow { display: block; width: 24px; height: 24px; border-right: 1.5px solid var(--color-accent); border-bottom: 1.5px solid var(--color-accent); transform: rotate(45deg); animation: scroll-bounce 1.8s ease-in-out infinite; }
-    @keyframes scroll-bounce { 0%,100% { opacity: 0.3; transform: rotate(45deg) translateY(0); } 50% { opacity: 1; transform: rotate(45deg) translateY(8px); } }
-    @media (prefers-reduced-motion: reduce) { .scroll-hint__arrow { animation: none; opacity: 0.6; } }
-    .section::after { height: 1px; }
-    .hero { display: block; padding-top: 160px; padding-bottom: 80px; min-height: auto; }
-    .hero__content { margin-left: auto; margin-right: auto; }
-    .evaluate-grid { max-width: 960px; margin: 0 auto; }
-    .content-centered { max-width: 900px; margin-left: auto; margin-right: auto; }
-    .content-centered--narrow { max-width: 800px; margin-left: auto; margin-right: auto; }
-    /* Responsive BOM card grid */
-    @media (max-width:1024px) { .evaluate-grid[style*="repeat(5"] { grid-template-columns:repeat(3,1fr)!important; } }
-    @media (max-width:768px) { .evaluate-grid[style*="repeat(5"] { grid-template-columns:repeat(2,1fr)!important; } }
-    @media (max-width:480px) { .evaluate-grid[style*="repeat(5"] { grid-template-columns:1fr!important; } }
-    /* Hero subtitle readability */
-    @media (max-width:768px) { .hero__sub { font-size:0.92rem!important; line-height:1.6!important; } }
-    .hero-quantum-viz { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
-    .hero h1 { font-size: clamp(2rem, 3.8vw, 3.2rem); }
-    .hero h1 .highlight { font-size: clamp(2.6rem, 5vw, 4.2rem); }
-    .bom-trigger { border-bottom: 1px dashed var(--color-accent); cursor: pointer; transition: color var(--transition-base); }
-    .bom-trigger:hover { color: var(--color-accent); }
-    .bom-popup { position: fixed; background: var(--color-surface); border: 0.5px solid var(--color-accent); padding: 14px 32px 14px 18px; max-width: 380px; font-size: 0.78rem; color: var(--color-text-dim); line-height: 1.6; font-weight: 300; z-index: 100; box-shadow: 0 8px 32px rgba(0,0,0,0.5); }
-    .bom-popup__close { position: absolute; top: 6px; right: 10px; background: none; border: none; color: var(--color-text-muted); font-size: 1.1rem; cursor: pointer; padding: 0; line-height: 1; }
-    .bom-popup__close:hover { color: var(--color-accent); }
-  </style>
-
-  <!-- ============================================================
-       SECTION 2: WHY Q-READINESS? WHY NOW?
-       ============================================================ -->
-  <section id="why-us" class="section section--deep" style="padding:48px 0;">
-    <div class="container">
-      <div class="reveal" style="text-align:center;margin-bottom:36px;">
-        <h2 class="section-title" data-i18n="whyus.heading">Why Q-Readiness? Why Now?</h2>
-        <p style="font-size:0.88rem;color:var(--color-text-dim);max-width:680px;margin:0 auto;line-height:1.7;font-weight:300;" data-i18n="whyus.subtitle">
-          Four global regulatory deadlines are converging. Organizations that wait will face rushed migrations, compliance penalties, and audit failures. Q-Readiness gives you the open-source tooling and AI analysis to act now — on your terms, in your environment.
-        </p>
-      </div>
-
-      <!-- Deadline cards — 4 columns -->
-      <div class="reveal" style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;max-width:960px;margin:0 auto 36px;">
-        <div style="background:var(--color-surface);border:0.5px solid var(--color-border);padding:20px 16px;text-align:center;">
-          <div style="font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.06em;color:#FF5F57;text-transform:uppercase;margin-bottom:6px;" data-i18n="whyus.deadline1_flag">Immediate</div>
-          <div style="font-family:var(--font-display);font-size:1.3rem;font-weight:500;color:var(--color-text);margin-bottom:4px;" data-i18n="whyus.deadline1_date">Jan 2027</div>
-          <div style="font-size:0.72rem;color:var(--color-text-dim);line-height:1.5;font-weight:300;" data-i18n="whyus.deadline1_name">CNSA 2.0 Phase 1<br>Software & firmware signing</div>
-        </div>
-        <div style="background:var(--color-surface);border:0.5px solid var(--color-border);padding:20px 16px;text-align:center;">
-          <div style="font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.06em;color:#FFBD2E;text-transform:uppercase;margin-bottom:6px;" data-i18n="whyus.deadline2_flag">Regulatory</div>
-          <div style="font-family:var(--font-display);font-size:1.3rem;font-weight:500;color:var(--color-text);margin-bottom:4px;" data-i18n="whyus.deadline2_date">2027</div>
-          <div style="font-size:0.72rem;color:var(--color-text-dim);line-height:1.5;font-weight:300;" data-i18n="whyus.deadline2_name">EU DORA & NIS2<br>Financial & critical infrastructure</div>
-        </div>
-        <div style="background:var(--color-surface);border:0.5px solid var(--color-border);padding:20px 16px;text-align:center;">
-          <div style="font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.06em;color:var(--color-accent);text-transform:uppercase;margin-bottom:6px;" data-i18n="whyus.deadline3_flag">Migration</div>
-          <div style="font-family:var(--font-display);font-size:1.3rem;font-weight:500;color:var(--color-text);margin-bottom:4px;" data-i18n="whyus.deadline3_date">2030</div>
-          <div style="font-size:0.72rem;color:var(--color-text-dim);line-height:1.5;font-weight:300;" data-i18n="whyus.deadline3_name">NIST Deprecation<br>RSA & ECDSA no longer approved</div>
-        </div>
-        <div style="background:var(--color-surface);border:0.5px solid var(--color-border);padding:20px 16px;text-align:center;">
-          <div style="font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.06em;color:var(--color-text-muted);text-transform:uppercase;margin-bottom:6px;" data-i18n="whyus.deadline4_flag">Hard Deadline</div>
-          <div style="font-family:var(--font-display);font-size:1.3rem;font-weight:500;color:var(--color-text);margin-bottom:4px;" data-i18n="whyus.deadline4_date">2035</div>
-          <div style="font-size:0.72rem;color:var(--color-text-dim);line-height:1.5;font-weight:300;" data-i18n="whyus.deadline4_name">NIST Removal<br>Classical algorithms disallowed entirely</div>
+    <!-- 1 · HERO -->
+    <section class="stage-section hero-stage" id="hero">
+      <div class="stage-inner">
+        <h1 data-i18n="hero.tagline">How you <em>think</em> about <em>quantum</em><br>decides how <em>ready</em> you are.</h1>
+        <div class="scroll-hint" aria-hidden="true">
+          <span data-i18n="hero.scroll">Scroll to know your risks</span>
+          <span class="scroll-hint__arrow"></span>
         </div>
       </div>
+    </section>
 
-      <!-- Differentiator cards — 3 columns -->
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px;max-width:900px;margin:0 auto;padding-top:24px;border-top:0.5px solid var(--color-border);">
-        <div class="reveal" style="text-align:center;padding:0 12px;">
-          <div style="font-family:var(--font-display);font-size:2.2rem;font-weight:300;color:var(--color-accent);line-height:1;margin-bottom:14px;">01</div>
-          <h3 style="font-family:var(--font-display);font-size:1.05rem;font-weight:500;margin-bottom:8px;color:var(--color-text);" data-i18n="whyus.col1_title">100% Open Source</h3>
-          <p style="font-size:0.8rem;color:var(--color-text-dim);line-height:1.6;font-weight:300;" data-i18n="whyus.col1_desc">Every scanner is inspectable on GitHub. No proprietary binaries, no vendor lock-in. You can verify exactly what runs on your infrastructure — or run it yourself.</p>
-        </div>
-        <div class="reveal" style="text-align:center;padding:0 12px;">
-          <div style="font-family:var(--font-display);font-size:2.2rem;font-weight:300;color:var(--color-accent);line-height:1;margin-bottom:14px;">02</div>
-          <h3 style="font-family:var(--font-display);font-size:1.05rem;font-weight:500;margin-bottom:8px;color:var(--color-text);" data-i18n="whyus.col2_title">Your Data, Your Perimeter</h3>
-          <p style="font-size:0.8rem;color:var(--color-text-dim);line-height:1.6;font-weight:300;" data-i18n="whyus.col2_desc">Scans execute locally. Nothing phones home. Before any upload, our AI shows you exactly what it found and asks for your explicit approval. Air-gapped deployment available.</p>
-        </div>
-        <div class="reveal" style="text-align:center;padding:0 12px;">
-          <div style="font-family:var(--font-display);font-size:2.2rem;font-weight:300;color:var(--color-accent);line-height:1;margin-bottom:14px;">03</div>
-          <h3 style="font-family:var(--font-display);font-size:1.05rem;font-weight:500;margin-bottom:8px;color:var(--color-text);" data-i18n="whyus.col3_title">AI That Shows Its Work</h3>
-          <p style="font-size:0.8rem;color:var(--color-text-dim);line-height:1.6;font-weight:300;" data-i18n="whyus.col3_desc">Claude Code cross-references findings across all 14 tools, flags confirmations and contradictions, and explains every conclusion. Board-ready, auditor-ready analysis — not a black-box score.</p>
-        </div>
-      </div>
-    </div>
-  </section>
+    <!-- 2 · STAKES -->
+    <section class="stage-section" id="stakes">
+      <div class="stage-inner">
+        <h2 class="section-title" data-i18n="stakes.heading">The deadlines are already moving.</h2>
+        <p class="stage-sub" data-i18n="stakes.subtitle">Three dates decide how fast you have to move. Wait, and a rushed migration will decide for you.</p>
 
-  <!-- ============================================================
-       SECTION 3: BOM CARDS — What We Scan
-       ============================================================ -->
-  <section id="evaluate" class="section section--darker section--striped">
-    <div class="container">
-      <h2 class="section-title reveal">What We Evaluate</h2>
-      <p class="section-subtitle reveal" data-i18n="bom.subtitle">Five infrastructure layers. Fourteen open-source tools. One free scan per section. Your dashboard unlocks as you scan.</p>
+        <div class="hndl-callout stakes-hndl">
+          <h3 data-i18n="stakes.hndl_label">HARVEST NOW, DECRYPT LATER &mdash; THE CLOCK IS TICKING</h3>
+          <p data-i18n="stakes.hndl_body">Adversaries are collecting your encrypted data <strong style="color:var(--color-text);font-weight:500;">right now</strong>, storing it until quantum computers can break today&rsquo;s encryption. The migration window closes around 2035 &mdash; every month of delay is more data permanently exposed.</p>
+        </div>
 
-      <!-- Sector selector — buyer-segment-aware filtering -->
-      <div class="evaluate-grid" style="grid-template-columns:repeat(5,1fr);gap:16px;">
-        <!-- Network -->
-        <div class="reveal" style="background:var(--color-surface);border:0.5px solid var(--color-border);padding:28px 20px;position:relative;transition:all var(--transition-base);">
-          <span style="position:absolute;top:12px;right:12px;font-size:0.58rem;font-weight:500;letter-spacing:0.04em;text-transform:uppercase;color:var(--color-accent);border:0.5px solid var(--color-border);padding:2px 8px;" data-i18n="bom.free_badge">Free: 1 scan</span>
-          <div style="font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.08em;color:var(--color-accent-dim);text-transform:uppercase;margin-bottom:10px;">01</div>
-          <h3 style="font-family:var(--font-display);font-size:1.1rem;font-weight:500;margin-bottom:10px;color:var(--color-text);" data-i18n="bom.network_title">Network & TLS</h3>
-          <p style="font-size:0.78rem;color:var(--color-text-dim);line-height:1.6;font-weight:300;" data-i18n="bom.network_desc">Scans TLS ciphers, SSH host keys, VPN tunnels, and network handshakes for quantum-vulnerable encryption.</p>
-        </div>
-        <!-- Code -->
-        <div class="reveal" style="background:var(--color-surface);border:0.5px solid var(--color-border);padding:28px 20px;position:relative;transition:all var(--transition-base);">
-          <span style="position:absolute;top:12px;right:12px;font-size:0.58rem;font-weight:500;letter-spacing:0.04em;text-transform:uppercase;color:var(--color-accent);border:0.5px solid var(--color-border);padding:2px 8px;" data-i18n="bom.free_badge">Free: 1 scan</span>
-          <div style="font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.08em;color:var(--color-accent-dim);text-transform:uppercase;margin-bottom:10px;">02</div>
-          <h3 style="font-family:var(--font-display);font-size:1.1rem;font-weight:500;margin-bottom:10px;color:var(--color-text);" data-i18n="bom.code_title">Code & Repos</h3>
-          <p style="font-size:0.78rem;color:var(--color-text-dim);line-height:1.6;font-weight:300;" data-i18n="bom.code_desc">Scans source code dependencies, third-party libraries, and container images for weak hashing and signing algorithms.</p>
-        </div>
-        <!-- Infra -->
-        <div class="reveal" style="background:var(--color-surface);border:0.5px solid var(--color-border);padding:28px 20px;position:relative;transition:all var(--transition-base);">
-          <span style="position:absolute;top:12px;right:12px;font-size:0.58rem;font-weight:500;letter-spacing:0.04em;text-transform:uppercase;color:var(--color-accent);border:0.5px solid var(--color-border);padding:2px 8px;" data-i18n="bom.free_badge">Free: 1 scan</span>
-          <div style="font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.08em;color:var(--color-accent-dim);text-transform:uppercase;margin-bottom:10px;">03</div>
-          <h3 style="font-family:var(--font-display);font-size:1.1rem;font-weight:500;margin-bottom:10px;color:var(--color-text);" data-i18n="bom.infra_title">Infra & Configs</h3>
-          <p style="font-size:0.78rem;color:var(--color-text-dim);line-height:1.6;font-weight:300;" data-i18n="bom.infra_desc">Scans cloud IAM roles, KMS keys, hardware security modules, and firmware signatures.</p>
-        </div>
-        <!-- Data -->
-        <div class="reveal" style="background:var(--color-surface);border:0.5px solid var(--color-border);padding:28px 20px;position:relative;transition:all var(--transition-base);">
-          <span style="position:absolute;top:12px;right:12px;font-size:0.58rem;font-weight:500;letter-spacing:0.04em;text-transform:uppercase;color:var(--color-accent);border:0.5px solid var(--color-border);padding:2px 8px;" data-i18n="bom.free_badge">Free: 1 scan</span>
-          <div style="font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.08em;color:var(--color-accent-dim);text-transform:uppercase;margin-bottom:10px;">04</div>
-          <h3 style="font-family:var(--font-display);font-size:1.1rem;font-weight:500;margin-bottom:10px;color:var(--color-text);" data-i18n="bom.data_title">Data & Storage</h3>
-          <p style="font-size:0.78rem;color:var(--color-text-dim);line-height:1.6;font-weight:300;" data-i18n="bom.data_desc">Scans databases, object storage, and backup archives for data-at-rest encryption standards.</p>
-        </div>
-        <!-- PKI -->
-        <div class="reveal" style="background:var(--color-surface);border:0.5px solid var(--color-border);padding:28px 20px;position:relative;transition:all var(--transition-base);">
-          <span style="position:absolute;top:12px;right:12px;font-size:0.58rem;font-weight:500;letter-spacing:0.04em;text-transform:uppercase;color:var(--color-accent);border:0.5px solid var(--color-border);padding:2px 8px;" data-i18n="bom.free_badge">Free: 1 scan</span>
-          <div style="font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.08em;color:var(--color-accent-dim);text-transform:uppercase;margin-bottom:10px;">05</div>
-          <h3 style="font-family:var(--font-display);font-size:1.1rem;font-weight:500;margin-bottom:10px;color:var(--color-text);" data-i18n="bom.pki_title">PKI & Identity</h3>
-          <p style="font-size:0.78rem;color:var(--color-text-dim);line-height:1.6;font-weight:300;" data-i18n="bom.pki_desc">Scans certificate authorities, intermediate certs, OCSP responders, and key rotation policies.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============================================================
-       SECTION 3: DASHBOARD PREVIEW — Premium Terminal Panel
-       ============================================================ -->
-  <section id="dashboard" class="section section--dark section--glow">
-    <div class="container">
-      <h2 class="section-title reveal">Your Assessment Dashboard</h2>
-      <p class="section-subtitle reveal">Every engagement includes portal access to your live readiness dashboard &mdash; real-time scores, prioritized findings, and actionable remediation steps.</p>
-      <div class="dashboard-panel reveal">
-        <div class="dashboard-panel__header">
-          <div class="dashboard-panel__header-dots">
-            <span class="dashboard-panel__header-dot"></span>
-            <span class="dashboard-panel__header-dot"></span>
-            <span class="dashboard-panel__header-dot"></span>
+        <div class="clocks-grid">
+          <div class="timeline-now" data-i18n="stakes.now">Now</div>
+          <div class="countdown-clock" data-target="2027-01-01T00:00:00">
+            <span class="countdown-year">2027</span>
+            <div class="countdown-value">
+              <span class="cd-days"><span class="countdown-number">000</span><span class="countdown-unit">Days</span></span>
+              <span class="cd-hours"><span class="countdown-number">00</span><span class="countdown-unit">Hrs</span></span>
+              <span class="cd-minutes"><span class="countdown-number">00</span><span class="countdown-unit">Min</span></span>
+              <span class="cd-seconds"><span class="countdown-number">00</span><span class="countdown-unit">Sec</span></span>
+            </div>
+            <p class="countdown-label" data-i18n="stakes.clock1_label">CNSA 2.0</p>
+            <p class="countdown-desc" data-i18n="stakes.clock1_desc">Software and firmware signing must move to PQC. The first hard date.</p>
           </div>
-          <span class="dashboard-panel__header-label">Q-Readiness Assessment Dashboard</span>
-        </div>
-        <div class="dashboard-panel__body">
-          <div class="dashboard-header">
-            <div class="dashboard-score">
-              <div class="dashboard-score__value">37<span style="font-size:1.4rem;color:var(--color-text-muted)">/100</span></div>
-              <div class="dashboard-score__label">Overall Readiness Score</div>
+          <div class="countdown-clock" data-target="2030-01-01T00:00:00">
+            <span class="countdown-year">2030</span>
+            <div class="countdown-value">
+              <span class="cd-days"><span class="countdown-number">000</span><span class="countdown-unit">Days</span></span>
+              <span class="cd-hours"><span class="countdown-number">00</span><span class="countdown-unit">Hrs</span></span>
+              <span class="cd-minutes"><span class="countdown-number">00</span><span class="countdown-unit">Min</span></span>
+              <span class="cd-seconds"><span class="countdown-number">00</span><span class="countdown-unit">Sec</span></span>
             </div>
-            <div class="dashboard-meta">
-              <div class="dashboard-meta__badge">&#9888; 4 Critical Findings</div>
-              <div class="dashboard-meta__text">Last updated: May 2026</div>
-            </div>
+            <p class="countdown-label" data-i18n="stakes.clock2_label">NIST Deprecation</p>
+            <p class="countdown-desc" data-i18n="stakes.clock2_desc">RSA and ECDSA are no longer approved. Internal PKI and code signing must migrate.</p>
           </div>
-          <div class="dashboard-bars">
-            <div class="dashboard-bar">
-              <div class="dashboard-bar__header">
-                <span class="dashboard-bar__label">Cryptographic Inventory</span>
-                <span class="dashboard-bar__pct" style="color:#FF5F57">30%</span>
-              </div>
-              <div class="dashboard-bar__track">
-                <div class="dashboard-bar__fill dashboard-bar__fill--red" data-width="30"></div>
-              </div>
+          <div class="countdown-clock" data-target="2035-01-01T00:00:00">
+            <span class="countdown-year">2035</span>
+            <div class="countdown-value">
+              <span class="cd-days"><span class="countdown-number">000</span><span class="countdown-unit">Days</span></span>
+              <span class="cd-hours"><span class="countdown-number">00</span><span class="countdown-unit">Hrs</span></span>
+              <span class="cd-minutes"><span class="countdown-number">00</span><span class="countdown-unit">Min</span></span>
+              <span class="cd-seconds"><span class="countdown-number">00</span><span class="countdown-unit">Sec</span></span>
             </div>
-            <div class="dashboard-bar">
-              <div class="dashboard-bar__header">
-                <span class="dashboard-bar__label">PQC Architecture</span>
-                <span class="dashboard-bar__pct" style="color:var(--color-accent)">55%</span>
+            <p class="countdown-label" data-i18n="stakes.clock3_label">NIST Removal</p>
+            <p class="countdown-desc" data-i18n="stakes.clock3_desc">Classical algorithms are disallowed entirely. Harvested data becomes readable.</p>
+          </div>
+        </div>
+      </div>
+      <div class="scroll-hint scroll-hint--bottom" aria-hidden="true">
+        <span data-i18n="stakes.scroll">Scroll to learn what to do</span>
+        <span class="scroll-hint__arrow"></span>
+      </div>
+    </section>
+
+    <!-- 3 · BOM -->
+    <section class="stage-section" id="bom">
+      <div class="stage-inner">
+        <h2 class="section-title" data-i18n="bom.heading">Your cryptographic inventory, in one scan.</h2>
+        <p class="stage-sub" data-i18n="bom.subtitle">Five layers. Open-source scanners. One free scan per section.</p>
+
+        <div class="run-modes">
+          <div class="run-mode">
+            <h3 data-i18n="bom.run_airgap_title">Free air-gapped Docker</h3>
+            <p data-i18n="bom.run_airgap_body">One prebuilt image with all 14 open-source tools. Runs fully offline — no network, nothing phones home.</p>
+          </div>
+          <div class="run-mode run-mode--accent">
+            <h3 data-i18n="bom.run_ai_title">Docker + AI</h3>
+            <p data-i18n="bom.run_ai_body">The same tools, orchestrated by AI. It reads every result, validates them, and explains the fix.</p>
+          </div>
+        </div>
+        <div class="run-arrows" aria-hidden="true">
+          <span class="run-arrow"></span>
+          <span class="run-arrow"></span>
+        </div>
+
+        <div class="bom-grid">
+          <div class="bom-card">
+            <span class="bom-card__badge" data-i18n="bom.free_badge">Free: 1 scan</span>
+            <div class="bom-card__num">01</div>
+            <h3 data-i18n="bom.network_title">Network &amp; TLS</h3>
+            <p data-i18n="bom.network_desc">Scans TLS ciphers, SSH host keys, VPN tunnels, and network handshakes for quantum-vulnerable encryption.</p>
+          </div>
+          <div class="bom-card">
+            <span class="bom-card__badge" data-i18n="bom.free_badge">Free: 1 scan</span>
+            <div class="bom-card__num">02</div>
+            <h3 data-i18n="bom.code_title">Code &amp; Repos</h3>
+            <p data-i18n="bom.code_desc">Scans source code dependencies, third-party libraries, and container images for weak hashing and signing algorithms.</p>
+          </div>
+          <div class="bom-card">
+            <span class="bom-card__badge" data-i18n="bom.free_badge">Free: 1 scan</span>
+            <div class="bom-card__num">03</div>
+            <h3 data-i18n="bom.infra_title">Infra &amp; Configs</h3>
+            <p data-i18n="bom.infra_desc">Scans cloud IAM roles, KMS keys, hardware security modules, and firmware signatures.</p>
+          </div>
+          <div class="bom-card">
+            <span class="bom-card__badge" data-i18n="bom.free_badge">Free: 1 scan</span>
+            <div class="bom-card__num">04</div>
+            <h3 data-i18n="bom.data_title">Data &amp; Storage</h3>
+            <p data-i18n="bom.data_desc">Scans databases, object storage, and backup archives for data-at-rest encryption standards.</p>
+          </div>
+          <div class="bom-card">
+            <span class="bom-card__badge" data-i18n="bom.free_badge">Free: 1 scan</span>
+            <div class="bom-card__num">05</div>
+            <h3 data-i18n="bom.pki_title">PKI &amp; Identity</h3>
+            <p data-i18n="bom.pki_desc">Scans certificate authorities, intermediate certs, OCSP responders, and key rotation policies.</p>
+          </div>
+        </div>
+
+        <p class="bom-open" data-i18n="bom.opensource">Every scanner is open-source &mdash; nothing hidden. Trust through transparency.</p>
+      </div>
+      <div class="scroll-hint scroll-hint--bottom" aria-hidden="true">
+        <span data-i18n="bom.scroll">Now what do we do?</span>
+        <span class="scroll-hint__arrow"></span>
+      </div>
+    </section>
+
+    <!-- 4 · HOW WE THINK -->
+    <section class="stage-section" id="how">
+      <div class="stage-inner">
+        <h2 class="section-title" data-i18n="how.heading">How we think the problem should be handled.</h2>
+        <p class="stage-sub" data-i18n="how.subtitle">Assessment, score, and staying current &mdash; the whole method, one view.</p>
+
+        <div class="how-flow">
+          <div class="how-flow__step">
+            <div class="side-card__label" data-i18n="questionnaire.tech_label">The technical side</div>
+            <h3 data-i18n="questionnaire.tech_title">Your cryptographic inventory</h3>
+            <p data-i18n="questionnaire.tech_body">Every key, certificate, and algorithm &mdash; and whether a quantum computer can break it.</p>
+          </div>
+
+          <span class="how-flow__arrow" aria-hidden="true"></span>
+
+          <div class="how-flow__step">
+            <div class="side-card__label" data-i18n="questionnaire.info_label">The informational side</div>
+            <h3 data-i18n="questionnaire.info_title">Governance, risk, training, external</h3>
+            <p data-i18n="questionnaire.info_body">Who&rsquo;s accountable, what your exposure is, who&rsquo;s trained, which vendors you rely on.</p>
+          </div>
+
+          <span class="how-flow__arrow" aria-hidden="true"></span>
+
+          <div class="how-flow__dashboard">
+            <div class="how-dashboard">
+              <div class="how-dashboard__cta">
+                <a href="dashboard.html" class="btn btn--outline btn--small" data-i18n="how.demo_button">Open the demo dashboard &rarr;</a>
               </div>
-              <div class="dashboard-bar__track">
-                <div class="dashboard-bar__fill dashboard-bar__fill--gold" data-width="55"></div>
-              </div>
-            </div>
-            <div class="dashboard-bar">
-              <div class="dashboard-bar__header">
-                <span class="dashboard-bar__label">Quantum Networking Readiness</span>
-                <span class="dashboard-bar__pct" style="color:#FF5F57">25%</span>
-              </div>
-              <div class="dashboard-bar__track">
-                <div class="dashboard-bar__fill dashboard-bar__fill--red" data-width="25"></div>
+              <div class="dashboard-panel how-dashboard__panel">
+                <div class="dashboard-panel__header">
+                  <div class="dashboard-panel__header-dots">
+                    <span class="dashboard-panel__header-dot"></span>
+                    <span class="dashboard-panel__header-dot"></span>
+                    <span class="dashboard-panel__header-dot"></span>
+                  </div>
+                  <span class="dashboard-panel__header-label">Q-Readiness Assessment Dashboard</span>
+                </div>
+                <div class="dashboard-panel__body">
+                  <div class="dashboard-header">
+                    <div class="dashboard-score">
+                      <div class="dashboard-score__value">37<span style="font-size:1.4rem;color:var(--color-text-muted)">/100</span></div>
+                      <div class="dashboard-score__label">Overall Readiness Score</div>
+                    </div>
+                    <div class="dashboard-meta">
+                      <div class="dashboard-meta__badge">&#9888; 4 Critical Findings</div>
+                      <div class="dashboard-meta__text">Last updated: May 2026</div>
+                    </div>
+                  </div>
+                  <div class="dashboard-bars">
+                    <div class="dashboard-bar">
+                      <div class="dashboard-bar__header">
+                        <span class="dashboard-bar__label">Cryptographic Inventory</span>
+                        <span class="dashboard-bar__pct" style="color:#FF5F57">30%</span>
+                      </div>
+                      <div class="dashboard-bar__track">
+                        <div class="dashboard-bar__fill dashboard-bar__fill--red" data-width="30"></div>
+                      </div>
+                    </div>
+                    <div class="dashboard-bar">
+                      <div class="dashboard-bar__header">
+                        <span class="dashboard-bar__label">PQC Architecture</span>
+                        <span class="dashboard-bar__pct" style="color:var(--color-accent)">55%</span>
+                      </div>
+                      <div class="dashboard-bar__track">
+                        <div class="dashboard-bar__fill dashboard-bar__fill--gold" data-width="55"></div>
+                      </div>
+                    </div>
+                    <div class="dashboard-bar">
+                      <div class="dashboard-bar__header">
+                        <span class="dashboard-bar__label">Quantum Networking Readiness</span>
+                        <span class="dashboard-bar__pct" style="color:#FF5F57">25%</span>
+                      </div>
+                      <div class="dashboard-bar__track">
+                        <div class="dashboard-bar__fill dashboard-bar__fill--red" data-width="25"></div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="dashboard-actions">
+                    <h4 class="dashboard-actions__title">Priority Actions</h4>
+                    <div class="dashboard-action">
+                      <span class="dashboard-action__checkbox"></span>
+                      <span>Inventory all PKI certificates and cipher suites</span>
+                      <span class="dashboard-action__tag dashboard-action__tag--critical">Critical</span>
+                    </div>
+                    <div class="dashboard-action">
+                      <span class="dashboard-action__checkbox"></span>
+                      <span>Identify and contact PQC-priority vendors</span>
+                      <span class="dashboard-action__tag dashboard-action__tag--critical">Critical</span>
+                    </div>
+                    <div class="dashboard-action">
+                      <span class="dashboard-action__checkbox"></span>
+                      <span>Assess TLS 1.3 readiness across all endpoints</span>
+                      <span class="dashboard-action__tag dashboard-action__tag--high">High</span>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
-          <div class="dashboard-actions">
-            <h4 class="dashboard-actions__title">Priority Actions</h4>
-            <div class="dashboard-action">
-              <span class="dashboard-action__checkbox"></span>
-              <span>Inventory all PKI certificates and cipher suites</span>
-              <span class="dashboard-action__tag dashboard-action__tag--critical">Critical</span>
+
+          <span class="how-flow__arrow" aria-hidden="true"></span>
+
+          <div class="how-flow__step">
+            <h3 data-i18n="how.reports_title">Newsletters &amp; Reports</h3>
+            <p data-i18n="how.reports_body">A monthly readiness report, plus news and alerts tailored to your industry and standards.</p>
+          </div>
+        </div>
+
+        <p class="how-note" data-i18n="questionnaire.note">Stage-1 onboarding is short and skippable &mdash; you can still scan and get a score. The full questionnaire unlocks personalized alerts.</p>
+      </div>
+      <div class="scroll-hint scroll-hint--bottom" aria-hidden="true">
+        <span data-i18n="how.talk_scroll">Talk to us</span>
+        <span class="scroll-hint__arrow"></span>
+      </div>
+    </section>
+
+    <!-- 5 · CONTACT / SIGN IN / LOGIN -->
+    <section class="stage-section" id="contact">
+      <div class="stage-inner">
+        <h2 class="section-title" data-i18n="contact.heading">Start free, or get white-glove.</h2>
+        <p class="stage-sub" data-i18n="contact.subtitle">Self-serve for most teams. A scoping call when you want us beside you.</p>
+
+        <div class="contact-paths">
+          <div class="path-card">
+            <h3 data-i18n="contact.path_self_title">Start free</h3>
+            <p data-i18n="contact.path_self_body">Create your free BOM now. No credit card. Run the scan yourself, in your environment.</p>
+            <a href="signup.html" class="btn btn--primary" data-i18n="hero.cta_primary">Start Free</a>
+          </div>
+          <div class="path-card path-card--accent">
+            <h3 data-i18n="contact.path_white_title">White-glove</h3>
+            <p data-i18n="contact.path_white_body">Tell us about your organization. We assess, you decide &mdash; no pitch, no deck.</p>
+            <a href="#contact-form" class="btn btn--outline" data-i18n="contact.path_white_cta">Book a scoping call</a>
+          </div>
+        </div>
+
+        <div class="contact-grid">
+          <form class="contact-form" id="contact-form" action="https://formspree.io/f/xzdqbbpo" method="POST" novalidate style="text-align:left;">
+            <div class="contact-form__group">
+              <label class="contact-form__label" for="name" data-i18n="contact.name">Name</label>
+              <input class="contact-form__input" type="text" id="name" name="name" autocomplete="name" required>
             </div>
-            <div class="dashboard-action">
-              <span class="dashboard-action__checkbox"></span>
-              <span>Identify and contact PQC-priority vendors</span>
-              <span class="dashboard-action__tag dashboard-action__tag--critical">Critical</span>
+            <div class="contact-form__group">
+              <label class="contact-form__label" for="email" data-i18n="contact.email">Work Email</label>
+              <input class="contact-form__input" type="email" id="email" name="email" autocomplete="email" required>
             </div>
-            <div class="dashboard-action">
-              <span class="dashboard-action__checkbox"></span>
-              <span>Assess TLS 1.3 readiness across all endpoints</span>
-              <span class="dashboard-action__tag dashboard-action__tag--high">High</span>
+            <div class="contact-form__group">
+              <label class="contact-form__label" for="org" data-i18n="contact.org">Organization</label>
+              <input class="contact-form__input" type="text" id="org" name="org" autocomplete="organization" required>
             </div>
-            <div class="dashboard-action">
-              <span class="dashboard-action__checkbox"></span>
-              <span>Begin crypto-agility roadmap and governance framework</span>
-              <span class="dashboard-action__tag dashboard-action__tag--medium">Medium</span>
+            <div class="contact-form__group">
+              <label class="contact-form__label" for="message" data-i18n="contact.message">Context (optional)</label>
+              <textarea class="contact-form__textarea" id="message" name="message" placeholder="Tell us about your infrastructure, timeline, and any specific concerns&hellip;"></textarea>
             </div>
-          </div>
+            <button class="btn btn--primary contact-form__submit" type="submit" data-i18n="contact.submit">Submit Inquiry</button>
+            <p class="contact-form__feedback" aria-live="polite"></p>
+          </form>
         </div>
-      </div>
-      <div class="reveal" style="text-align:center;margin-top:36px;">
-        <a href="dashboard.html" class="btn btn--outline">View Full Dashboard &rarr;</a>
-      </div>
-    </div>
-  </section>
 
-  <!-- ============================================================
-       SECTION 4: HOW IT WORKS — 3 Steps
-       ============================================================ -->
-  <section id="howitworks" class="section section--darker section--striped">
-    <div class="container">
-      <h2 class="section-title reveal" data-i18n="howitworks.heading">From Assessment to Action in 3 Steps</h2>
-      <div style="max-width:900px;margin:48px auto 0;">
-        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px;">
-        <div style="background:var(--color-surface);border:0.5px solid var(--color-border);padding:36px 28px;text-align:center;transition:all var(--transition-base);">
-          <div style="font-size:2rem;margin-bottom:16px;">1</div>
-          <h3 style="font-family:var(--font-display);font-size:1.1rem;font-weight:500;margin-bottom:10px;color:var(--color-text);" data-i18n="howitworks.step1_title">Answer the Questionnaire</h3>
-          <p style="font-size:0.82rem;color:var(--color-text-dim);line-height:1.7;font-weight:300;" data-i18n="howitworks.step1_desc">Tell us your industry, region, and infrastructure. Takes 2 minutes. Tailors your BOM and future alerts.</p>
-        </div>
-        <div style="background:var(--color-surface);border:0.5px solid var(--color-accent);padding:36px 28px;text-align:center;transition:all var(--transition-base);">
-          <div style="font-size:2rem;margin-bottom:16px;">2</div>
-          <h3 style="font-family:var(--font-display);font-size:1.1rem;font-weight:500;margin-bottom:10px;color:var(--color-text);" data-i18n="howitworks.step2_title">AI Generates Your BOM</h3>
-          <p style="font-size:0.82rem;color:var(--color-text-dim);line-height:1.7;font-weight:300;" data-i18n="howitworks.step2_desc">Our agent orchestrates 14 open-source scanners across your selected sections. Results in minutes.</p>
-        </div>
-        <div style="background:var(--color-surface);border:0.5px solid var(--color-border);padding:36px 28px;text-align:center;transition:all var(--transition-base);">
-          <div style="font-size:2rem;margin-bottom:16px;">3</div>
-          <h3 style="font-family:var(--font-display);font-size:1.1rem;font-weight:500;margin-bottom:10px;color:var(--color-text);" data-i18n="howitworks.step3_title">Explore & Stay Updated</h3>
-          <p style="font-size:0.82rem;color:var(--color-text-dim);line-height:1.7;font-weight:300;" data-i18n="howitworks.step3_desc">Visualize gaps against 4 global standards. Pro+ users get email deadline alerts and tailored newsletter.</p>
-        </div>
+        <div class="auth-row">
+          <span data-i18n="contact.auth_prompt">Already have an account?</span>
+          <a href="login.html" data-i18n="contact.auth_login">Log in</a>
+          <span>&middot;</span>
+          <a href="signup.html" data-i18n="contact.auth_signup">Sign up</a>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
+  </div>
 
-  <!-- ============================================================
-       SECTION 5: PRICING TEASER
-       ============================================================ -->
-  <section id="pricing" class="section section--darker section--glow">
-    <div class="container">
-      <h2 class="section-title reveal">Simple, Transparent Pricing</h2>
-      <p class="section-subtitle reveal" style="max-width:600px;">Start free. Upgrade when you need more scope.</p>
-      <div style="max-width:800px;margin:40px auto 0;">
-        <div class="reveal" style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px;">
-        <div style="background:var(--color-surface);border:0.5px solid var(--color-border);padding:36px 24px;text-align:center;">
-          <div style="font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.08em;color:var(--color-text-muted);text-transform:uppercase;margin-bottom:8px;">Free</div>
-          <div style="font-family:var(--font-display);font-size:2.2rem;font-weight:300;color:var(--color-accent);margin-bottom:12px;">$0</div>
-          <p style="font-size:0.78rem;color:var(--color-text-dim);line-height:1.6;font-weight:300;">1 asset per section. Same dashboard. In-app deadline alerts. No credit card.</p>
-          <a href="signup.html" class="btn btn--outline btn--small" style="margin-top:20px;">Start Free</a>
-        </div>
-        <div style="background:var(--color-surface);border:0.5px solid var(--color-accent);padding:36px 24px;text-align:center;position:relative;">
-          <div style="position:absolute;top:-1px;right:16px;font-size:0.55rem;font-weight:500;letter-spacing:0.06em;text-transform:uppercase;padding:4px 10px;background:var(--color-accent);color:var(--color-base);">Popular</div>
-          <div style="font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.08em;color:var(--color-text-muted);text-transform:uppercase;margin-bottom:8px;">Pro</div>
-          <div style="font-family:var(--font-display);font-size:2.2rem;font-weight:300;color:var(--color-accent);margin-bottom:12px;">$29.99<span style="font-size:0.8rem;color:var(--color-text-muted);">/mo</span></div>
-          <p style="font-size:0.78rem;color:var(--color-text-dim);line-height:1.6;font-weight:300;">10 IPs, 50 repos, 50 DBs. Email alerts + tailored newsletter.</p>
-          <a href="signup.html" class="btn btn--primary btn--small" style="margin-top:20px;">Get Started</a>
-        </div>
-        <div style="background:var(--color-surface);border:0.5px solid var(--color-border);padding:36px 24px;text-align:center;">
-          <div style="font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.08em;color:var(--color-text-muted);text-transform:uppercase;margin-bottom:8px;">Enterprise</div>
-          <div style="font-family:var(--font-display);font-size:2.2rem;font-weight:300;color:var(--color-accent);margin-bottom:12px;">$249.99<span style="font-size:0.8rem;color:var(--color-text-muted);">/mo</span></div>
-          <p style="font-size:0.78rem;color:var(--color-text-dim);line-height:1.6;font-weight:300;">100 IPs, 500 repos, 500 DBs. All features included.</p>
-          <a href="signup.html" class="btn btn--outline btn--small" style="margin-top:20px;">Get Started</a>
-        </div>
-      </div>
-      </div>
-      <div class="reveal" style="text-align:center;margin-top:32px;">
-        <a href="pricing.html" class="btn btn--text">View Full Pricing →</a>
-        <p style="font-size:0.75rem;color:var(--color-text-muted);margin-top:8px;">Need air-gapped or on-premise deployment? <a href="#contact" style="color:var(--color-accent);">Contact us</a> for a Custom quote.</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============================================================
-       SECTION 5: QUANTUM TIMELINE — Premium Countdown Clocks
-       ============================================================ -->
-  <section id="quantum-timeline" class="section section--darker section--striped">
-    <div class="container">
-      <h2 class="section-title reveal">Quantum Timeline</h2>
-      <p class="section-subtitle reveal">Live countdown to critical PQC migration deadlines. Organizations that begin today gain a 12&ndash;18 month advantage in vendor negotiations and regulatory positioning.</p>
-
-      <!-- Urgency bar — nearest deadline indicator -->
-      <div class="urgency-bar">
-        <span class="urgency-bar__dot"></span>
-        <span>Nearest deadline: <strong class="urgency-bar__date" id="urgencyDate">Jun 1, 2027</strong></span>
-        <span class="urgency-bar__sep">&mdash;</span>
-        <span>Self-assessment — AI-guided, on your schedule</span>
-      </div>
-
-      <div class="clocks-grid">
-        <!-- Clock 1: Next NIST Standards — 2027-06-01 -->
-        <div class="countdown-clock reveal" data-target="2027-06-01T00:00:00">
-          <div class="countdown-value">
-            <span class="cd-days"><span class="countdown-number">000</span><span class="countdown-unit">Days</span></span>
-            <span class="cd-hours"><span class="countdown-number">00</span><span class="countdown-unit">Hrs</span></span>
-            <span class="cd-minutes"><span class="countdown-number">00</span><span class="countdown-unit">Min</span></span>
-            <span class="cd-seconds"><span class="countdown-number">00</span><span class="countdown-unit">Sec</span></span>
-          </div>
-          <p class="countdown-label">Next NIST Standards</p>
-          <p class="countdown-desc">FN-DSA (FIPS 206) expected to finalize. Additional signature and KEM schemes for specialized use cases including lightweight IoT and zero-trust architectures.</p>
-        </div>
-        <!-- Clock 2: Enterprise PQC — 2028-01-01 -->
-        <div class="countdown-clock reveal" data-target="2028-01-01T00:00:00">
-          <div class="countdown-value">
-            <span class="cd-days"><span class="countdown-number">000</span><span class="countdown-unit">Days</span></span>
-            <span class="cd-hours"><span class="countdown-number">00</span><span class="countdown-unit">Hrs</span></span>
-            <span class="cd-minutes"><span class="countdown-number">00</span><span class="countdown-unit">Min</span></span>
-            <span class="cd-seconds"><span class="countdown-number">00</span><span class="countdown-unit">Sec</span></span>
-          </div>
-          <p class="countdown-label">Enterprise PQC Window</p>
-          <p class="countdown-desc">Banks and regulated enterprises begin mandatory migration. Regulatory pressure from OCC, ECB, and MAS expected to align with this window.</p>
-        </div>
-        <!-- Clock 3: Defense Systems — 2030-01-01 -->
-        <div class="countdown-clock reveal" data-target="2030-01-01T00:00:00">
-          <div class="countdown-value">
-            <span class="cd-days"><span class="countdown-number">000</span><span class="countdown-unit">Days</span></span>
-            <span class="cd-hours"><span class="countdown-number">00</span><span class="countdown-unit">Hrs</span></span>
-            <span class="cd-minutes"><span class="countdown-number">00</span><span class="countdown-unit">Min</span></span>
-            <span class="cd-seconds"><span class="countdown-number">00</span><span class="countdown-unit">Sec</span></span>
-          </div>
-          <p class="countdown-label">Defense Systems Deadline</p>
-          <p class="countdown-desc">Government PQC compliance for National Security Systems. CNSA 2.0 mandates in full effect. CRQC considered probable by intelligence assessments.</p>
-        </div>
-        <!-- Clock 4: CNSA 2.0 — 2033-01-01 -->
-        <div class="countdown-clock reveal" data-target="2033-01-01T00:00:00">
-          <div class="countdown-value">
-            <span class="cd-days"><span class="countdown-number">000</span><span class="countdown-unit">Days</span></span>
-            <span class="cd-hours"><span class="countdown-number">00</span><span class="countdown-unit">Hrs</span></span>
-            <span class="cd-minutes"><span class="countdown-number">00</span><span class="countdown-unit">Min</span></span>
-            <span class="cd-seconds"><span class="countdown-number">00</span><span class="countdown-unit">Sec</span></span>
-          </div>
-          <p class="countdown-label">CNSA 2.0 Compliance</p>
-          <p class="countdown-desc">All national security systems fully migrated to PQC-approved algorithms. Current PKI infrastructure considered broken by this point. Harvested data at risk.</p>
-        </div>
-      </div>
-
-      <!-- Clocks urgency note -->
-      <p class="clocks-urgency">The nearest deadline is <span id="nearestDeadlineLabel">June 1, 2027</span>. Start your free assessment today — generate your BOM in minutes.</p>
-
-      <div class="reveal" style="text-align:center;margin-top:48px;">
-        <a href="quantum-status.html" class="btn btn--outline">View Full Timeline &rarr;</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============================================================
-       SECTION 6: NEWS / INTELLIGENCE — Premium Magazine Layout
-       ============================================================ -->
-  <section id="intelligence" class="section section--dark section--striped">
-    <div class="container">
-      <h2 class="section-title reveal">Quantum Intelligence</h2>
-      <p class="section-subtitle reveal">Curated updates on PQC standards, regulatory timelines, and quantum technology milestones. Structured intelligence for decision-makers.</p>
-      <div class="news-grid">
-        <!-- Card 1 -->
-        <article class="news-card reveal" tabindex="0" role="button">
-          <span class="news-card__source-tag">NIST</span>
-          <div class="news-card__date">May 2026</div>
-          <h3>NIST Finalizes First PQC Standards</h3>
-          <p>ML-KEM (FIPS 203), ML-DSA (FIPS 204), and SLH-DSA (FIPS 205) finalized for immediate adoption. NIST states these "can and should be put into use now."</p>
-          <div class="news-card__expand">
-            <p>Organizations should begin cryptographic inventory and migration planning immediately. The standards cover key establishment and digital signatures &mdash; the foundation of enterprise PKI, TLS, and code-signing infrastructure.</p>
-          </div>
-          <span class="news-card__toggle">Read more</span>
-        </article>
-        <!-- Card 2 -->
-        <article class="news-card reveal" tabindex="0" role="button">
-          <span class="news-card__source-tag">NSA</span>
-          <div class="news-card__date">April 2026</div>
-          <h3>NSA Reaffirms PQC as Primary Quantum Mitigation</h3>
-          <p>CNSA 2.0 timelines established for national security systems. NSA does not recommend QKD for National Security Systems due to hardware and integration limitations.</p>
-          <div class="news-card__expand">
-            <p>Updated guidance reinforces PQC as the cost-effective, maintainable path. CNSA 2.0 mandates set clear deadlines through 2033 for all government and defense systems. Commercial equivalents expected across Five Eyes partners.</p>
-          </div>
-          <span class="news-card__toggle">Read more</span>
-        </article>
-        <!-- Card 3 -->
-        <article class="news-card reveal" tabindex="0" role="button">
-          <span class="news-card__source-tag">Industry</span>
-          <div class="news-card__date">March 2026</div>
-          <h3>Enterprise PQC Hiring Surges Across Security Industry</h3>
-          <p>Booz Allen, Palo Alto Networks, and other major vendors post dedicated PQC roles as cryptographic inventory becomes a formal product category with dedicated budget.</p>
-          <div class="news-card__expand">
-            <p>Roles span cryptographic inventory, migration architecture, PKI/TLS readiness, vendor assessment, and executive risk reporting. This signals real budget allocation &mdash; not exploratory research &mdash; across regulated sectors.</p>
-          </div>
-          <span class="news-card__toggle">Read more</span>
-        </article>
-        <!-- Card 4 -->
-        <article class="news-card reveal" tabindex="0" role="button">
-          <span class="news-card__source-tag">NCSC</span>
-          <div class="news-card__date">February 2026</div>
-          <h3>NCSC Publishes Quantum Networking Classification Guide</h3>
-          <p>Three-class framework helps enterprises evaluate when quantum networking is relevant vs. premature, covering QKD, networked sensors, and entanglement distribution.</p>
-          <div class="news-card__expand">
-            <p>The guide divides quantum networking into three classes: replacing classical security (QKD), extending networks with quantum components, and inherently quantum networks. Helps buyers avoid over-investing before technology matures for their use case.</p>
-          </div>
-          <span class="news-card__toggle">Read more</span>
-        </article>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============================================================
-       SECTION 7: WHO WE ARE
-       ============================================================ -->
-  <section id="who-we-are" class="section section--deep" style="padding:80px 0 40px;">
-    <div class="container">
-      <h2 class="section-title reveal">Who We Are</h2>
-      <div class="reveal" style="max-width:600px;margin:40px auto 0;text-align:center;">
-        <div style="width:64px;height:64px;border-radius:50%;background:var(--color-accent-subtle);border:0.5px solid var(--color-border);margin:0 auto 16px;display:flex;align-items:center;justify-content:center;font-size:1.5rem;color:var(--color-accent);">E</div>
-        <div style="font-size:0.7rem;font-weight:500;letter-spacing:0.06em;text-transform:uppercase;color:var(--color-accent);margin-bottom:8px;">Academic Lead</div>
-        <h3 style="font-family:var(--font-display);font-size:1.2rem;font-weight:500;margin-bottom:12px;color:var(--color-text);">Prof. Emiliano Ortner</h3>
-        <p style="font-size:0.84rem;color:var(--color-text-dim);line-height:1.7;font-weight:300;">Professor of Applied Quantum Computing at Universidad de Buenos Aires, and a team of cryptographers and security engineers.</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============================================================
-       SECTION 8: CONTACT / BOOK A CALL — Premium Form & Offers
-       ============================================================ -->
-  <section id="contact" class="section section--darker">
-    <div class="container">
-      <h2 class="section-title reveal" data-i18n="contact.heading">Start Your Assessment</h2>
-      <p class="section-subtitle reveal">Tell us about your organization and we will prepare a tailored quantum readiness assessment proposal. No pitch. No deck.</p>
-      <div class="contact-grid">
-        <!-- Left: Form -->
-        <form class="contact-form reveal" id="contact-form" action="https://formspree.io/f/xzdqbbpo" method="POST" novalidate>
-          <div class="contact-form__group">
-            <label class="contact-form__label" for="name">Name</label>
-            <input class="contact-form__input" type="text" id="name" name="name" autocomplete="name" required>
-          </div>
-          <div class="contact-form__group">
-            <label class="contact-form__label" for="email">Work Email</label>
-            <input class="contact-form__input" type="email" id="email" name="email" autocomplete="email" required>
-          </div>
-          <div class="contact-form__group">
-            <label class="contact-form__label" for="org">Organization</label>
-            <input class="contact-form__input" type="text" id="org" name="org" autocomplete="organization" required>
-          </div>
-          <div class="contact-form__group">
-            <label class="contact-form__label" for="interest">Area of Interest</label>
-            <select class="contact-form__select" id="interest" name="interest">
-              <option value="">Select an option&hellip;</option>
-              <option value="q1">Q-1: Readiness Assessment</option>
-              <option value="q2">Q-2: PQC Architecture Pilot</option>
-              <option value="q3">Q-3: Networking Decision Brief</option>
-              <option value="q4">Q-4: Simulator Workshop</option>
-              <option value="multiple">Multiple / Not Sure</option>
-            </select>
-          </div>
-          <div class="contact-form__group">
-            <label class="contact-form__label" for="message">Context (optional)</label>
-            <textarea class="contact-form__textarea" id="message" name="message" placeholder="Tell us about your infrastructure, timeline, and any specific concerns&hellip;"></textarea>
-          </div>
-          <button class="btn btn--primary contact-form__submit" type="submit">Submit Inquiry</button>
-          <p class="contact-form__feedback" aria-live="polite"></p>
-        </form>
-        <!-- Right: Offers -->
-        <div class="contact-offers reveal">
-          <h3 class="contact-offers__heading">Our Services</h3>
-          <div class="contact-offer">
-            <div class="contact-offer__title"><span class="accent-text">Q-1</span> Quantum Readiness Assessment</div>
-            <p class="contact-offer__desc">Cryptographic inventory, risk classification, vendor assessment, and migration roadmap aligned to NIST standards.</p>
-            <span class="contact-offer__cta">Book a scoping call &rarr;</span>
-          </div>
-          <div class="contact-offer">
-            <div class="contact-offer__title"><span class="accent-text">Q-2</span> PQC Architecture &amp; Pilot</div>
-            <p class="contact-offer__desc">Prototype hybrid or PQC-ready flows for one bounded protocol or application surface with performance testing.</p>
-            <span class="contact-offer__cta">Technical follow-on &rarr;</span>
-          </div>
-          <div class="contact-offer">
-            <div class="contact-offer__title"><span class="accent-text">Q-3</span> Quantum Networking Decision Brief</div>
-            <p class="contact-offer__desc">Determine whether QKD or quantum networking is relevant to your specific environment and threat model.</p>
-            <span class="contact-offer__cta">Specialized add-on &rarr;</span>
-          </div>
-          <div class="contact-offer">
-            <div class="contact-offer__title"><span class="accent-text">Q-4</span> Simulator Workshop</div>
-            <p class="contact-offer__desc">Technical enablement for engineering and security teams using NetSquid and quantum network simulators.</p>
-            <span class="contact-offer__cta">Team workshop &rarr;</span>
-          </div>
-        </div>
-        <!-- Portal note -->
-        <div class="contact-portal-note reveal">
-          <strong>Every assessment includes portal access</strong> to your live readiness dashboard with real-time scores, downloadable reports, and ongoing monitoring. Your data, your dashboard &mdash; not email newsletters.
-        </div>
-      </div>
-    </div>
-
-    <!-- Footer -->
-    <div class="container" style="margin-top:80px;padding-top:36px;border-top:0.5px solid var(--color-border);">
-      <footer class="footer">
-        <div>
-          <span>&copy; 2026 Q-Readiness</span>
-          <span style="display:block;font-size:0.7rem;color:var(--color-text-muted);margin-top:4px;">Proudly built by Universidad de Buenos Aires and 🦎 Larry the Plastic Lizard (Chief Morale Officer).</span>
-        </div>
-        <div class="footer__links">
-          <a href="index.html">Home</a>
-          <a href="pricing.html">Pricing</a>
-          <a href="dashboard.html">Demo</a>
-          <a href="index.html#contact">Contact</a>
-        </div>
-      </footer>
-    </div>
-  </section>
+  <!-- scroll space that powers the cross-fade -->
+  <div class="scroll-space" aria-hidden="true"></div>
 
   <button class="scroll-top-btn" id="scrollTopBtn" aria-label="Scroll to top">&uarr;</button>
 
-  <div id="bom-popup" class="bom-popup" role="tooltip" hidden>
-    <span data-i18n="hero.bom_popup">Bill of Materials — a complete inventory of every cryptographic asset in your infrastructure: TLS endpoints, certificates, code dependencies, keys, and more.</span>
-    <button class="bom-popup__close" aria-label="Close" onclick="this.parentElement.hidden=true">&times;</button>
-  </div>
-  <script>
-    document.addEventListener('click', function(e) {
-      var trigger = e.target.closest('.bom-trigger');
-      if (trigger) {
-        var popup = document.getElementById('bom-popup');
-        var rect = trigger.getBoundingClientRect();
-        popup.style.left = Math.min(rect.left, window.innerWidth - 400) + 'px';
-        popup.style.top = (rect.bottom + 8) + 'px';
-        popup.hidden = !popup.hidden;
-        e.stopPropagation();
-        return;
-      }
-      if (!e.target.closest('.bom-popup')) {
-        document.getElementById('bom-popup').hidden = true;
+  <script src="js/firebase.js"></script>
+  <script src="js/hero-bayer.js"></script>
+  <script src="js/main.js"></script>
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-app.js";
+    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-firestore.js";
+
+    const KEY = "qr_unlockedUntil";
+
+    const app = initializeApp(window.FIREBASE_CONFIG);
+    const db = getFirestore(app);
+    const lock = document.getElementById("lock");
+    const errorDiv = document.getElementById("lock-error");
+    const form = document.getElementById("lockForm");
+    const input = document.getElementById("lock-token");
+
+    async function sha256hex(str) {
+      const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(str));
+      return Array.from(new Uint8Array(buf)).map((b) => b.toString(16).padStart(2, "0")).join("");
+    }
+
+    function isUnlocked() {
+      const until = Number(sessionStorage.getItem(KEY));
+      return !!until && Date.now() < until;
+    }
+    function updateLock() {
+      const unlocked = isUnlocked();
+      lock.style.display = unlocked ? "none" : "flex";
+      if (unlocked) errorDiv.hidden = true;
+    }
+
+    const showError = (msg) => { errorDiv.textContent = msg; errorDiv.hidden = false; };
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      errorDiv.hidden = true;
+      const token = input.value.trim();
+      if (!token) return;
+      try {
+        const snap = await getDoc(doc(db, "gate", "access"));
+        if (!snap.exists()) { showError("Access not configured."); return; }
+        const d = snap.data();
+        const expiresAt = d.expiresAt && d.expiresAt.toMillis ? d.expiresAt.toMillis() : Number(d.expiresAt);
+        if (!expiresAt || Date.now() > expiresAt) { showError("Access code expired."); return; }
+        const hash = await sha256hex((d.salt || "") + token);
+        if (hash !== d.tokenHash) { showError("Invalid access code."); return; }
+        sessionStorage.setItem(KEY, String(expiresAt));
+        updateLock();
+      } catch (err) {
+        showError("Could not verify. Try again.");
+        console.error(err);
       }
     });
+
+    updateLock();
+    setInterval(updateLock, 30000);   // re-lock when the token expires
   </script>
-  <script src="js/main.js"></script>
 </body>
 </html>

@@ -432,9 +432,17 @@
         if (target) {
           e.preventDefault();
           var navH = 80;
-          var targetPos = target.getBoundingClientRect().top + window.scrollY - navH;
+          var targetPos;
+          if (target.classList.contains('stage-section')) {
+            var sections = qsa('.stage-section');
+            var idx = Array.prototype.indexOf.call(sections, target);
+            var max = document.documentElement.scrollHeight - window.innerHeight;
+            targetPos = (idx / (sections.length - 1)) * max;
+          } else {
+            targetPos = target.getBoundingClientRect().top + window.scrollY - navH;
+          }
           window.scrollTo({
-            top: targetPos,
+            top: Math.max(0, targetPos),
             behavior: state.reducedMotion ? 'auto' : 'smooth'
           });
         }
@@ -778,7 +786,6 @@
     initContactForm();
     initSmoothScroll();
     initNewsToggles();
-    initSideNav();
     initKnowMore();
     initSectorSelector();
     initScrollToTop();
