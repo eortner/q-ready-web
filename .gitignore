@@ -1,0 +1,10 @@
+# Python compiled cache
+__pycache__/
+*.pyc
+
+# Scratch / prototype test pages
+test-*.html
+
+# Test fixtures and assets
+tests/
+img/test/
